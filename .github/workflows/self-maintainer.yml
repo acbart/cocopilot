@@ -64,28 +64,38 @@ jobs:
 
           issue_body="## Goal
 
-          Propose incremental improvements to this repository and website and perform them via a Copilot PR. Please:
-          - Keep this workflow file unchanged: .github/workflows/self-maintainer.yml
-          - Make small, reviewable commits
+          Please review this repository and make any improvements you think would be valuable. You have full creative freedom to decide what changes would enhance this project.
 
-          ## Suggested changes (today)
+          ## Current Repository State
 
-          - Tidy/beautify index.html (semantic tags, meta viewport, descriptive title)
-          - Improve copy on the homepage to explain the self-update loop
-          - If needed, add lightweight styling (no external build step)
+          - **index.html**: A simple homepage for this self-updating repository
+          - **tomorrow.md**: A planning document for future work
+          - **README.md**: Basic repository description
 
-          ## Update tomorrow.md
+          ## Your Mission
 
-          Please update tomorrow.md to include tasks for the next day (checked into the PR), such as:
-          - Review UX copy again
-          - Add a simple changelog section to the homepage
-          - Consider a minimal CSS file with accessible defaults
+          Analyze the current state and implement whatever improvements you believe would be most beneficial. This could include but is not limited to:
+          - Enhancing the user interface and experience
+          - Improving documentation and explanations
+          - Adding new functionality or features
+          - Restructuring content for better organization
+          - Adding styling, interactivity, or multimedia elements
+          - Creating new files or resources as needed
 
-          ## Constraints
+          You are free to:
+          - Make any changes to any files (except .github/workflows/self-maintainer.yml)
+          - Add new files and directories
+          - Reorganize the repository structure
+          - Implement your own vision for what this project should become
 
-          - Do not modify .github/workflows/self-maintainer.yml
-          - Keep CI green
-          - Reference this issue in the PR
+          ## Guidelines
+
+          - Make thoughtful, incremental improvements
+          - Keep commits focused and reviewable
+          - Reference this issue in your PR
+          - Feel free to update tomorrow.md with your own ideas for future development
+
+          Use your best judgment and creativity!
 
           Thanks!"
           # write to GITHUB_OUTPUT as multiline
@@ -161,15 +171,20 @@ jobs:
           echo "url=$issue_url" >> "$GITHUB_OUTPUT"
           echo "Created and assigned: $issue_url"
 
-      - name: "Fallback: create issue without assignment (if Copilot unavailable)"
+      - name: "Fallback: create issue and attempt copilot assignment (if Copilot unavailable)"
         if: steps.copilot.outputs.available != 'true'
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
+          issue_url=$(gh issue create \
+            --title "${{ steps.meta.outputs.title }}" \
+            --body  "${{ steps.meta.outputs.body }}" \
+            --assignee "copilot" || \
           gh issue create \
             --title "${{ steps.meta.outputs.title }}" \
             --body  "${{ steps.meta.outputs.body }}" \
-            --label "needs-copilot"
+            --label "needs-copilot")
+          echo "Created issue: $issue_url"
 
   merge-copilot-prs:
     if: github.event_name == 'pull_request'
