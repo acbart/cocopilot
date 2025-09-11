@@ -90,7 +90,7 @@ jobs:
           Thanks!"
           # write to GITHUB_OUTPUT as multiline
           {
-            echo "body<<'EOF'"
+            echo "body<<EOF"
             echo "$issue_body"
             echo "EOF"
           } >> "$GITHUB_OUTPUT"
