@@ -1,0 +1,212 @@
+name: Self-maintainer (Copilot-driven)
+
+on:
+  schedule:
+    - cron: "15 9 * * *"   # daily at 09:15 UTC (~05:15 ET)
+  workflow_dispatch: {}
+  pull_request:
+    types: [opened, ready_for_review, synchronize, reopened, edited]
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+
+env:
+  WORKFLOW_PATH: .github/workflows/self-maintainer.yml
+
+jobs:
+  open-planning-issue:
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Ensure baseline files exist (index.html & tomorrow.md)
+        shell: bash
+        run: |
+          set -euo pipefail
+          changed=0
+          if [[ ! -f index.html ]]; then
+            cat > index.html <<'HTML'
+<!doctype html>
+<html lang="en"><meta charset="utf-8">
+<title>Self-updating site</title>
+<body>
+<h1>👋 Hello from a self-updating repo</h1>
+<p>This site proposes changes via a daily Copilot-assigned issue.</p>
+</body></html>
+HTML
+            changed=1
+          fi
+          if [[ ! -f tomorrow.md ]]; then
+            echo -e "# Tomorrow\n\n- [ ] Draft tomorrow's plan\n- [ ] Keep index.html tidy\n" > tomorrow.md
+            changed=1
+          fi
+          if [[ $changed -eq 1 ]]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add index.html tomorrow.md
+            git commit -m "chore: bootstrap baseline files"
+            git push
+          fi
+
+      - name: Install GitHub CLI
+        uses: cli/cli@v2
+        with:
+          version: 2.60.0
+
+      - name: Compute titles & bodies
+        id: meta
+        shell: bash
+        run: |
+          today_iso="$(date -u +'%Y-%m-%d')"
+          tomorrow_iso="$(date -u -d '1 day' +'%Y-%m-%d')"
+          printf 'title<<EOF\n' >> "$GITHUB_OUTPUT"
+          echo "Daily self-update plan — $today_iso" >> "$GITHUB_OUTPUT"
+          printf 'EOF\n' >> "$GITHUB_OUTPUT"
+
+          issue_body=$(cat <<'MD'
+## Goal
+
+Propose incremental improvements to this repository and website and perform them via a Copilot PR. Please:
+- Keep this workflow file **unchanged**: `.github/workflows/self-maintainer.yml`
+- Make small, reviewable commits
+
+## Suggested changes (today)
+
+- Tidy/beautify `index.html` (semantic tags, meta viewport, descriptive title)
+- Improve copy on the homepage to explain the self-update loop
+- If needed, add lightweight styling (no external build step)
+
+## Update `tomorrow.md`
+
+Please update `tomorrow.md` to include tasks for the next day (checked into the PR), such as:
+- [ ] Review UX copy again
+- [ ] Add a simple "changelog" section to the homepage
+- [ ] Consider a minimal CSS file with accessible defaults
+
+## Constraints
+
+- Do **not** modify `.github/workflows/self-maintainer.yml`
+- Keep CI green
+- Reference this issue in the PR
+
+Thanks!
+MD
+)
+          # write to GITHUB_OUTPUT as multiline
+          {
+            echo "body<<'EOF'"
+            echo "$issue_body"
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
+
+          echo "today=$today_iso" >> "$GITHUB_OUTPUT"
+          echo "tomorrow=$tomorrow_iso" >> "$GITHUB_OUTPUT"
+
+      - name: Look up Copilot coding agent ID (copilot-swe-agent)
+        id: copilot
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          owner="${GITHUB_REPOSITORY%/*}"
+          repo="${GITHUB_REPOSITORY#*/}"
+          # find assignable actors (bots/users) and locate Copilot agent
+          data=$(gh api graphql -f query='
+            query($owner:String!, $repo:String!) {
+              repository(owner:$owner, name:$repo) {
+                id
+                suggestedActors(capabilities:[CAN_BE_ASSIGNED], first:100) {
+                  nodes {
+                    login
+                    ... on Bot { id }
+                    ... on User { id }
+                  }
+                }
+              }
+            }' -F owner="$owner" -F repo="$repo")
+          repo_id=$(jq -r '.data.repository.id' <<<"$data")
+          copilot_id=$(jq -r '.data.repository.suggestedActors.nodes[] | select(.login=="copilot-swe-agent") | .id' <<<"$data")
+
+          if [[ -z "$copilot_id" || "$copilot_id" == "null" ]]; then
+            echo "::warning::Copilot coding agent is not available to assign in this repo. See GitHub Docs."
+            echo "available=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          echo "available=true" >> "$GITHUB_OUTPUT"
+          echo "repo_id=$repo_id" >> "$GITHUB_OUTPUT"
+          echo "actor_id=$copilot_id" >> "$GITHUB_OUTPUT"
+
+      - name: Create & assign daily planning issue to Copilot
+        if: steps.copilot.outputs.available == 'true'
+        id: issue
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          title="${{ steps.meta.outputs.title }}"
+          body="${{ steps.meta.outputs.body }}"
+          repo_id="${{ steps.copilot.outputs.repo_id }}"
+          actor_id="${{ steps.copilot.outputs.actor_id }}"
+
+          # Create the issue and assign Copilot in one mutation
+          resp=$(gh api graphql -f query='
+            mutation($repo:ID!, $title:String!, $body:String!, $assignees:[ID!]!) {
+              createIssue(input:{repositoryId:$repo, title:$title, body:$body, assigneeIds:$assignees}) {
+                issue { number url }
+              }
+            }' -F repo="$repo_id" -F title="$title" -F body="$body" -F assignees="[$actor_id]")
+
+          issue_number=$(jq -r '.data.createIssue.issue.number' <<<"$resp")
+          issue_url=$(jq -r '.data.createIssue.issue.url' <<<"$resp")
+          echo "number=$issue_number" >> "$GITHUB_OUTPUT"
+          echo "url=$issue_url" >> "$GITHUB_OUTPUT"
+          echo "Created and assigned: $issue_url"
+
+      - name: Fallback: create issue without assignment (if Copilot unavailable)
+        if: steps.copilot.outputs.available != 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh issue create \
+            --title "${{ steps.meta.outputs.title }}" \
+            --body  "${{ steps.meta.outputs.body }}" \
+            --label "needs-copilot"
+
+  merge-copilot-prs:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install GitHub CLI
+        uses: cli/cli@v2
+        with:
+          version: 2.60.0
+
+      - name: Guardrail — block if PR modifies this workflow
+        id: guard
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          PR="${{ github.event.pull_request.number }}"
+          files=$(gh pr view "$PR" --json files --jq '.files[].path')
+          if echo "$files" | grep -qx "${WORKFLOW_PATH}"; then
+            echo "::error::Refusing to merge: PR changes ${WORKFLOW_PATH}"
+            exit 1
+          fi
+
+      - name: Prefer auto-merge; fall back to immediate merge if allowed
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          PR="${{ github.event.pull_request.number }}"
+          # If required checks not yet passed, this enables auto-merge; otherwise it queues/merges. 
+          # Uses repo's default merge strategy or squash via flag.
+          gh pr merge "$PR" --squash --auto || gh pr merge "$PR" --squash --admin
