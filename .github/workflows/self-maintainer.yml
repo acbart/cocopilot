@@ -52,11 +52,6 @@ jobs:
             git push
           fi
 
-      - name: Install GitHub CLI
-        uses: cli/cli@v3
-        with:
-          version: 2.60.0
-
       - name: Compute titles & bodies
         id: meta
         shell: bash
@@ -180,11 +175,6 @@ jobs:
     if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     steps:
-      - name: Install GitHub CLI
-        uses: cli/cli@v3
-        with:
-          version: 2.60.0
-
       - name: Guardrail — block if PR modifies this workflow
         id: guard
         env:
