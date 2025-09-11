@@ -29,15 +29,15 @@ jobs:
           set -euo pipefail
           changed=0
           if [[ ! -f index.html ]]; then
-            cat > index.html <<'HTML'
-<!doctype html>
-<html lang="en"><meta charset="utf-8">
-<title>Self-updating site</title>
-<body>
-<h1>👋 Hello from a self-updating repo</h1>
-<p>This site proposes changes via a daily Copilot-assigned issue.</p>
-</body></html>
-HTML
+            cat > index.html << 'EOF'
+          <!doctype html>
+          <html lang="en"><meta charset="utf-8">
+          <title>Self-updating site</title>
+          <body>
+          <h1>👋 Hello from a self-updating repo</h1>
+          <p>This site proposes changes via a daily Copilot-assigned issue.</p>
+          </body></html>
+          EOF
             changed=1
           fi
           if [[ ! -f tomorrow.md ]]; then
@@ -67,35 +67,32 @@ HTML
           echo "Daily self-update plan — $today_iso" >> "$GITHUB_OUTPUT"
           printf 'EOF\n' >> "$GITHUB_OUTPUT"
 
-          issue_body=$(cat <<'MD'
-## Goal
+          issue_body="## Goal
 
-Propose incremental improvements to this repository and website and perform them via a Copilot PR. Please:
-- Keep this workflow file **unchanged**: `.github/workflows/self-maintainer.yml`
-- Make small, reviewable commits
+          Propose incremental improvements to this repository and website and perform them via a Copilot PR. Please:
+          - Keep this workflow file unchanged: .github/workflows/self-maintainer.yml
+          - Make small, reviewable commits
 
-## Suggested changes (today)
+          ## Suggested changes (today)
 
-- Tidy/beautify `index.html` (semantic tags, meta viewport, descriptive title)
-- Improve copy on the homepage to explain the self-update loop
-- If needed, add lightweight styling (no external build step)
+          - Tidy/beautify index.html (semantic tags, meta viewport, descriptive title)
+          - Improve copy on the homepage to explain the self-update loop
+          - If needed, add lightweight styling (no external build step)
 
-## Update `tomorrow.md`
+          ## Update tomorrow.md
 
-Please update `tomorrow.md` to include tasks for the next day (checked into the PR), such as:
-- [ ] Review UX copy again
-- [ ] Add a simple "changelog" section to the homepage
-- [ ] Consider a minimal CSS file with accessible defaults
+          Please update tomorrow.md to include tasks for the next day (checked into the PR), such as:
+          - Review UX copy again
+          - Add a simple changelog section to the homepage
+          - Consider a minimal CSS file with accessible defaults
 
-## Constraints
+          ## Constraints
 
-- Do **not** modify `.github/workflows/self-maintainer.yml`
-- Keep CI green
-- Reference this issue in the PR
+          - Do not modify .github/workflows/self-maintainer.yml
+          - Keep CI green
+          - Reference this issue in the PR
 
-Thanks!
-MD
-)
+          Thanks!"
           # write to GITHUB_OUTPUT as multiline
           {
             echo "body<<'EOF'"
@@ -169,7 +166,7 @@ MD
           echo "url=$issue_url" >> "$GITHUB_OUTPUT"
           echo "Created and assigned: $issue_url"
 
-      - name: Fallback: create issue without assignment (if Copilot unavailable)
+      - name: "Fallback: create issue without assignment (if Copilot unavailable)"
         if: steps.copilot.outputs.available != 'true'
         env:
           GH_TOKEN: ${{ github.token }}
