@@ -579,6 +579,142 @@ class PerformanceOptimizer {
   }
 
   /**
+   * Create new optimization dashboard
+   */
+  createOptimizationDashboard() {
+    const dashboard = document.createElement('div');
+    dashboard.id = 'performance-dashboard';
+    dashboard.className = 'performance-dashboard';
+    dashboard.innerHTML = `
+      <div class="dashboard-header">
+        <h4>⚡ Performance Metrics</h4>
+        <button class="dashboard-close" onclick="this.parentElement.parentElement.remove()">×</button>
+      </div>
+      <div class="dashboard-content">
+        <div class="metric-grid">
+          <div class="metric-item">
+            <span class="metric-label">LCP</span>
+            <span class="metric-value" id="lcp-value">-</span>
+          </div>
+          <div class="metric-item">
+            <span class="metric-label">FID</span>
+            <span class="metric-value" id="fid-value">-</span>
+          </div>
+          <div class="metric-item">
+            <span class="metric-label">CLS</span>
+            <span class="metric-value" id="cls-value">-</span>
+          </div>
+          <div class="metric-item">
+            <span class="metric-label">FCP</span>
+            <span class="metric-value" id="fcp-value">-</span>
+          </div>
+        </div>
+      </div>
+    `;
+
+    document.body.appendChild(dashboard);
+    this.addDashboardStyles();
+    this.enhanceExistingDashboard(dashboard);
+  }
+
+  /**
+   * Add dashboard-specific styles
+   */
+  addDashboardStyles() {
+    if (document.getElementById('dashboard-styles')) {
+      return;
+    }
+
+    const style = document.createElement('style');
+    style.id = 'dashboard-styles';
+    style.textContent = `
+      .performance-dashboard {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background: rgba(0, 0, 0, 0.8);
+        color: white;
+        border-radius: 10px;
+        padding: 15px;
+        min-width: 200px;
+        font-size: 0.8em;
+        z-index: 1000;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      .dashboard-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+      }
+
+      .dashboard-header h4 {
+        margin: 0;
+        font-size: 0.9em;
+        color: #ffd700;
+      }
+
+      .dashboard-close {
+        background: none;
+        border: none;
+        color: white;
+        font-size: 1.2em;
+        cursor: pointer;
+        padding: 0;
+        width: 20px;
+        height: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        transition: background 0.2s ease;
+      }
+
+      .dashboard-close:hover {
+        background: rgba(255, 255, 255, 0.2);
+      }
+
+      .metric-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+      }
+
+      .metric-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: rgba(255, 255, 255, 0.1);
+        padding: 6px 8px;
+        border-radius: 4px;
+      }
+
+      .metric-label {
+        font-size: 0.7em;
+        font-weight: 500;
+      }
+
+      .metric-value {
+        font-weight: bold;
+        color: #4caf50;
+      }
+
+      @media (max-width: 768px) {
+        .performance-dashboard {
+          bottom: 10px;
+          right: 10px;
+          left: 10px;
+          max-width: none;
+        }
+      }
+    `;
+    
+    document.head.appendChild(style);
+  }
+
+  /**
    * Check if dashboard should be shown
    */
   shouldShowDashboard() {

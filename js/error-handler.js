@@ -10,6 +10,9 @@ class ErrorHandler {
     this.notificationTimeout = 5000;
     this.retryAttempts = new Map();
     this.maxRetries = 3;
+    this.activeNotifications = new Map(); // Track active notifications to prevent duplicates
+    this.notificationDelay = 1000; // Minimum delay between notifications
+    this.lastNotificationTime = 0;
     
     this.init();
   }
@@ -145,8 +148,27 @@ class ErrorHandler {
    * Show user-friendly error notification
    */
   showErrorNotification(errorInfo) {
+    // Create a unique key for this type of error to prevent duplicates
+    const errorKey = `${errorInfo.type}-${this.getErrorTitle(errorInfo)}`;
+    const now = Date.now();
+    
+    // Check if we already have an active notification for this error type
+    if (this.activeNotifications.has(errorKey)) {
+      console.log('Suppressing duplicate error notification:', errorKey);
+      return;
+    }
+    
+    // Rate limit notifications
+    if (now - this.lastNotificationTime < this.notificationDelay) {
+      console.log('Rate limiting error notification');
+      return;
+    }
+    
+    this.lastNotificationTime = now;
+    
     const notification = document.createElement('div');
     notification.className = 'error-notification';
+    notification.setAttribute('data-error-key', errorKey);
     notification.innerHTML = `
       <div class="error-content">
         <div class="error-icon">⚠️</div>
@@ -155,16 +177,20 @@ class ErrorHandler {
           <div class="error-message">${this.getErrorMessage(errorInfo)}</div>
           ${this.getErrorActions(errorInfo)}
         </div>
-        <button class="error-close" onclick="this.parentElement.remove()">×</button>
+        <button class="error-close" onclick="this.parentElement.remove(); window.errorHandler.removeActiveNotification('${errorKey}')">×</button>
       </div>
     `;
 
     document.body.appendChild(notification);
+    
+    // Track active notification
+    this.activeNotifications.set(errorKey, notification);
 
     // Auto-remove after timeout
     setTimeout(() => {
       if (notification.parentElement) {
         notification.remove();
+        this.removeActiveNotification(errorKey);
       }
     }, this.notificationTimeout);
 
@@ -172,6 +198,13 @@ class ErrorHandler {
     requestAnimationFrame(() => {
       notification.classList.add('error-notification-visible');
     });
+  }
+  
+  /**
+   * Remove active notification tracking
+   */
+  removeActiveNotification(errorKey) {
+    this.activeNotifications.delete(errorKey);
   }
 
   /**
@@ -323,11 +356,19 @@ class ErrorHandler {
   }
 
   /**
-   * Clear error queue
+   * Clear error queue and active notifications
    */
   clearErrors() {
     this.errorQueue = [];
     this.retryAttempts.clear();
+    
+    // Remove all active error notifications
+    this.activeNotifications.forEach((notification, key) => {
+      if (notification.parentElement) {
+        notification.remove();
+      }
+    });
+    this.activeNotifications.clear();
   }
 
   /**
