@@ -132,6 +132,7 @@ jobs:
                 }
               }
             }' -F owner="$owner" -F repo="$repo")
+          echo "$data"
           repo_id=$(jq -r '.data.repository.id' <<<"$data")
           copilot_id=$(jq -r '.data.repository.suggestedActors.nodes[] | select(.login=="copilot-swe-agent") | .id' <<<"$data")
 
