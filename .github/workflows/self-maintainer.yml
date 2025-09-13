@@ -122,7 +122,7 @@ jobs:
             query($owner:String!, $repo:String!) {
               repository(owner:$owner, name:$repo) {
                 id
-                suggestedActors(capabilities:[CAN_BE_ASSIGNED], first:100) {
+                suggestedActors {
                   nodes {
                     login
                     ... on Bot { id }
@@ -132,7 +132,7 @@ jobs:
               }
             }' -F owner="$owner" -F repo="$repo")
           repo_id=$(jq -r '.data.repository.id' <<<"$data")
-          copilot_id=$(jq -r '.data.repository.suggestedActors.nodes[] | select(.login=="Copilot") | .id' <<<"$data")
+          copilot_id=$(jq -r '.data.repository.suggestedActors.nodes[] | select(.login=="copilot-swe-agent") | .id' <<<"$data")
 
           if [[ -z "$copilot_id" || "$copilot_id" == "null" ]]; then
             echo "::warning::Copilot coding agent is not available to assign in this repo. See GitHub Docs."
