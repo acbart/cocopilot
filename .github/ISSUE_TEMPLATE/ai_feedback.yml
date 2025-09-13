@@ -1,0 +1,130 @@
+name: 🤖 AI Development Feedback
+description: Provide feedback on Copilot's automated changes and development decisions
+title: "[AI-FEEDBACK] "
+labels: ["ai-feedback", "copilot-review", "meta"]
+assignees:
+  - copilot
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## AI Development Feedback 🤖
+        
+        This template is for providing feedback specifically about GitHub Copilot's automated changes, development decisions, or the AI-driven development process itself.
+        
+        **Important**: This feedback will be reviewed by a human maintainer and then provided to Copilot to help improve its future decision-making and development approach.
+
+  - type: dropdown
+    id: feedback_type
+    attributes:
+      label: Feedback Type
+      description: What type of AI development feedback is this?
+      options:
+        - Code Quality - Feedback on generated code
+        - Design Decisions - Feedback on UI/UX choices made by Copilot
+        - Development Process - Feedback on the automated workflow
+        - Documentation - Feedback on AI-generated documentation
+        - Testing Strategy - Feedback on automated testing approaches
+        - Project Direction - Feedback on overall project evolution
+        - Performance Impact - Feedback on performance changes
+        - Accessibility - Feedback on accessibility implementations
+        - Other (please specify in description)
+    validations:
+      required: true
+
+  - type: input
+    id: related_pr_issue
+    attributes:
+      label: Related PR/Issue/Commit
+      description: Link to the specific PR, issue, or commit you're providing feedback on
+      placeholder: "https://github.com/acbart/cocopilot/pull/123 or commit SHA"
+
+  - type: textarea
+    id: feedback_description
+    attributes:
+      label: Feedback Description
+      description: Provide detailed feedback about Copilot's work
+      placeholder: |
+        Please be specific about:
+        - What Copilot did well
+        - What could be improved
+        - Specific suggestions for better approaches
+        - Impact on user experience or code quality
+    validations:
+      required: true
+
+  - type: dropdown
+    id: feedback_sentiment
+    attributes:
+      label: Overall Assessment
+      description: How would you rate this particular AI development decision?
+      options:
+        - Excellent - Outstanding work, exceeds expectations
+        - Good - Solid work, meets expectations well
+        - Satisfactory - Acceptable work, room for improvement
+        - Needs Improvement - Below expectations, issues present
+        - Poor - Significant problems, major improvement needed
+    validations:
+      required: true
+
+  - type: textarea
+    id: suggestions
+    attributes:
+      label: Suggestions for Improvement
+      description: How could Copilot improve its approach in similar situations?
+      placeholder: |
+        Constructive suggestions for Copilot's future development:
+        - Alternative approaches to consider
+        - Tools or techniques that might be helpful
+        - Patterns or best practices to follow
+        - Areas to focus on for improvement
+
+  - type: textarea
+    id: positive_aspects
+    attributes:
+      label: Positive Aspects
+      description: What did Copilot do particularly well that should be continued?
+      placeholder: |
+        Highlight the positive aspects:
+        - Good decisions and approaches
+        - Quality of implementation
+        - Thoughtful considerations
+        - Effective problem-solving
+
+  - type: textarea
+    id: impact_assessment
+    attributes:
+      label: Impact Assessment
+      description: How did this change impact the project overall?
+      placeholder: |
+        Assess the overall impact:
+        - User experience improvements or regressions
+        - Code maintainability changes
+        - Performance implications
+        - Long-term project health considerations
+
+  - type: checkboxes
+    id: expertise
+    attributes:
+      label: Your Background
+      description: Help us understand your perspective (optional)
+      options:
+        - label: I have professional software development experience
+        - label: I have experience with web development (HTML/CSS/JavaScript)
+        - label: I have experience with AI/ML development
+        - label: I have experience with accessibility standards
+        - label: I have experience with UI/UX design
+        - label: I am familiar with this project's history and goals
+
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Acknowledgment
+      description: Please confirm your understanding
+      options:
+        - label: I understand this feedback will help improve Copilot's future development decisions
+          required: true
+        - label: I am providing constructive feedback to enhance the AI-driven development process
+          required: true
+        - label: I understand that Copilot will use this feedback to improve its autonomous development approach
+          required: true

@@ -1,0 +1,107 @@
+name: 📋 General Issue
+description: Report any other type of issue or question for Copilot's attention
+title: "[ISSUE] "
+labels: ["question", "needs-copilot-review"]
+assignees:
+  - copilot
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Welcome to CocoPilot! 🤖
+        
+        Thank you for creating an issue. This will be reviewed by a human maintainer to prevent prompt injection, then assigned to GitHub Copilot for analysis and response.
+        
+        **Important**: All decisions and responses are ultimately provided by Copilot as part of this repository's AI-driven development philosophy.
+        
+        **Note**: For specific bug reports, please use the "Bug Report" template. For feature suggestions, please use the "Feature Proposal" template.
+
+  - type: input
+    id: issue_title
+    attributes:
+      label: Issue Title
+      description: A clear and concise title for your issue
+      placeholder: "Question about the daily self-update process"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: issue_type
+    attributes:
+      label: Issue Type
+      description: What type of issue is this?
+      options:
+        - Question about the project
+        - Documentation clarification
+        - Support request
+        - Discussion about project direction
+        - Feedback or suggestion
+        - Repository maintenance
+        - Security concern
+        - Other (please specify in description)
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: Provide a detailed description of your issue, question, or concern
+      placeholder: |
+        Please provide as much detail as possible:
+        - What specifically are you asking about or reporting?
+        - What context or background information is relevant?
+        - What outcome or response are you hoping for?
+    validations:
+      required: true
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional Context
+      description: Any additional context, links, screenshots, or information
+      placeholder: |
+        Additional information that might be helpful:
+        - Links to relevant documentation or examples
+        - Screenshots or recordings if applicable
+        - Related issues or discussions
+        - Any attempted solutions or research you've done
+
+  - type: dropdown
+    id: urgency
+    attributes:
+      label: Priority Level
+      description: How urgent is this issue?
+      options:
+        - Low - General question or minor concern
+        - Medium - Important question or moderate concern
+        - High - Urgent question or significant concern
+        - Critical - Security issue or major project concern
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: research
+    attributes:
+      label: Research Checklist
+      description: Please confirm you've done basic research
+      options:
+        - label: I have searched existing issues to see if this has been addressed before
+          required: true
+        - label: I have read the README and DEVELOPMENT.md documentation
+          required: true
+        - label: I have considered whether this should be a bug report or feature proposal instead
+          required: true
+
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Acknowledgment
+      description: Please confirm your understanding of our AI-driven development process
+      options:
+        - label: I understand that this issue will be reviewed by a human maintainer and then assigned to GitHub Copilot for analysis and response
+          required: true
+        - label: I understand that Copilot will make all decisions about how to address this issue
+          required: true
+        - label: I understand that responses and actions will be taken according to the repository's autonomous development philosophy
+          required: true

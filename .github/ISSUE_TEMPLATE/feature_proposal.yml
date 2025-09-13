@@ -1,0 +1,155 @@
+name: 💡 Feature Proposal
+description: Suggest a new feature or improvement for Copilot to evaluate and implement
+title: "[PROPOSAL] "
+labels: ["proposal", "enhancement", "needs-copilot-review"]
+assignees:
+  - copilot
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Welcome to CocoPilot! 🤖
+        
+        Thank you for proposing a new feature or improvement. This proposal will be reviewed by a human maintainer to prevent prompt injection, then assigned to GitHub Copilot for evaluation and potential implementation.
+        
+        **Important**: All decisions about feature acceptance, design, and implementation are ultimately made by Copilot as part of this repository's AI-driven development philosophy.
+
+  - type: input
+    id: proposal_title
+    attributes:
+      label: Proposal Title
+      description: A clear and concise title for your proposal
+      placeholder: "Add dark mode toggle animation"
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem_statement
+    attributes:
+      label: Problem Statement
+      description: What problem does this proposal solve? Why is it needed?
+      placeholder: |
+        Currently, the theme toggle happens instantly without any visual feedback, which can be jarring for users.
+        A smooth transition would improve the user experience and make the interface feel more polished.
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposed_solution
+    attributes:
+      label: Proposed Solution
+      description: Describe your proposed solution in detail
+      placeholder: |
+        Add a CSS transition that smoothly animates the color changes when switching themes:
+        - Fade transition for background colors (300ms)
+        - Smooth color interpolation for text elements
+        - Optional: Add a subtle loading indicator during the transition
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternative_solutions
+    attributes:
+      label: Alternative Solutions
+      description: Describe any alternative solutions or features you've considered
+      placeholder: |
+        Alternative approaches could include:
+        - Instant toggle with a brief flash animation
+        - Slide transition effect
+        - Keeping the current instant toggle (no change)
+
+  - type: dropdown
+    id: proposal_category
+    attributes:
+      label: Proposal Category
+      description: What type of improvement is this?
+      options:
+        - User Interface / User Experience
+        - Performance Optimization
+        - Accessibility Enhancement
+        - New Feature
+        - Code Quality / Refactoring
+        - Documentation Improvement
+        - Development Workflow
+        - Security Enhancement
+        - Other (please specify in additional context)
+    validations:
+      required: true
+
+  - type: dropdown
+    id: proposal_priority
+    attributes:
+      label: Suggested Priority
+      description: How important do you think this proposal is?
+      options:
+        - Low - Nice to have, not urgent
+        - Medium - Would improve the project meaningfully
+        - High - Important for user experience or functionality
+        - Critical - Essential for project goals or user needs
+    validations:
+      required: true
+
+  - type: textarea
+    id: user_benefit
+    attributes:
+      label: User Benefit
+      description: How would this proposal benefit users of CocoPilot?
+      placeholder: |
+        This would benefit users by:
+        - Providing better visual feedback during theme changes
+        - Making the interface feel more modern and polished
+        - Reducing the jarring effect of instant color changes
+    validations:
+      required: true
+
+  - type: textarea
+    id: technical_considerations
+    attributes:
+      label: Technical Considerations
+      description: Any technical aspects, constraints, or implementation thoughts
+      placeholder: |
+        Technical considerations:
+        - Should use CSS transitions for best performance
+        - Need to ensure accessibility (respect prefers-reduced-motion)
+        - Should work across all supported browsers
+        - Minimal impact on page load time
+
+  - type: textarea
+    id: mockups_examples
+    attributes:
+      label: Mockups/Examples
+      description: If applicable, provide mockups, screenshots, or examples
+      placeholder: "Link to mockups, reference implementations, or describe the visual design"
+
+  - type: textarea
+    id: additional_context
+    attributes:
+      label: Additional Context
+      description: Add any other context or information about your proposal
+      placeholder: "Any other relevant information, links, or context"
+
+  - type: checkboxes
+    id: research
+    attributes:
+      label: Research Checklist
+      description: Please confirm you've done basic research
+      options:
+        - label: I have searched existing issues and proposals to ensure this hasn't been suggested before
+          required: true
+        - label: I have reviewed the project's goals and believe this aligns with CocoPilot's vision
+          required: true
+        - label: I understand that this is a suggestion and the final implementation (if any) will be designed and coded by Copilot
+          required: true
+
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Acknowledgment
+      description: Please confirm your understanding of our AI-driven development process
+      options:
+        - label: I understand that this proposal will be reviewed by a human maintainer and then assigned to GitHub Copilot for evaluation
+          required: true
+        - label: I understand that Copilot will make all decisions about whether to implement this proposal, how to implement it, and when to implement it
+          required: true
+        - label: I understand that Copilot may modify, enhance, or completely reimagine this proposal during implementation
+          required: true

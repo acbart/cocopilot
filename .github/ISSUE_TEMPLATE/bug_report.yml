@@ -1,0 +1,137 @@
+name: 🐛 Bug Report
+description: Report a problem for Copilot to investigate and resolve
+title: "[BUG] "
+labels: ["bug", "needs-copilot-review"]
+assignees:
+  - copilot
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Welcome to CocoPilot! 🤖
+        
+        Thank you for reporting a bug. This issue will be reviewed by a human maintainer to prevent prompt injection, then assigned to GitHub Copilot for analysis and resolution.
+        
+        **Important**: All technical decisions about fixes are ultimately made by Copilot as part of this repository's AI-driven development philosophy.
+
+  - type: input
+    id: summary
+    attributes:
+      label: Bug Summary
+      description: A clear and concise description of what the bug is
+      placeholder: "The theme toggle button doesn't work in dark mode"
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps to Reproduce
+      description: Tell us how to reproduce this behavior
+      placeholder: |
+        1. Go to https://acbart.github.io/cocopilot/
+        2. Click on the theme toggle button
+        3. Switch to dark mode
+        4. Try to click the button again
+        5. See error...
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected Behavior
+      description: What you expected to happen
+      placeholder: "The theme toggle should work consistently in both light and dark modes"
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual Behavior
+      description: What actually happened
+      placeholder: "The button becomes unresponsive after switching to dark mode"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: browsers
+    attributes:
+      label: Browser(s) Affected
+      description: Which browsers are you seeing the problem on?
+      multiple: true
+      options:
+        - Firefox
+        - Chrome
+        - Safari
+        - Microsoft Edge
+        - Opera
+        - Other (please specify in additional context)
+    validations:
+      required: true
+
+  - type: dropdown
+    id: device
+    attributes:
+      label: Device Type
+      description: What type of device are you using?
+      options:
+        - Desktop
+        - Mobile Phone
+        - Tablet
+        - Other (please specify in additional context)
+    validations:
+      required: true
+
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment Details
+      description: Please provide additional environment information
+      placeholder: |
+        - Operating System: (e.g., Windows 11, macOS 14, Ubuntu 22.04)
+        - Browser Version: (e.g., Chrome 118.0.5993.70)
+        - Screen Resolution: (e.g., 1920x1080)
+        - Any browser extensions that might interfere
+
+  - type: textarea
+    id: console_errors
+    attributes:
+      label: Console Errors
+      description: If applicable, paste any error messages from the browser console
+      placeholder: "Paste console errors here (F12 -> Console tab)"
+      render: shell
+
+  - type: textarea
+    id: additional_context
+    attributes:
+      label: Additional Context
+      description: Add any other context about the problem here
+      placeholder: "Screenshots, recordings, or any other relevant information"
+
+  - type: dropdown
+    id: severity
+    attributes:
+      label: Bug Severity
+      description: How would you rate the impact of this bug?
+      options:
+        - Low - Minor inconvenience, workaround available
+        - Medium - Noticeable issue affecting some functionality
+        - High - Major functionality broken or inaccessible
+        - Critical - Site completely unusable or major security issue
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Acknowledgment
+      description: Please confirm your understanding of our AI-driven development process
+      options:
+        - label: I understand that this issue will be reviewed by a human maintainer and then assigned to GitHub Copilot for analysis and resolution
+          required: true
+        - label: I understand that all technical decisions about the fix will be made by Copilot as part of the repository's autonomous development philosophy
+          required: true
+        - label: I have searched existing issues to ensure this bug hasn't already been reported
+          required: true
