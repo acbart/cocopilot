@@ -134,7 +134,8 @@ jobs:
             }' -F owner="$owner" -F repo="$repo")
           echo "$data"
           repo_id=$(jq -r '.data.repository.id' <<<"$data")
-          copilot_id=$(jq -r '.data.repository.suggestedActors.nodes[] | select(.login=="copilot-swe-agent") | .id' <<<"$data")
+          copilot_id="BOT_kgDOC9w8XQ"
+          # copilot_id=$(jq -r '.data.repository.suggestedActors.nodes[] | select(.login=="copilot-swe-agent") | .id' <<<"$data")
 
           if [[ -z "$copilot_id" || "$copilot_id" == "null" ]]; then
             echo "::warning::Copilot coding agent `$copilot_id` is not available to assign in this repo. See GitHub Docs."
