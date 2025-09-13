@@ -12,11 +12,11 @@ describe('Theme Management', () => {
     test('should toggle from light to dark theme', () => {
       const body = document.body;
       const themeToggle = document.querySelector('.theme-toggle');
-      
+
       // Simulate the toggle logic
       body.setAttribute('data-theme', 'dark');
       themeToggle.textContent = '☀️';
-      
+
       expect(body.getAttribute('data-theme')).toBe('dark');
       expect(themeToggle.textContent).toBe('☀️');
     });
@@ -24,14 +24,14 @@ describe('Theme Management', () => {
     test('should toggle from dark to light theme', () => {
       const body = document.body;
       const themeToggle = document.querySelector('.theme-toggle');
-      
+
       // Set up dark theme first
       body.setAttribute('data-theme', 'dark');
-      
+
       // Simulate toggle back to light
       body.removeAttribute('data-theme');
       themeToggle.textContent = '🌙';
-      
+
       expect(body.getAttribute('data-theme')).toBeNull();
       expect(themeToggle.textContent).toBe('🌙');
     });
@@ -41,11 +41,11 @@ describe('Theme Management', () => {
     test('should initialize dark theme', () => {
       const body = document.body;
       const themeToggle = document.querySelector('.theme-toggle');
-      
+
       // Simulate initialization with dark theme
       body.setAttribute('data-theme', 'dark');
       themeToggle.textContent = '☀️';
-      
+
       expect(body.getAttribute('data-theme')).toBe('dark');
       expect(themeToggle.textContent).toBe('☀️');
     });
@@ -53,7 +53,7 @@ describe('Theme Management', () => {
     test('should keep light theme by default', () => {
       // Reset body for this specific test
       document.body.removeAttribute('data-theme');
-      
+
       // By default, no data-theme attribute should be set (light theme)
       expect(document.body.getAttribute('data-theme')).toBeNull();
     });

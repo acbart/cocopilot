@@ -436,6 +436,79 @@
             margin: 10px 0;
         }
         
+        .language-switcher {
+            position: absolute;
+            top: 20px;
+            right: 80px;
+            z-index: 1000;
+        }
+        
+        .language-dropdown {
+            position: relative;
+        }
+        
+        .language-trigger {
+            background: var(--container-bg);
+            border: 2px solid var(--border-color);
+            border-radius: 20px;
+            padding: 6px 12px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+        
+        .language-trigger:hover {
+            background: var(--feature-bg);
+            border-color: var(--button-gradient-start);
+        }
+        
+        .dropdown-arrow {
+            font-size: 0.7rem;
+            transition: transform 0.3s ease;
+        }
+        
+        .language-trigger[aria-expanded="true"] .dropdown-arrow {
+            transform: rotate(180deg);
+        }
+        
+        .language-menu {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: var(--container-bg);
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            margin: 4px 0 0 0;
+            padding: 4px 0;
+            list-style: none;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            min-width: 120px;
+        }
+        
+        .language-menu li {
+            padding: 6px 12px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            transition: all 0.2s ease;
+        }
+        
+        .language-menu li:hover,
+        .language-menu li.selected {
+            background: var(--feature-bg);
+            color: var(--text-primary);
+        }
+        
+        .language-menu li.selected {
+            font-weight: 600;
+        }
+        
         .theme-toggle {
             position: absolute;
             top: 20px;
@@ -950,5 +1023,8 @@
     
     <!-- Evolution Timeline JavaScript -->
     <script src="js/timeline.js"></script>
+    
+    <!-- Internationalization Support -->
+    <script src="js/i18n.js"></script>
 </body>
 </html>
