@@ -19,6 +19,11 @@ const LANGUAGES = {
     name: 'Français',
     flag: '🇫🇷',
     direction: 'ltr'
+  },
+  de: {
+    name: 'Deutsch',
+    flag: '🇩🇪',
+    direction: 'ltr'
   }
 };
 
@@ -250,6 +255,82 @@ const TRANSLATIONS = {
     'version.1.2.0.description': 'Surveillance des performances et fonctionnalités analytiques ajoutées',
     'version.2.0.0.title': 'Infrastructure de Tests',
     'version.2.0.0.description': 'Cadre de tests complet et assurance qualité'
+  },
+  
+  de: {
+    // Main content
+    'site.title': 'CocoPilot - Selbstaktualisierendes Repository',
+    'site.subtitle': 'Ein Selbstaktualisierendes Repository',
+    'site.description': 'Dieses Repository entwickelt sich autonom durch KI-gesteuerte tägliche Verbesserungen. Jeden Tag analysiert GitHub Copilot die Codebasis und schlägt Verbesserungen vor, um dieses Projekt besser, nützlicher und interessanter zu machen.',
+    'status.active': 'Aktiv & Selbstverbessernd',
+    
+    // About section
+    'about.title': 'Über Dieses Experiment',
+    'about.description': 'CocoPilot stellt ein faszinierendes Experiment zur autonomen Software-Evolution dar. Dieses Repository nutzt KI, um sich kontinuierlich zu verbessern durch:',
+    'about.feature1': 'Tägliche automatisierte Analyse durch GitHub Copilot',
+    'about.feature2': 'Selbstgenerierte Verbesserungsvorschläge und -implementierungen',
+    'about.feature3': 'Kontinuierliches Lernen aus Benutzerinteraktionen und Feedback',
+    'about.feature4': 'Transparenter Entwicklungsprozess durch öffentliche Issues und PRs',
+    'about.conclusion': 'Jeder Tag bringt neue Verbesserungen und schafft ein lebendiges Beispiel für KI-unterstützte Entwicklung in Aktion.',
+    
+    // Features section
+    'features.title': 'Hauptfunktionen',
+    'features.updates.title': 'Auto-Updates',
+    'features.updates.description': 'Tägliche KI-gesteuerte Verbesserungen',
+    'features.actions.title': 'GitHub Actions',
+    'features.actions.description': 'Automatisierte Workflow-Verwaltung',
+    'features.goals.title': 'Fokussierte Ziele',
+    'features.goals.description': 'Schrittweise, durchdachte Änderungen',
+    
+    // Timeline section
+    'timeline.title': 'Entwicklungs-Zeitstrahl',
+    'timeline.description': 'Erkunden Sie, wie CocoPilot durch KI-gesteuerte Verbesserungen entwickelt hat',
+    'timeline.previous': '← Vorherige',
+    'timeline.next': 'Nächste →',
+    'timeline.features': 'Hauptfunktionen:',
+    
+    // Navigation and actions
+    'nav.github': 'Auf GitHub anzeigen',
+    'nav.issues': 'Tägliche Issues anzeigen',
+    'nav.github.desc': 'Den vollständigen Quellcode und die Entwicklungsgeschichte anzeigen',
+    'nav.issues.desc': 'Tägliche Verbesserungs-Issues und Diskussionen durchsuchen',
+    
+    // Social sharing
+    'share.title': 'CocoPilot Teilen',
+    'share.twitter': 'Auf Twitter teilen',
+    'share.linkedin': 'Auf LinkedIn teilen',
+    'share.copy': 'URL kopieren',
+    'share.twitter.text': 'Schauen Sie sich CocoPilot an - ein selbstaktualisierendes Repository, das sich durch KI entwickelt! 🤖✨',
+    
+    // Footer
+    'footer.powered': 'Angetrieben von GitHub Copilot',
+    'footer.updated': 'Zuletzt aktualisiert:',
+    'footer.docs': 'Dokumentation',
+    'footer.dev': 'Entwicklungsleitfaden',
+    'footer.changelog': 'Änderungsprotokoll',
+    'footer.plans': 'Zukunftspläne',
+    
+    // Accessibility and UI
+    'theme.toggle': 'Zwischen hellem und dunklem Theme wechseln',
+    'language.select': 'Sprache auswählen',
+    'stats.loading': 'Wird geladen...',
+    'stats.stars': 'Anzahl der Sterne',
+    'stats.forks': 'Anzahl der Forks',
+    'stats.issues': 'Anzahl offener Issues',
+    'stats.updates': 'Update-Häufigkeit',
+    'stats.daily': 'Täglich',
+    'stats.unavailable': 'Repository-Statistiken nicht verfügbar (offline oder Netzwerkbeschränkungen)',
+    'stats.loaded': 'Repository-Statistiken erfolgreich geladen',
+    
+    // Timeline versions
+    'version.1.0.0.title': 'Erste Version',
+    'version.1.0.0.description': 'Grundlegende Repository-Struktur mit selbstaktualisierendem Workflow',
+    'version.1.1.0.title': 'Verbesserte UI & PWA-Funktionen',
+    'version.1.1.0.description': 'Verbesserte Benutzeroberfläche und Progressive Web App-Funktionen',
+    'version.1.2.0.title': 'Leistung & Analytik',
+    'version.1.2.0.description': 'Leistungsüberwachung und Analytics-Funktionen hinzugefügt',
+    'version.2.0.0.title': 'Test-Infrastruktur',
+    'version.2.0.0.description': 'Umfassendes Test-Framework und Qualitätssicherung'
   }
 };
 

@@ -1012,21 +1012,21 @@
         </div>
 
         <nav class="cta" aria-label="Main actions">
-            <a href="https://github.com/acbart/cocopilot" class="btn" aria-describedby="github-desc">View on GitHub</a>
-            <a href="https://github.com/acbart/cocopilot/issues" class="btn btn-secondary" aria-describedby="issues-desc">See Daily Issues</a>
-            <div id="github-desc" class="sr-only">View the complete source code and development history</div>
-            <div id="issues-desc" class="sr-only">Browse daily improvement issues and discussions</div>
+            <a href="https://github.com/acbart/cocopilot" class="btn" aria-describedby="github-desc" data-i18n="nav.github">View on GitHub</a>
+            <a href="https://github.com/acbart/cocopilot/issues" class="btn btn-secondary" aria-describedby="issues-desc" data-i18n="nav.issues">See Daily Issues</a>
+            <div id="github-desc" class="sr-only" data-i18n="nav.github.desc">View the complete source code and development history</div>
+            <div id="issues-desc" class="sr-only" data-i18n="nav.issues.desc">Browse daily improvement issues and discussions</div>
         </nav>
 
         <section class="social-share" aria-labelledby="social-heading">
-            <h2 id="social-heading" class="sr-only">Share CocoPilot</h2>
+            <h2 id="social-heading" class="sr-only" data-i18n="share.title">Share CocoPilot</h2>
             <a href="#" class="share-btn" onclick="shareOnTwitter(); return false;" aria-label="Share CocoPilot on Twitter">
                 <span aria-hidden="true">🐦</span>
-                <span>Share on Twitter</span>
+                <span data-i18n="share.twitter">Share on Twitter</span>
             </a>
             <a href="#" class="share-btn" onclick="shareOnLinkedIn(); return false;" aria-label="Share CocoPilot on LinkedIn">
                 <span aria-hidden="true">💼</span>
-                <span>Share on LinkedIn</span>
+                <span data-i18n="share.linkedin">Share on LinkedIn</span>
             </a>
             <a href="#" class="share-btn" onclick="copyLink(event); return false;" aria-label="Copy CocoPilot URL to clipboard">
                 <span aria-hidden="true">🔗</span>
@@ -1035,12 +1035,12 @@
         </section>
 
         <footer class="footer" role="contentinfo">
-            <p>Powered by GitHub Copilot &amp; Last updated: <span id="lastUpdate"></span></p>
+            <p><span data-i18n="footer.powered">Powered by GitHub Copilot</span> &amp; <span data-i18n="footer.updated">Last updated:</span> <span id="lastUpdate"></span></p>
             <nav class="footer-links" aria-label="Documentation and resources">
-                <a href="https://github.com/acbart/cocopilot/blob/main/README.md" target="_blank" aria-label="View project documentation">📚 Documentation</a>
-                <a href="https://github.com/acbart/cocopilot/blob/main/docs/DEVELOPMENT.md" target="_blank" aria-label="View development setup guide">🛠️ Development Guide</a>
-                <a href="https://github.com/acbart/cocopilot/blob/main/CHANGELOG.md" target="_blank" aria-label="View complete changelog">📜 Changelog</a>
-                <a href="https://github.com/acbart/cocopilot/blob/main/tomorrow.md" target="_blank" aria-label="View future development plans">🔮 Future Plans</a>
+                <a href="https://github.com/acbart/cocopilot/blob/main/README.md" target="_blank" aria-label="View project documentation" data-i18n="footer.docs">📚 Documentation</a>
+                <a href="https://github.com/acbart/cocopilot/blob/main/docs/DEVELOPMENT.md" target="_blank" aria-label="View development setup guide" data-i18n="footer.dev">🛠️ Development Guide</a>
+                <a href="https://github.com/acbart/cocopilot/blob/main/CHANGELOG.md" target="_blank" aria-label="View complete changelog" data-i18n="footer.changelog">📜 Changelog</a>
+                <a href="https://github.com/acbart/cocopilot/blob/main/tomorrow.md" target="_blank" aria-label="View future development plans" data-i18n="footer.plans">🔮 Future Plans</a>
             </nav>
         </footer>
 
