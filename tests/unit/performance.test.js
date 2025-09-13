@@ -59,7 +59,8 @@ describe('Performance Monitoring', () => {
         domContentLoadedEventEnd: 500
       };
 
-      performance.getEntriesByType.mockReturnValue([navigationEntry]);
+      // Ensure the mock is properly set up
+      global.performance.getEntriesByType = jest.fn().mockReturnValue([navigationEntry]);
 
       // Simulate the performance measurement logic
       const navigation = performance.getEntriesByType('navigation')[0];
@@ -71,7 +72,8 @@ describe('Performance Monitoring', () => {
     });
 
     test('should handle missing navigation entries gracefully', () => {
-      performance.getEntriesByType.mockReturnValue([]);
+      // Ensure the mock is properly set up
+      global.performance.getEntriesByType = jest.fn().mockReturnValue([]);
 
       const navigation = performance.getEntriesByType('navigation')[0];
       expect(navigation).toBeUndefined();

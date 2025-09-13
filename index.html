@@ -537,6 +537,205 @@
             font-size: 0.8rem;
         }
         
+        /* GitHub Activity Timeline Styles */
+        .github-activity {
+            margin: 40px 0;
+            background: var(--container-bg);
+            border-radius: 16px;
+            padding: 24px;
+            border: 2px solid var(--border-color);
+            backdrop-filter: blur(10px);
+        }
+        
+        .activity-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .activity-header h3 {
+            margin: 0;
+            color: var(--text-primary);
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+        
+        .activity-stats {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .stat-badge {
+            background: var(--feature-bg);
+            color: var(--text-secondary);
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            border: 1px solid var(--border-color);
+        }
+        
+        .activity-loading, .activity-error {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+        
+        .loading-spinner {
+            animation: spin 2s linear infinite;
+        }
+        
+        .error-icon {
+            color: #f85149;
+        }
+        
+        .activity-timeline {
+            position: relative;
+        }
+        
+        .activity-timeline::before {
+            content: '';
+            position: absolute;
+            left: 15px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(to bottom, var(--button-gradient-start), var(--button-gradient-end));
+            opacity: 0.3;
+        }
+        
+        .commit-item {
+            display: flex;
+            margin-bottom: 16px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            padding: 12px;
+            border-radius: 12px;
+            position: relative;
+        }
+        
+        .commit-item:hover {
+            background: var(--feature-bg);
+            transform: translateX(4px);
+        }
+        
+        .commit-item:focus {
+            outline: 2px solid var(--button-gradient-start);
+            outline-offset: 2px;
+        }
+        
+        .commit-item.recent {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+            border-left: 3px solid var(--button-gradient-start);
+        }
+        
+        .commit-indicator {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--container-bg);
+            border: 2px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 16px;
+            position: relative;
+            z-index: 1;
+            flex-shrink: 0;
+        }
+        
+        .commit-type-icon {
+            font-size: 1.1rem;
+        }
+        
+        .commit-content {
+            flex: 1;
+            min-width: 0; /* Allows text truncation */
+        }
+        
+        .commit-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 6px;
+        }
+        
+        .commit-message {
+            color: var(--text-primary);
+            font-weight: 500;
+            line-height: 1.4;
+            flex: 1;
+            min-width: 0;
+        }
+        
+        .commit-id {
+            background: var(--feature-bg);
+            color: var(--text-tertiary);
+            padding: 2px 8px;
+            border-radius: 8px;
+            font-family: 'Monaco', 'Menlo', 'Consolas', monospace;
+            font-size: 0.75rem;
+            flex-shrink: 0;
+            border: 1px solid var(--border-color);
+        }
+        
+        .commit-meta {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+        }
+        
+        .author-avatar {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border: 1px solid var(--border-color);
+        }
+        
+        .commit-author {
+            font-weight: 500;
+        }
+        
+        .commit-time {
+            margin-left: auto;
+            font-style: italic;
+        }
+        
+        .activity-footer {
+            margin-top: 20px;
+            text-align: center;
+            padding-top: 16px;
+            border-top: 1px solid var(--border-color);
+        }
+        
+        .view-all-link {
+            color: var(--button-gradient-start);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        .view-all-link:hover {
+            color: var(--button-gradient-end);
+            transform: translateX(2px);
+        }
+        
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
         .share-btn:focus {
             outline: none;
             box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.3);
@@ -619,6 +818,65 @@
             
             .emoji {
                 font-size: 3rem;
+            }
+            
+            /* GitHub Activity Mobile Styles */
+            .github-activity {
+                margin: 20px 0;
+                padding: 16px;
+            }
+            
+            .activity-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 12px;
+            }
+            
+            .activity-header h3 {
+                font-size: 1.1rem;
+            }
+            
+            .activity-stats {
+                align-self: stretch;
+            }
+            
+            .commit-item {
+                padding: 8px;
+                margin-bottom: 12px;
+            }
+            
+            .commit-indicator {
+                width: 28px;
+                height: 28px;
+                margin-right: 12px;
+            }
+            
+            .commit-type-icon {
+                font-size: 1rem;
+            }
+            
+            .commit-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 6px;
+            }
+            
+            .commit-message {
+                font-size: 0.9rem;
+            }
+            
+            .commit-id {
+                font-size: 0.7rem;
+            }
+            
+            .commit-meta {
+                gap: 6px;
+                font-size: 0.8rem;
+            }
+            
+            .author-avatar {
+                width: 18px;
+                height: 18px;
             }
             
             .features {
@@ -741,6 +999,13 @@
             </div>
         </section>
         
+        <!-- GitHub Activity Timeline Section -->
+        <div id="github-activity" class="github-activity" aria-labelledby="activity-heading">
+            <div class="activity-header">
+                <h3 id="activity-heading">🚀 Recent Activity</h3>
+            </div>
+        </div>
+        
         <!-- Evolution Timeline Section -->
         <div class="evolution-section">
             <div id="evolutionTimeline"></div>
@@ -763,9 +1028,9 @@
                 <span aria-hidden="true">💼</span>
                 <span>Share on LinkedIn</span>
             </a>
-            <a href="#" class="share-btn" onclick="copyLink(event); return false;" aria-label="Copy CocoPilot link to clipboard">
+            <a href="#" class="share-btn" onclick="copyLink(event); return false;" aria-label="Copy CocoPilot URL to clipboard">
                 <span aria-hidden="true">🔗</span>
-                <span>Copy Link</span>
+                <span data-i18n="share.copy">Copy URL</span>
             </a>
         </section>
         
@@ -1061,6 +1326,9 @@
     
     <!-- Internationalization (i18n) JavaScript -->
     <script src="js/i18n.js"></script>
+    
+    <!-- GitHub Activity Visualization JavaScript -->
+    <script src="js/github-activity.js"></script>
     
     <!-- Evolution Timeline JavaScript -->
     <script src="js/timeline.js"></script>

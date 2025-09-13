@@ -170,18 +170,22 @@ describe('Accessibility Features', () => {
     test('should have descriptive link text', () => {
       const links = document.querySelectorAll('a[href]');
       
-      links.forEach(link => {
+      links.forEach((link, index) => {
         const text = link.textContent.trim();
         const ariaLabel = link.getAttribute('aria-label');
         
         // Link should have either meaningful text or aria-label
         expect(text.length > 0 || ariaLabel).toBeTruthy();
         
-        // Avoid generic link text
-        const genericTexts = ['click here', 'read more', 'link'];
-        const isGeneric = genericTexts.some(generic => 
-          text.toLowerCase().includes(generic)
-        );
+        // Avoid generic link text (check for whole words)
+        const genericTexts = ['click here', 'read more'];
+        const textLower = text.toLowerCase();
+        const isGeneric = genericTexts.some(generic => textLower === generic) ||
+                         textLower === 'link' || 
+                         /^link$/i.test(text) ||
+                         /\bclick here\b/i.test(text) ||
+                         /\bread more\b/i.test(text);
+        
         expect(isGeneric).toBeFalsy();
       });
     });

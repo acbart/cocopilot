@@ -66,7 +66,7 @@ const TRANSLATIONS = {
     'share.title': 'Share CocoPilot',
     'share.twitter': 'Share on Twitter',
     'share.linkedin': 'Share on LinkedIn',
-    'share.copy': 'Copy Link',
+    'share.copy': 'Copy URL',
     'share.twitter.text': 'Check out CocoPilot - a self-updating repository that evolves through AI! 🤖✨',
     
     // Footer
@@ -142,7 +142,7 @@ const TRANSLATIONS = {
     'share.title': 'Compartir CocoPilot',
     'share.twitter': 'Compartir en Twitter',
     'share.linkedin': 'Compartir en LinkedIn',
-    'share.copy': 'Copiar Enlace',
+    'share.copy': 'Copiar URL',
     'share.twitter.text': '¡Echa un vistazo a CocoPilot - un repositorio autoactualizable que evoluciona a través de IA! 🤖✨',
     
     // Footer
@@ -218,7 +218,7 @@ const TRANSLATIONS = {
     'share.title': 'Partager CocoPilot',
     'share.twitter': 'Partager sur Twitter',
     'share.linkedin': 'Partager sur LinkedIn',
-    'share.copy': 'Copier le Lien',
+    'share.copy': 'Copier l\'URL',
     'share.twitter.text': 'Découvrez CocoPilot - un dépôt auto-mise à jour qui évolue grâce à l\'IA ! 🤖✨',
     
     // Footer
