@@ -62,3 +62,11 @@ lighthouse-report.html
 /test-results/
 /playwright-report/
 /playwright/.cache/
+
+# Code quality tools
+.eslintcache
+.prettier-cache
+
+# Additional development files
+*.tsbuildinfo
+.nyc_output/

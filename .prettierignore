@@ -1,0 +1,11 @@
+# Prettier ignore file
+node_modules/
+coverage/
+dist/
+build/
+*.min.js
+*.min.css
+playwright-report/
+test-results/
+lighthouse-report.json
+package-lock.json

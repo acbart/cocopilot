@@ -78,16 +78,29 @@ Visit the live site: **[https://acbart.github.io/cocopilot/](https://acbart.gith
 
 ### Development Tools
 
-The project includes optional development tools for validation and testing:
+The project includes comprehensive development tools for testing, validation, and quality assurance:
 
 ```bash
 # Install development dependencies
 npm install
 
-# Available commands
-npm run validate    # Validate HTML and CSS
-npm run lighthouse  # Run Lighthouse performance audit
-npm run test       # Run validation tests
+# Testing and Quality
+npm test             # Run complete test suite (unit, e2e, validation, linting)
+npm run test:unit    # Run unit tests only  
+npm run test:e2e     # Run end-to-end tests
+npm run test:coverage # Generate test coverage report
+
+# Code Quality
+npm run lint         # Run ESLint code analysis
+npm run lint:fix     # Fix linting issues automatically
+npm run format       # Format code with Prettier
+npm run format:check # Check code formatting
+npm run quality      # Run all quality checks
+
+# Validation and Performance
+npm run validate     # Validate HTML markup
+npm run lighthouse   # Run Lighthouse performance audit
+```
 ```
 
 For detailed development instructions, see [docs/DEVELOPMENT.md](docs/DEVELOPMENT.md).

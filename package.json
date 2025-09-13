@@ -1,6 +1,6 @@
 {
   "name": "cocopilot",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "A self-modifying repository that evolves through AI-driven daily improvements",
   "main": "index.html",
   "scripts": {
@@ -8,13 +8,18 @@
     "serve": "python3 -m http.server 8000",
     "validate": "html-validate index.html",
     "lighthouse": "lighthouse http://localhost:8000 --output=json --output-path=./lighthouse-report.json --chrome-flags='--headless'",
-    "test": "npm run test:unit && npm run test:e2e && npm run validate",
+    "test": "npm run test:unit && npm run test:e2e && npm run validate && npm run lint",
     "test:unit": "jest",
     "test:e2e": "playwright test",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
     "build": "echo 'Static site - no build required'",
-    "deploy": "echo 'Deploy via GitHub Pages'"
+    "deploy": "echo 'Deploy via GitHub Pages'",
+    "lint": "eslint . --ext .js",
+    "lint:fix": "eslint . --ext .js --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "quality": "npm run lint && npm run format:check && npm run test:coverage"
   },
   "repository": {
     "type": "git",
@@ -45,7 +50,9 @@
     "@babel/core": "^7.23.0",
     "@babel/preset-env": "^7.23.0",
     "babel-jest": "^29.7.0",
-    "@axe-core/cli": "^4.8.0"
+    "@axe-core/cli": "^4.8.0",
+    "eslint": "^8.50.0",
+    "prettier": "^3.0.0"
   },
   "engines": {
     "node": ">=16.0.0"

@@ -1,0 +1,23 @@
+{
+  "extends": ["html-validate:recommended"],
+  "rules": {
+    "require-sri": "off",
+    "no-inline-style": "warn",
+    "aria-label-misuse": "error",
+    "aria-hidden-body": "error",
+    "heading-level": "error",
+    "meta-refresh": "error",
+    "no-autoplay": "error",
+    "no-dup-attr": "error",
+    "no-dup-id": "error",
+    "no-missing-references": "error",
+    "prefer-native-element": "error",
+    "wcag/h30": "error",
+    "wcag/h32": "error",
+    "wcag/h36": "error",
+    "wcag/h37": "error"
+  },
+  "elements": [
+    "html5"
+  ]
+}
