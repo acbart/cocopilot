@@ -45,6 +45,62 @@
             text-align: center;
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
             border: 1px solid rgba(255, 255, 255, 0.2);
+            position: relative;
+        }
+        
+        .theme-toggle {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+        
+        .theme-toggle:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.1);
+        }
+        
+        /* Dark theme */
+        body.dark-theme {
+            background: linear-gradient(135deg, #2c3e50 0%, #4a6741 100%);
+        }
+        
+        body.dark-theme .container {
+            background: rgba(45, 55, 72, 0.95);
+            color: #e2e8f0;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        body.dark-theme .subtitle {
+            color: #a0aec0;
+        }
+        
+        body.dark-theme .description {
+            color: #cbd5e0;
+        }
+        
+        body.dark-theme .feature {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        body.dark-theme .feature-desc {
+            color: #a0aec0;
+        }
+        
+        body.dark-theme .footer {
+            color: #718096;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
         }
         
         .emoji {
@@ -184,6 +240,10 @@
 </head>
 <body>
     <div class="container">
+        <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark/light theme">
+            <span id="theme-icon">🌙</span>
+        </button>
+        
         <span class="emoji">🤖</span>
         <h1>Hello from CocoPilot!</h1>
         <p class="subtitle">A Self-Updating Repository</p>
@@ -225,11 +285,41 @@
     </div>
     
     <script>
+        // Theme toggle functionality
+        function toggleTheme() {
+            const body = document.body;
+            const themeIcon = document.getElementById('theme-icon');
+            
+            body.classList.toggle('dark-theme');
+            
+            if (body.classList.contains('dark-theme')) {
+                themeIcon.textContent = '☀️';
+                localStorage.setItem('theme', 'dark');
+            } else {
+                themeIcon.textContent = '🌙';
+                localStorage.setItem('theme', 'light');
+            }
+        }
+        
+        // Load saved theme preference
+        function loadTheme() {
+            const savedTheme = localStorage.getItem('theme');
+            const body = document.body;
+            const themeIcon = document.getElementById('theme-icon');
+            
+            if (savedTheme === 'dark') {
+                body.classList.add('dark-theme');
+                themeIcon.textContent = '☀️';
+            }
+        }
+        
         // Display current date as last update
         document.getElementById('lastUpdate').textContent = new Date().toLocaleDateString();
         
         // Add some interactive animations
         document.addEventListener('DOMContentLoaded', function() {
+            loadTheme();
+            
             const features = document.querySelectorAll('.feature');
             
             features.forEach((feature, index) => {

@@ -2,6 +2,7 @@
 
 [![GitHub Pages](https://img.shields.io/badge/GitHub%20Pages-Live-brightgreen)](https://acbart.github.io/cocopilot/)
 [![GitHub Issues](https://img.shields.io/github/issues/acbart/cocopilot)](https://github.com/acbart/cocopilot/issues)
+[![Auto-Update Status](https://img.shields.io/badge/Auto--Update-Active-success)](https://github.com/acbart/cocopilot/actions)
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
 > **A self-modifying repository that evolves through AI-driven daily improvements**
@@ -64,10 +65,13 @@ Visit the live site: **[https://acbart.github.io/cocopilot/](https://acbart.gith
 ## 📈 Recent Improvements
 
 - ✅ **Modern UI Design**: Complete redesign with gradient backgrounds, smooth animations, and responsive layout
+- ✅ **Dark/Light Theme Toggle**: User preference saving with smooth transitions
 - ✅ **Enhanced Documentation**: Comprehensive README with badges, structure overview, and clear instructions
 - ✅ **SEO Optimization**: Added meta tags, Open Graph properties, and proper semantic HTML
 - ✅ **Interactive Elements**: JavaScript animations and dynamic content updates
 - ✅ **Accessibility**: Proper ARIA labels, semantic markup, and mobile-friendly design
+- ✅ **Custom Favicon**: Professional SVG favicon with robot theme
+- ✅ **Project Structure**: Added .gitignore, CHANGELOG.md, and organized documentation
 
 ## 🎯 Future Vision
 
