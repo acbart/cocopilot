@@ -33,9 +33,18 @@ cocopilot/
 ├── index.html          # Main webpage with modern, responsive design
 ├── README.md           # Project documentation (this file)
 ├── tomorrow.md         # Planning document for future improvements
+├── CHANGELOG.md        # Detailed version history and changes
+├── sw.js              # Enhanced service worker for PWA features
+├── favicon.svg        # Custom SVG favicon and PWA icon
+├── manifest.json      # Web app manifest for PWA installation
+├── package.json       # Development dependencies and scripts
+├── .gitignore         # Git ignore rules for development files
+├── docs/
+│   └── DEVELOPMENT.md # Comprehensive development guide
 └── .github/
     └── workflows/
-        └── self-maintainer.yml  # Automation workflow
+        ├── self-maintainer.yml  # Automation workflow
+        └── automerge.yml        # Auto-merge configuration
 ```
 
 ## 🚀 Getting Started
@@ -54,20 +63,47 @@ Visit the live site: **[https://acbart.github.io/cocopilot/](https://acbart.gith
 
 2. Serve the files locally:
    ```bash
+   # Using Python (recommended)
    python3 -m http.server 8000
-   # or
+   
+   # Or using npm (with development tools)
+   npm install
+   npm run dev
+   
+   # Or using Node.js
    npx serve .
    ```
 
 3. Open your browser to `http://localhost:8000`
 
+### Development Tools
+
+The project includes optional development tools for validation and testing:
+
+```bash
+# Install development dependencies
+npm install
+
+# Available commands
+npm run validate    # Validate HTML and CSS
+npm run lighthouse  # Run Lighthouse performance audit
+npm run test       # Run validation tests
+```
+
+For detailed development instructions, see [docs/DEVELOPMENT.md](docs/DEVELOPMENT.md).
+
 ## 📈 Recent Improvements
 
 - ✅ **Modern UI Design**: Complete redesign with gradient backgrounds, smooth animations, and responsive layout
 - ✅ **Enhanced Documentation**: Comprehensive README with badges, structure overview, and clear instructions
-- ✅ **SEO Optimization**: Added meta tags, Open Graph properties, and proper semantic HTML
+- ✅ **SEO Optimization**: Added meta tags, Open Graph properties, structured data, and proper semantic HTML
 - ✅ **Interactive Elements**: JavaScript animations and dynamic content updates
 - ✅ **Accessibility**: Proper ARIA labels, semantic markup, and mobile-friendly design
+- ✅ **Progressive Web App**: Enhanced PWA support with web app manifest and advanced service worker
+- ✅ **Performance Optimization**: Improved CSS delivery, resource preloading, and Core Web Vitals monitoring
+- ✅ **Developer Experience**: Added development tools, package.json, and comprehensive development guide
+- ✅ **Error Handling**: Enhanced error handling with graceful fallbacks and retry mechanisms
+- ✅ **Offline Support**: Advanced caching strategies and offline functionality improvements
 
 ## 🎯 Future Vision
 

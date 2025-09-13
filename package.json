@@ -1,0 +1,45 @@
+{
+  "name": "cocopilot",
+  "version": "2.0.0",
+  "description": "A self-modifying repository that evolves through AI-driven daily improvements",
+  "main": "index.html",
+  "scripts": {
+    "dev": "python3 -m http.server 8000",
+    "serve": "python3 -m http.server 8000",
+    "validate": "html5validator --root . --also-check-css --show-warnings",
+    "lighthouse": "lighthouse http://localhost:8000 --output=json --output-path=./lighthouse-report.json --chrome-flags='--headless'",
+    "test": "echo 'Running validation tests...' && npm run validate",
+    "build": "echo 'Static site - no build required'",
+    "deploy": "echo 'Deploy via GitHub Pages'"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/acbart/cocopilot.git"
+  },
+  "keywords": [
+    "ai",
+    "automation",
+    "github-copilot",
+    "self-updating",
+    "progressive-web-app",
+    "github-actions"
+  ],
+  "author": "CocoPilot AI",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/acbart/cocopilot/issues"
+  },
+  "homepage": "https://acbart.github.io/cocopilot/",
+  "devDependencies": {
+    "html5validator": "^0.4.2",
+    "lighthouse": "^11.0.0"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead"
+  ]
+}
