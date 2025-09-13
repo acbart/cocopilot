@@ -165,7 +165,7 @@ jobs:
               createIssue(input:{repositoryId:$repo, title:$title, body:$body, assigneeIds:$assignees}) {
                 issue { number url }
               }
-            }' -F repo="$repo_id" -F title="$title" -F body="$body" -F assignees="[$actor_id]")
+            }' -F repo="$repo_id" -F title="$title" -F body="$body" -F assignees="$actor_id")
 
           issue_number=$(jq -r '.data.createIssue.issue.number' <<<"$resp")
           issue_url=$(jq -r '.data.createIssue.issue.url' <<<"$resp")
