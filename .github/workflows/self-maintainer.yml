@@ -118,6 +118,7 @@ jobs:
           owner="${GITHUB_REPOSITORY%/*}"
           repo="${GITHUB_REPOSITORY#*/}"
           # find assignable actors (bots/users) and locate Copilot agent
+          echo "TRYING: ${owner} + ${repo}"
           data=$(gh api graphql -f query='
             query($owner:String!, $repo:String!) {
               repository(owner:$owner, name:$repo) {
@@ -135,9 +136,9 @@ jobs:
           copilot_id=$(jq -r '.data.repository.suggestedActors.nodes[] | select(.login=="copilot-swe-agent") | .id' <<<"$data")
 
           if [[ -z "$copilot_id" || "$copilot_id" == "null" ]]; then
-            echo "::warning::Copilot coding agent is not available to assign in this repo. See GitHub Docs."
+            echo "::warning::Copilot coding agent `$copilot_id` is not available to assign in this repo. See GitHub Docs."
             echo "available=false" >> "$GITHUB_OUTPUT"
-            exit 0
+            exit 1
           fi
 
           echo "available=true" >> "$GITHUB_OUTPUT"
