@@ -24,6 +24,41 @@ const LANGUAGES = {
     name: 'Deutsch',
     flag: '🇩🇪',
     direction: 'ltr'
+  },
+  ja: {
+    name: '日本語',
+    flag: '🇯🇵',
+    direction: 'ltr'
+  },
+  zh: {
+    name: '中文',
+    flag: '🇨🇳',
+    direction: 'ltr'
+  },
+  ko: {
+    name: '한국어',
+    flag: '🇰🇷',
+    direction: 'ltr'
+  },
+  pt: {
+    name: 'Português',
+    flag: '🇧🇷',
+    direction: 'ltr'
+  },
+  it: {
+    name: 'Italiano',
+    flag: '🇮🇹',
+    direction: 'ltr'
+  },
+  ru: {
+    name: 'Русский',
+    flag: '🇷🇺',
+    direction: 'ltr'
+  },
+  ar: {
+    name: 'العربية',
+    flag: '🇸🇦',
+    direction: 'rtl'
   }
 };
 
@@ -373,6 +408,264 @@ const TRANSLATIONS = {
     'viz.tech.subtitle': 'Moderne Webtechnologien, die CocoPilot antreiben',
     'viz.legend.features': 'Hinzugefügte Funktionen',
     'viz.legend.maturity': 'Plattform-Reife'
+  },
+
+  ja: {
+    // Main content
+    'site.title': 'CocoPilot - 自己更新リポジトリ',
+    'site.subtitle': '自己更新リポジトリ',
+    'site.description': 'このリポジトリは、AI主導の日々の改善により自律的に進化します。毎日、GitHub Copilotがコードベースを分析し、このプロジェクトをより良く、より有用で、より興味深いものにするための拡張機能を提案します。',
+    'status.active': 'アクティブ＆自己改善中',
+
+    // About section
+    'about.title': 'この実験について',
+    'about.description': 'CocoPilotは自律的ソフトウェア進化の魅力的な実験です。このリポジトリはAIを使用して以下を通じて継続的に自己改善します：',
+    'about.feature1': 'GitHub Copilotによる日次自動分析',
+    'about.feature2': '自動生成された改善提案と実装',
+    'about.feature3': 'ユーザーとのやり取りやフィードバックからの継続学習',
+    'about.feature4': '公開イシューとPRを通じた透明な開発プロセス',
+    'about.conclusion': '毎日新しい拡張機能がもたらされ、AI支援開発の生きた例を作り上げています。',
+
+    // Features section
+    'features.title': '主な機能',
+    'features.updates.title': '自動更新',
+    'features.updates.description': 'AI主導の日次改善',
+    'features.actions.title': 'GitHub Actions',
+    'features.actions.description': '自動化されたワークフロー管理',
+    'features.goals.title': '集中的な目標',
+    'features.goals.description': '段階的で思慮深い変更',
+
+    // Timeline section
+    'timeline.title': '進化タイムライン',
+    'timeline.description': 'AI主導の改善によってCocoPilotがどのように進化したかを探る',
+    'timeline.previous': '← 前へ',
+    'timeline.next': '次へ →',
+    'timeline.features': '主な機能：',
+
+    // Navigation and actions
+    'nav.github': 'GitHubで表示',
+    'nav.issues': '日次イシューを見る',
+    'nav.github.desc': '完全なソースコードと開発履歴を表示',
+    'nav.issues.desc': '日次改善イシューとディスカッションを閲覧',
+
+    // Social sharing
+    'share.title': 'CocoPilotを共有',
+    'share.twitter': 'Twitterで共有',
+    'share.linkedin': 'LinkedInで共有',
+    'share.copy': 'URLをコピー',
+    'share.twitter.text': 'CocoPilotをチェック - AIを通じて進化する自己更新リポジトリ！🤖✨',
+
+    // Footer
+    'footer.powered': 'GitHub Copilotを活用',
+    'footer.updated': '最終更新：',
+    'footer.docs': 'ドキュメント',
+    'footer.dev': '開発ガイド',
+    'footer.changelog': '変更ログ',
+    'footer.plans': '将来の計画',
+
+    // Accessibility and UI
+    'theme.toggle': 'ライトテーマとダークテーマを切り替え',
+    'language.select': '言語を選択',
+    'stats.loading': '読み込み中...',
+    'stats.stars': 'スター数',
+    'stats.forks': 'フォーク数',
+    'stats.issues': 'オープンイシュー数',
+    'stats.updates': '更新頻度',
+    'stats.daily': '日次',
+    'stats.unavailable': 'リポジトリ統計が利用できません（オフラインまたはネットワーク制限）',
+    'stats.loaded': 'リポジトリ統計が正常に読み込まれました',
+
+    // Timeline versions
+    'version.1.0.0.title': '初回リリース',
+    'version.1.0.0.description': '自己更新ワークフローを持つ基本的なリポジトリ構造',
+    'version.1.1.0.title': '強化されたUIとPWA機能',
+    'version.1.1.0.description': '改善されたユーザーインターフェースとプログレッシブウェブアプリ機能',
+    'version.1.2.0.title': 'パフォーマンスと分析',
+    'version.1.2.0.description': 'パフォーマンス監視と分析機能の追加',
+    'version.2.0.0.title': 'テストインフラストラクチャ',
+    'version.2.0.0.description': '包括的なテストフレームワークと品質保証',
+
+    // Data Visualization
+    'viz.growth.title': 'リポジトリの成長',
+    'viz.growth.subtitle': '時間の経過に伴う機能と改善の進化を追跡',
+    'viz.timeline.title': '機能実装タイムライン',
+    'viz.timeline.subtitle': 'AI主導のCocoPilot開発における主要なマイルストーン',
+    'viz.tech.title': 'テクノロジースタック',
+    'viz.tech.subtitle': 'CocoPilotを支える現代的なウェブテクノロジー',
+    'viz.legend.features': '追加された機能',
+    'viz.legend.maturity': 'プラットフォームの成熟度'
+  },
+
+  zh: {
+    // Main content
+    'site.title': 'CocoPilot - 自动更新仓库',
+    'site.subtitle': '自动更新仓库',
+    'site.description': '这个仓库通过AI驱动的日常改进实现自主演化。每天，GitHub Copilot分析代码库并提出增强建议，使这个项目变得更好、更有用、更有趣。',
+    'status.active': '活跃且自我改进中',
+
+    // About section
+    'about.title': '关于这个实验',
+    'about.description': 'CocoPilot代表了自主软件演化的一个迷人实验。这个仓库使用AI通过以下方式持续自我改进：',
+    'about.feature1': 'GitHub Copilot的日常自动分析',
+    'about.feature2': '自动生成的改进建议和实现',
+    'about.feature3': '从用户交互和反馈中持续学习',
+    'about.feature4': '通过公开问题和PR的透明开发过程',
+    'about.conclusion': '每天都会带来新的增强功能，创造了AI辅助开发的生动例子。',
+
+    // Features section
+    'features.title': '核心功能',
+    'features.updates.title': '自动更新',
+    'features.updates.description': 'AI驱动的日常改进',
+    'features.actions.title': 'GitHub Actions',
+    'features.actions.description': '自动化工作流管理',
+    'features.goals.title': '专注目标',
+    'features.goals.description': '渐进式、深思熟虑的变更',
+
+    // Timeline section
+    'timeline.title': '演化时间线',
+    'timeline.description': '探索CocoPilot如何通过AI驱动的改进而演化',
+    'timeline.previous': '← 上一个',
+    'timeline.next': '下一个 →',
+    'timeline.features': '核心功能：',
+
+    // Navigation and actions
+    'nav.github': '在GitHub上查看',
+    'nav.issues': '查看日常问题',
+    'nav.github.desc': '查看完整的源代码和开发历史',
+    'nav.issues.desc': '浏览日常改进问题和讨论',
+
+    // Social sharing
+    'share.title': '分享CocoPilot',
+    'share.twitter': '在Twitter上分享',
+    'share.linkedin': '在LinkedIn上分享',
+    'share.copy': '复制URL',
+    'share.twitter.text': '查看CocoPilot - 一个通过AI演化的自动更新仓库！🤖✨',
+
+    // Footer
+    'footer.powered': '由GitHub Copilot提供支持',
+    'footer.updated': '最后更新：',
+    'footer.docs': '文档',
+    'footer.dev': '开发指南',
+    'footer.changelog': '更改日志',
+    'footer.plans': '未来计划',
+
+    // Accessibility and UI
+    'theme.toggle': '在明暗主题间切换',
+    'language.select': '选择语言',
+    'stats.loading': '加载中...',
+    'stats.stars': '星标数',
+    'stats.forks': '分叉数',
+    'stats.issues': '开放问题数',
+    'stats.updates': '更新频率',
+    'stats.daily': '每日',
+    'stats.unavailable': '仓库统计不可用（离线或网络限制）',
+    'stats.loaded': '仓库统计已成功加载',
+
+    // Timeline versions
+    'version.1.0.0.title': '初始发布',
+    'version.1.0.0.description': '具有自动更新工作流的基本仓库结构',
+    'version.1.1.0.title': '增强的UI和PWA功能',
+    'version.1.1.0.description': '改进的用户界面和渐进式Web应用功能',
+    'version.1.2.0.title': '性能和分析',
+    'version.1.2.0.description': '添加了性能监控和分析功能',
+    'version.2.0.0.title': '测试基础设施',
+    'version.2.0.0.description': '全面的测试框架和质量保证',
+
+    // Data Visualization
+    'viz.growth.title': '仓库增长',
+    'viz.growth.subtitle': '跟踪功能和改进随时间的演化',
+    'viz.timeline.title': '功能实现时间线',
+    'viz.timeline.subtitle': 'AI驱动的CocoPilot开发中的主要里程碑',
+    'viz.tech.title': '技术栈',
+    'viz.tech.subtitle': '驱动CocoPilot的现代Web技术',
+    'viz.legend.features': '添加的功能',
+    'viz.legend.maturity': '平台成熟度'
+  },
+
+  ko: {
+    // Main content
+    'site.title': 'CocoPilot - 자동 업데이트 저장소',
+    'site.subtitle': '자동 업데이트 저장소',
+    'site.description': '이 저장소는 AI 기반의 일일 개선을 통해 자율적으로 진화합니다. 매일 GitHub Copilot이 코드베이스를 분석하고 이 프로젝트를 더 좋고, 더 유용하고, 더 흥미롭게 만드는 개선사항을 제안합니다.',
+    'status.active': '활성 및 자가 개선 중',
+
+    // About section
+    'about.title': '이 실험에 대하여',
+    'about.description': 'CocoPilot은 자율적 소프트웨어 진화의 매혹적인 실험을 나타냅니다. 이 저장소는 다음을 통해 지속적으로 자가 개선하기 위해 AI를 사용합니다:',
+    'about.feature1': 'GitHub Copilot의 일일 자동 분석',
+    'about.feature2': '자동 생성된 개선 제안 및 구현',
+    'about.feature3': '사용자 상호작용 및 피드백으로부터의 지속적 학습',
+    'about.feature4': '공개 이슈 및 PR을 통한 투명한 개발 프로세스',
+    'about.conclusion': '매일 새로운 개선사항이 제공되어 AI 지원 개발의 살아있는 예시를 만들어냅니다.',
+
+    // Features section
+    'features.title': '주요 기능',
+    'features.updates.title': '자동 업데이트',
+    'features.updates.description': 'AI 기반 일일 개선',
+    'features.actions.title': 'GitHub Actions',
+    'features.actions.description': '자동화된 워크플로우 관리',
+    'features.goals.title': '집중된 목표',
+    'features.goals.description': '점진적이고 신중한 변경',
+
+    // Timeline section
+    'timeline.title': '진화 타임라인',
+    'timeline.description': 'AI 기반 개선을 통해 CocoPilot이 어떻게 진화했는지 탐색',
+    'timeline.previous': '← 이전',
+    'timeline.next': '다음 →',
+    'timeline.features': '주요 기능:',
+
+    // Navigation and actions
+    'nav.github': 'GitHub에서 보기',
+    'nav.issues': '일일 이슈 보기',
+    'nav.github.desc': '완전한 소스 코드 및 개발 이력 보기',
+    'nav.issues.desc': '일일 개선 이슈 및 토론 찾아보기',
+
+    // Social sharing
+    'share.title': 'CocoPilot 공유',
+    'share.twitter': 'Twitter에서 공유',
+    'share.linkedin': 'LinkedIn에서 공유',
+    'share.copy': 'URL 복사',
+    'share.twitter.text': 'CocoPilot을 확인해보세요 - AI를 통해 진화하는 자동 업데이트 저장소! 🤖✨',
+
+    // Footer
+    'footer.powered': 'GitHub Copilot으로 구동',
+    'footer.updated': '마지막 업데이트:',
+    'footer.docs': '문서',
+    'footer.dev': '개발 가이드',
+    'footer.changelog': '변경 로그',
+    'footer.plans': '미래 계획',
+
+    // Accessibility and UI
+    'theme.toggle': '밝은 테마와 어두운 테마 전환',
+    'language.select': '언어 선택',
+    'stats.loading': '로딩 중...',
+    'stats.stars': '스타 수',
+    'stats.forks': '포크 수',
+    'stats.issues': '열린 이슈 수',
+    'stats.updates': '업데이트 빈도',
+    'stats.daily': '일일',
+    'stats.unavailable': '저장소 통계를 사용할 수 없음 (오프라인 또는 네트워크 제한)',
+    'stats.loaded': '저장소 통계가 성공적으로 로드됨',
+
+    // Timeline versions
+    'version.1.0.0.title': '초기 릴리스',
+    'version.1.0.0.description': '자동 업데이트 워크플로우가 있는 기본 저장소 구조',
+    'version.1.1.0.title': '향상된 UI 및 PWA 기능',
+    'version.1.1.0.description': '개선된 사용자 인터페이스 및 프로그레시브 웹 앱 기능',
+    'version.1.2.0.title': '성능 및 분석',
+    'version.1.2.0.description': '성능 모니터링 및 분석 기능 추가',
+    'version.2.0.0.title': '테스트 인프라',
+    'version.2.0.0.description': '포괄적인 테스트 프레임워크 및 품질 보증',
+
+    // Data Visualization
+    'viz.growth.title': '저장소 성장',
+    'viz.growth.subtitle': '시간에 따른 기능 및 개선사항의 진화 추적',
+    'viz.timeline.title': '기능 구현 타임라인',
+    'viz.timeline.subtitle': 'AI 기반 CocoPilot 개발의 주요 이정표',
+    'viz.tech.title': '기술 스택',
+    'viz.tech.subtitle': 'CocoPilot을 구동하는 현대적인 웹 기술',
+    'viz.legend.features': '추가된 기능',
+    'viz.legend.maturity': '플랫폼 성숙도'
   }
 };
 

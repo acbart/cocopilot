@@ -2,6 +2,9 @@
  * Unit tests for RSS Generator functionality
  */
 
+// Import RSSGenerator for testing
+const RSSGenerator = require('../../js/rss-generator.js');
+
 describe('RSS Generator', () => {
   let rssGenerator;
 
@@ -22,7 +25,7 @@ describe('RSS Generator', () => {
     test('should escape XML characters correctly', () => {
       const input = '<script>alert("test")</script> & "quotes" & \'single\'';
       const escaped = rssGenerator.escapeXML(input);
-      
+
       expect(escaped).toBe('&lt;script&gt;alert(&quot;test&quot;)&lt;/script&gt; &amp; &quot;quotes&quot; &amp; &#x27;single&#x27;');
     });
 
@@ -51,7 +54,7 @@ describe('RSS Generator', () => {
       };
 
       const xml = rssGenerator.buildRSSXML(testData);
-      
+
       expect(xml).toContain('<?xml version="1.0" encoding="UTF-8"?>');
       expect(xml).toContain('<rss version="2.0"');
       expect(xml).toContain('<title><![CDATA[Test Feed]]></title>');
@@ -68,13 +71,13 @@ describe('RSS Generator', () => {
         { date: new Date('2025-09-13T10:00:00Z'), title: 'Older commit' },
         { date: new Date('2025-09-13T12:00:00Z'), title: 'Newer commit' }
       ];
-      
+
       const releases = [
         { date: new Date('2025-09-13T11:00:00Z'), title: 'Middle release' }
       ];
 
       const combined = rssGenerator.combineAndSortItems(commits, releases);
-      
+
       expect(combined).toHaveLength(3);
       expect(combined[0].title).toBe('Newer commit'); // Most recent first
       expect(combined[1].title).toBe('Middle release');
@@ -85,7 +88,7 @@ describe('RSS Generator', () => {
   describe('Error Handling', () => {
     test('should generate error feed when main generation fails', () => {
       const errorFeed = rssGenerator.generateErrorFeed();
-      
+
       expect(errorFeed).toContain('<?xml version="1.0" encoding="UTF-8"?>');
       expect(errorFeed).toContain('RSS Feed Temporarily Unavailable');
       expect(errorFeed).toContain('temporarily unavailable due to network issues');
@@ -93,18 +96,18 @@ describe('RSS Generator', () => {
 
     test('should provide fallback RSS URL', () => {
       const feedUrl = rssGenerator.getRSSFeedURL();
-      
+
       expect(feedUrl).toBe('https://github.com/acbart/cocopilot/releases.atom');
     });
   });
 
   describe('Download Functionality', () => {
-    test('should handle download errors gracefully', async () => {
+    test('should handle download errors gracefully', async() => {
       // Mock a failing RSS generation
       jest.spyOn(rssGenerator, 'generateFeed').mockRejectedValue(new Error('Network error'));
-      
+
       const result = await rssGenerator.downloadRSSFeed();
-      
+
       expect(result).toBe(false);
     });
   });
@@ -119,7 +122,7 @@ describe('RSS Generator', () => {
       jest.restoreAllMocks();
     });
 
-    test('should fetch repository information successfully', async () => {
+    test('should fetch repository information successfully', async() => {
       const mockRepoData = {
         name: 'cocopilot',
         description: 'A self-updating repository'
@@ -127,16 +130,16 @@ describe('RSS Generator', () => {
 
       fetch.mockResolvedValueOnce({
         ok: true,
-        json: async () => mockRepoData
+        json: async() => mockRepoData
       });
 
       const repoInfo = await rssGenerator.fetchRepositoryInfo();
-      
+
       expect(fetch).toHaveBeenCalledWith('https://api.github.com/repos/acbart/cocopilot');
       expect(repoInfo).toEqual(mockRepoData);
     });
 
-    test('should handle API fetch errors', async () => {
+    test('should handle API fetch errors', async() => {
       fetch.mockResolvedValueOnce({
         ok: false,
         status: 404,
@@ -146,7 +149,7 @@ describe('RSS Generator', () => {
       await expect(rssGenerator.fetchRepositoryInfo()).rejects.toThrow('Failed to fetch repository info: 404');
     });
 
-    test('should fetch and process commits correctly', async () => {
+    test('should fetch and process commits correctly', async() => {
       const mockCommits = [
         {
           sha: 'abc123',
@@ -163,11 +166,11 @@ describe('RSS Generator', () => {
 
       fetch.mockResolvedValueOnce({
         ok: true,
-        json: async () => mockCommits
+        json: async() => mockCommits
       });
 
       const commits = await rssGenerator.fetchRecentCommits();
-      
+
       expect(commits).toHaveLength(1);
       expect(commits[0].type).toBe('commit');
       expect(commits[0].title).toBe('Commit: Test commit');
@@ -175,14 +178,14 @@ describe('RSS Generator', () => {
       expect(commits[0].id).toBe('abc123');
     });
 
-    test('should handle missing releases gracefully', async () => {
+    test('should handle missing releases gracefully', async() => {
       fetch.mockResolvedValueOnce({
         ok: false,
         status: 404
       });
 
       const releases = await rssGenerator.fetchRecentReleases();
-      
+
       expect(releases).toEqual([]);
     });
   });
