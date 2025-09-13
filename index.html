@@ -486,6 +486,15 @@
                 gap: 8px;
             }
         }
+        
+        /* Evolution Timeline Section */
+        .evolution-section {
+            margin: 4rem 0;
+            padding: 2rem;
+            background: var(--feature-bg);
+            border-radius: 20px;
+            border: 1px solid var(--border-color);
+        }
     </style>
 </head>
 <body>
@@ -555,6 +564,11 @@
                 <div class="feature-title">Focused Goals</div>
                 <div class="feature-desc">Incremental, thoughtful changes</div>
             </div>
+        </div>
+        
+        <!-- Evolution Timeline Section -->
+        <div class="evolution-section">
+            <div id="evolutionTimeline"></div>
         </div>
         
         <div class="cta">
@@ -865,5 +879,8 @@
             console.error('Unhandled promise rejection:', event.reason);
         });
     </script>
+    
+    <!-- Evolution Timeline JavaScript -->
+    <script src="js/timeline.js"></script>
 </body>
 </html>
