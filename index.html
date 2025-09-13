@@ -66,6 +66,31 @@
             justify-content: center;
             padding: 20px;
             transition: background 0.3s ease, color 0.3s ease;
+            position: relative;
+            overflow-x: hidden;
+        }
+        
+        .background-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        .floating-element {
+            position: absolute;
+            opacity: 0.1;
+            animation: float 20s infinite ease-in-out;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            25% { transform: translateY(-20px) rotate(90deg); }
+            50% { transform: translateY(-40px) rotate(180deg); }
+            75% { transform: translateY(-20px) rotate(270deg); }
         }
         
         .container {
@@ -260,6 +285,38 @@
             color: var(--text-tertiary);
         }
         
+        .footer-links {
+            margin-top: 15px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .footer-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.8rem;
+            padding: 5px 10px;
+            border-radius: 10px;
+            transition: all 0.2s ease;
+        }
+        
+        .footer-links a:hover {
+            background: var(--feature-bg);
+            color: var(--text-primary);
+        }
+        
+        .offline-indicator {
+            margin-top: 15px;
+            padding: 8px 15px;
+            background: #f39c12;
+            color: white;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            display: inline-block;
+        }
+        
         .status {
             display: inline-block;
             background: #28a745;
@@ -377,10 +434,16 @@
                 width: 200px;
                 text-align: center;
             }
+            
+            .footer-links {
+                flex-direction: column;
+                gap: 8px;
+            }
         }
     </style>
 </head>
 <body>
+    <div class="background-animation" id="backgroundAnimation"></div>
     <div class="container" role="main">
         <button class="theme-toggle" onclick="toggleTheme()" title="Toggle theme" aria-label="Toggle between light and dark theme">🌙</button>
         <span class="emoji">🤖</span>
@@ -470,10 +533,62 @@
         
         <div class="footer">
             <p>Powered by GitHub Copilot • Last updated: <span id="lastUpdate"></span></p>
+            <div class="footer-links">
+                <a href="https://github.com/acbart/cocopilot/blob/main/README.md" target="_blank">📚 Documentation</a>
+                <a href="https://github.com/acbart/cocopilot/blob/main/CHANGELOG.md" target="_blank">📜 Changelog</a>
+                <a href="https://github.com/acbart/cocopilot/blob/main/tomorrow.md" target="_blank">🔮 Future Plans</a>
+            </div>
+            <div class="offline-indicator" id="offlineIndicator" style="display: none;">
+                📡 Offline Mode • Cached version loaded
+            </div>
         </div>
     </div>
     
     <script>
+        // Create floating background elements
+        function createFloatingElements() {
+            const backgroundAnimation = document.getElementById('backgroundAnimation');
+            const elements = ['🤖', '⚡', '✨', '🔄', '🚀', '💫'];
+            
+            for (let i = 0; i < 8; i++) {
+                const element = document.createElement('div');
+                element.className = 'floating-element';
+                element.textContent = elements[Math.floor(Math.random() * elements.length)];
+                element.style.left = Math.random() * 100 + '%';
+                element.style.top = Math.random() * 100 + '%';
+                element.style.fontSize = (Math.random() * 2 + 1) + 'rem';
+                element.style.animationDelay = Math.random() * 20 + 's';
+                element.style.animationDuration = (Math.random() * 10 + 15) + 's';
+                backgroundAnimation.appendChild(element);
+            }
+        }
+        
+        // Service Worker registration
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function() {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(function(registration) {
+                        console.log('ServiceWorker registration successful:', registration.scope);
+                    })
+                    .catch(function(err) {
+                        console.log('ServiceWorker registration failed:', err);
+                    });
+            });
+        }
+        
+        // Online/Offline detection
+        function updateOnlineStatus() {
+            const offlineIndicator = document.getElementById('offlineIndicator');
+            if (!navigator.onLine) {
+                offlineIndicator.style.display = 'block';
+            } else {
+                offlineIndicator.style.display = 'none';
+            }
+        }
+        
+        window.addEventListener('online', updateOnlineStatus);
+        window.addEventListener('offline', updateOnlineStatus);
+        
         // Social sharing functions
         function shareOnTwitter() {
             const url = encodeURIComponent(window.location.href);
@@ -575,6 +690,8 @@
         document.addEventListener('DOMContentLoaded', function() {
             initTheme();
             fetchRepoStats();
+            updateOnlineStatus();
+            createFloatingElements();
             
             const features = document.querySelectorAll('.feature');
             
