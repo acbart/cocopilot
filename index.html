@@ -32,6 +32,10 @@
 
     <!-- Resource Preloads -->
     <link rel="preload" href="favicon.svg" as="image" type="image/svg+xml">
+    
+    <!-- RSS Feed Discovery -->
+    <link rel="alternate" type="application/rss+xml" title="CocoPilot Updates" href="feed.xml">
+    <link rel="alternate" type="application/atom+xml" title="CocoPilot Releases" href="https://github.com/acbart/cocopilot/releases.atom">
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
@@ -1183,137 +1187,339 @@
             });
         }
 
-        // RSS Feed functions
+        // Enhanced RSS Feed functions
         async function handleRSSFeed() {
-            const btn = event.target;
+            const btn = event.target.closest('button');
             const originalContent = btn.innerHTML;
             
             try {
-                // Show loading state
-                btn.innerHTML = '<span aria-hidden="true">⏳</span> Generating...';
+                // Show loading state with better UX
+                btn.innerHTML = '<span aria-hidden="true">⏳</span> <span data-i18n="rss.generating">Generating...</span>';
                 btn.disabled = true;
+                btn.setAttribute('aria-busy', 'true');
                 
-                // Create RSS generator instance
-                const rssGenerator = new RSSGenerator('acbart', 'cocopilot');
+                // Create enhanced RSS feed builder
+                const rssBuilder = new RSSFeedBuilder('acbart', 'cocopilot');
                 
-                // Show options to user
-                const action = await showRSSOptions();
+                // Show enhanced options to user
+                const action = await showEnhancedRSSOptions();
                 
                 if (action === 'download') {
-                    const success = await rssGenerator.downloadRSSFeed();
-                    if (success) {
-                        btn.innerHTML = '<span aria-hidden="true">✅</span> Downloaded!';
+                    const result = await rssBuilder.createRSSFile();
+                    if (result.success) {
+                        // Download the file
+                        const link = document.createElement('a');
+                        link.href = result.url;
+                        link.download = `cocopilot-updates-${new Date().toISOString().split('T')[0]}.xml`;
+                        link.style.display = 'none';
+                        document.body.appendChild(link);
+                        link.click();
+                        document.body.removeChild(link);
+                        URL.revokeObjectURL(result.url);
+                        
+                        btn.innerHTML = '<span aria-hidden="true">✅</span> <span data-i18n="rss.downloaded">Downloaded!</span>';
                         setTimeout(() => {
                             btn.innerHTML = originalContent;
                             btn.disabled = false;
-                        }, 2000);
+                            btn.removeAttribute('aria-busy');
+                        }, 2500);
                     } else {
-                        throw new Error('Download failed');
+                        throw new Error(result.error || 'Download failed');
                     }
                 } else if (action === 'subscribe') {
-                    const feedUrl = rssGenerator.getRSSFeedURL();
+                    // Open GitHub releases feed as primary option
+                    const feedUrl = `https://github.com/acbart/cocopilot/releases.atom`;
                     window.open(feedUrl, '_blank');
-                    btn.innerHTML = originalContent;
-                    btn.disabled = false;
+                    btn.innerHTML = '<span aria-hidden="true">📡</span> <span data-i18n="rss.opened">Feed Opened!</span>';
+                    setTimeout(() => {
+                        btn.innerHTML = originalContent;
+                        btn.disabled = false;
+                        btn.removeAttribute('aria-busy');
+                    }, 2000);
+                } else if (action === 'copy') {
+                    // Copy RSS content to clipboard
+                    const rssContent = await rssBuilder.generateRSSFeed();
+                    try {
+                        await navigator.clipboard.writeText(rssContent);
+                        btn.innerHTML = '<span aria-hidden="true">📋</span> <span data-i18n="rss.copied">Copied to Clipboard!</span>';
+                    } catch (clipboardError) {
+                        // Fallback for clipboard API
+                        const textarea = document.createElement('textarea');
+                        textarea.value = rssContent;
+                        document.body.appendChild(textarea);
+                        textarea.select();
+                        document.execCommand('copy');
+                        document.body.removeChild(textarea);
+                        btn.innerHTML = '<span aria-hidden="true">📋</span> <span data-i18n="rss.copied">Copied to Clipboard!</span>';
+                    }
+                    setTimeout(() => {
+                        btn.innerHTML = originalContent;
+                        btn.disabled = false;
+                        btn.removeAttribute('aria-busy');
+                    }, 2500);
                 } else {
                     // User cancelled
                     btn.innerHTML = originalContent;
                     btn.disabled = false;
+                    btn.removeAttribute('aria-busy');
                 }
                 
             } catch (error) {
                 console.error('RSS feed error:', error);
-                btn.innerHTML = '<span aria-hidden="true">❌</span> Error';
+                btn.innerHTML = '<span aria-hidden="true">❌</span> <span data-i18n="rss.error">Error</span>';
+                btn.setAttribute('aria-describedby', 'rss-error-desc');
+                
+                // Show user-friendly error message
+                showRSSErrorMessage(error.message);
+                
                 setTimeout(() => {
                     btn.innerHTML = originalContent;
                     btn.disabled = false;
-                }, 3000);
+                    btn.removeAttribute('aria-busy');
+                    btn.removeAttribute('aria-describedby');
+                }, 4000);
             }
         }
 
-        function showRSSOptions() {
+        function showEnhancedRSSOptions() {
             return new Promise((resolve) => {
+                // Remove any existing modal
+                const existingModal = document.getElementById('rss-modal');
+                if (existingModal) {
+                    existingModal.remove();
+                }
+
+                // Create modal
                 const modal = document.createElement('div');
+                modal.id = 'rss-modal';
                 modal.style.cssText = `
                     position: fixed;
                     top: 0;
                     left: 0;
                     width: 100%;
                     height: 100%;
-                    background: rgba(0, 0, 0, 0.5);
+                    background: rgba(0, 0, 0, 0.7);
                     display: flex;
                     align-items: center;
                     justify-content: center;
-                    z-index: 1000;
+                    z-index: 10000;
+                    backdrop-filter: blur(5px);
+                    animation: fadeIn 0.3s ease-out;
                 `;
-                
+
                 modal.innerHTML = `
                     <div style="
-                        background: var(--container-bg, white);
-                        padding: 30px;
+                        background: var(--container-bg);
+                        border: 2px solid var(--border-color);
                         border-radius: 15px;
-                        max-width: 400px;
-                        text-align: center;
+                        padding: 30px;
+                        max-width: 500px;
+                        width: 90%;
                         box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-                        color: var(--text-primary, black);
+                        transform: scale(0.9);
+                        animation: modalSlideIn 0.3s ease-out forwards;
                     ">
-                        <h3 style="margin-top: 0; color: var(--text-primary);">📡 RSS Feed Options</h3>
-                        <p style="color: var(--text-secondary); margin: 15px 0;">How would you like to access the RSS feed?</p>
-                        <div style="display: flex; flex-direction: column; gap: 10px;">
+                        <h3 style="
+                            margin-top: 0; 
+                            color: var(--text-primary);
+                            text-align: center;
+                            font-size: 1.4em;
+                            margin-bottom: 10px;
+                        ">📡 RSS Feed Options</h3>
+                        <p style="
+                            color: var(--text-secondary); 
+                            margin: 15px 0 25px 0;
+                            text-align: center;
+                            line-height: 1.5;
+                        ">Choose how you'd like to access the CocoPilot RSS feed with repository updates, commits, and releases.</p>
+                        <div style="display: flex; flex-direction: column; gap: 12px;">
                             <button id="downloadRSS" style="
-                                padding: 12px 20px;
-                                background: linear-gradient(135deg, #ff6b35, #f7931e);
+                                padding: 15px 20px;
+                                border: none;
+                                border-radius: 8px;
+                                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
                                 color: white;
-                                border: none;
-                                border-radius: 8px;
                                 cursor: pointer;
-                                font-weight: 600;
-                            ">📥 Download RSS File</button>
+                                transition: all 0.3s ease;
+                                font-size: 1em;
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                                gap: 10px;
+                            " onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 5px 15px rgba(102, 126, 234, 0.4)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">
+                                <span>📥</span> Download RSS File
+                            </button>
                             <button id="subscribeRSS" style="
-                                padding: 12px 20px;
-                                background: transparent;
-                                color: var(--text-primary);
-                                border: 2px solid #ff6b35;
+                                padding: 15px 20px;
+                                border: 2px solid var(--border-color);
                                 border-radius: 8px;
+                                background: var(--container-bg);
+                                color: var(--text-primary);
                                 cursor: pointer;
-                                font-weight: 600;
-                            ">🔗 Open Subscription Link</button>
+                                transition: all 0.3s ease;
+                                font-size: 1em;
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                                gap: 10px;
+                            " onmouseover="this.style.transform='translateY(-2px)'; this.style.borderColor='var(--button-gradient-start)'" onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='var(--border-color)'">
+                                <span>🔗</span> Open GitHub Feed
+                            </button>
+                            <button id="copyRSS" style="
+                                padding: 15px 20px;
+                                border: 2px solid var(--border-color);
+                                border-radius: 8px;
+                                background: var(--container-bg);
+                                color: var(--text-primary);
+                                cursor: pointer;
+                                transition: all 0.3s ease;
+                                font-size: 1em;
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                                gap: 10px;
+                            " onmouseover="this.style.transform='translateY(-2px)'; this.style.borderColor='var(--button-gradient-start)'" onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='var(--border-color)'">
+                                <span>📋</span> Copy RSS Content
+                            </button>
                             <button id="cancelRSS" style="
-                                padding: 8px 16px;
+                                padding: 12px 20px;
+                                border: 1px solid var(--text-tertiary);
+                                border-radius: 8px;
                                 background: transparent;
-                                color: var(--text-tertiary);
-                                border: none;
+                                color: var(--text-secondary);
                                 cursor: pointer;
+                                transition: all 0.3s ease;
+                                font-size: 0.9em;
                                 margin-top: 10px;
-                            ">Cancel</button>
+                            " onmouseover="this.style.color='var(--text-primary)'; this.style.borderColor='var(--text-secondary)'" onmouseout="this.style.color='var(--text-secondary)'; this.style.borderColor='var(--text-tertiary)'">
+                                Cancel
+                            </button>
+                        </div>
+                        <div style="
+                            margin-top: 20px;
+                            padding-top: 15px;
+                            border-top: 1px solid var(--border-color);
+                            font-size: 0.85em;
+                            color: var(--text-tertiary);
+                            text-align: center;
+                            line-height: 1.4;
+                        ">
+                            <strong>💡 Tip:</strong> RSS feeds auto-update with new commits, issues, and releases
                         </div>
                     </div>
                 `;
-                
+
                 document.body.appendChild(modal);
-                
+
+                // Add CSS animations if not already present
+                if (!document.getElementById('rss-modal-styles')) {
+                    const style = document.createElement('style');
+                    style.id = 'rss-modal-styles';
+                    style.textContent = `
+                        @keyframes fadeIn {
+                            from { opacity: 0; }
+                            to { opacity: 1; }
+                        }
+                        @keyframes modalSlideIn {
+                            from { transform: scale(0.9) translateY(-20px); opacity: 0; }
+                            to { transform: scale(1) translateY(0); opacity: 1; }
+                        }
+                        @keyframes slideInRight {
+                            from { transform: translateX(100%); opacity: 0; }
+                            to { transform: translateX(0); opacity: 1; }
+                        }
+                        @keyframes slideOutRight {
+                            from { transform: translateX(0); opacity: 1; }
+                            to { transform: translateX(100%); opacity: 0; }
+                        }
+                    `;
+                    document.head.appendChild(style);
+                }
+
+                // Event handlers with better UX
                 modal.querySelector('#downloadRSS').onclick = () => {
-                    document.body.removeChild(modal);
+                    modal.remove();
                     resolve('download');
                 };
-                
+
                 modal.querySelector('#subscribeRSS').onclick = () => {
-                    document.body.removeChild(modal);
+                    modal.remove();
                     resolve('subscribe');
                 };
-                
+
+                modal.querySelector('#copyRSS').onclick = () => {
+                    modal.remove();
+                    resolve('copy');
+                };
+
                 modal.querySelector('#cancelRSS').onclick = () => {
-                    document.body.removeChild(modal);
+                    modal.remove();
                     resolve('cancel');
                 };
-                
+
+                // Close on backdrop click
                 modal.onclick = (e) => {
                     if (e.target === modal) {
-                        document.body.removeChild(modal);
+                        modal.remove();
                         resolve('cancel');
                     }
                 };
+
+                // Close on Escape key
+                const handleEscape = (e) => {
+                    if (e.key === 'Escape') {
+                        modal.remove();
+                        document.removeEventListener('keydown', handleEscape);
+                        resolve('cancel');
+                    }
+                };
+                document.addEventListener('keydown', handleEscape);
+
+                // Focus management for accessibility
+                modal.querySelector('#downloadRSS').focus();
             });
+        }
+
+        function showRSSErrorMessage(errorMessage) {
+            // Create a user-friendly error notification
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: #ff4757;
+                color: white;
+                padding: 15px 20px;
+                border-radius: 8px;
+                box-shadow: 0 5px 15px rgba(255, 71, 87, 0.3);
+                z-index: 10001;
+                max-width: 350px;
+                animation: slideInRight 0.3s ease-out;
+            `;
+            
+            notification.innerHTML = `
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <span style="font-size: 1.2em;">⚠️</span>
+                    <div>
+                        <strong>RSS Feed Error</strong><br/>
+                        <span style="opacity: 0.9; font-size: 0.9em;">
+                            ${errorMessage.includes('network') || errorMessage.includes('fetch') ? 
+                                'Network connection issue. Please check your internet connection and try again.' :
+                                'Unable to generate RSS feed. Please try again later.'}
+                        </span>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            // Auto-remove after 5 seconds
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.style.animation = 'slideOutRight 0.3s ease-in';
+                    setTimeout(() => notification.remove(), 300);
+                }
+            }, 5000);
         }
 
         // Theme management
@@ -1651,6 +1857,8 @@
 
     <!-- RSS Feed Generator JavaScript -->
     <script src="js/rss-generator.js"></script>
+    <!-- Enhanced RSS Feed Builder JavaScript -->
+    <script src="js/rss-feed-builder.js"></script>
     <!-- Interactive Onboarding System -->
     <script src="js/onboarding.js"></script>
     <!-- Advanced Performance Monitoring -->
