@@ -102,7 +102,17 @@ const TRANSLATIONS = {
     'version.1.2.0.title': 'Performance & Analytics',
     'version.1.2.0.description': 'Added performance monitoring and analytics features',
     'version.2.0.0.title': 'Testing Infrastructure',
-    'version.2.0.0.description': 'Comprehensive testing framework and quality assurance'
+    'version.2.0.0.description': 'Comprehensive testing framework and quality assurance',
+    
+    // Data Visualization
+    'viz.growth.title': 'Repository Growth',
+    'viz.growth.subtitle': 'Track the evolution of features and improvements over time',
+    'viz.timeline.title': 'Feature Implementation Timeline',
+    'viz.timeline.subtitle': 'Major milestones in CocoPilot\'s AI-driven development',
+    'viz.tech.title': 'Technology Stack',
+    'viz.tech.subtitle': 'Modern web technologies powering CocoPilot',
+    'viz.legend.features': 'Features Added',
+    'viz.legend.maturity': 'Platform Maturity'
   },
   
   es: {
@@ -178,7 +188,17 @@ const TRANSLATIONS = {
     'version.1.2.0.title': 'Rendimiento y Análisis',
     'version.1.2.0.description': 'Monitoreo de rendimiento y características de análisis añadidas',
     'version.2.0.0.title': 'Infraestructura de Pruebas',
-    'version.2.0.0.description': 'Marco de pruebas integral y aseguramiento de calidad'
+    'version.2.0.0.description': 'Marco de pruebas integral y aseguramiento de calidad',
+    
+    // Data Visualization
+    'viz.growth.title': 'Crecimiento del Repositorio',
+    'viz.growth.subtitle': 'Seguimiento de la evolución de características y mejoras a lo largo del tiempo',
+    'viz.timeline.title': 'Cronología de Implementación de Características',
+    'viz.timeline.subtitle': 'Hitos principales en el desarrollo de CocoPilot impulsado por IA',
+    'viz.tech.title': 'Stack Tecnológico',
+    'viz.tech.subtitle': 'Tecnologías web modernas que impulsan CocoPilot',
+    'viz.legend.features': 'Características Añadidas',
+    'viz.legend.maturity': 'Madurez de la Plataforma'
   },
   
   fr: {
@@ -254,7 +274,17 @@ const TRANSLATIONS = {
     'version.1.2.0.title': 'Performance et Analytique',
     'version.1.2.0.description': 'Surveillance des performances et fonctionnalités analytiques ajoutées',
     'version.2.0.0.title': 'Infrastructure de Tests',
-    'version.2.0.0.description': 'Cadre de tests complet et assurance qualité'
+    'version.2.0.0.description': 'Cadre de tests complet et assurance qualité',
+    
+    // Data Visualization
+    'viz.growth.title': 'Croissance du Dépôt',
+    'viz.growth.subtitle': 'Suivre l\'évolution des fonctionnalités et améliorations au fil du temps',
+    'viz.timeline.title': 'Chronologie d\'Implémentation des Fonctionnalités',
+    'viz.timeline.subtitle': 'Étapes majeures du développement de CocoPilot piloté par l\'IA',
+    'viz.tech.title': 'Stack Technologique',
+    'viz.tech.subtitle': 'Technologies web modernes alimentant CocoPilot',
+    'viz.legend.features': 'Fonctionnalités Ajoutées',
+    'viz.legend.maturity': 'Maturité de la Plateforme'
   },
   
   de: {
@@ -330,7 +360,17 @@ const TRANSLATIONS = {
     'version.1.2.0.title': 'Leistung & Analytik',
     'version.1.2.0.description': 'Leistungsüberwachung und Analytics-Funktionen hinzugefügt',
     'version.2.0.0.title': 'Test-Infrastruktur',
-    'version.2.0.0.description': 'Umfassendes Test-Framework und Qualitätssicherung'
+    'version.2.0.0.description': 'Umfassendes Test-Framework und Qualitätssicherung',
+    
+    // Data Visualization
+    'viz.growth.title': 'Repository-Wachstum',
+    'viz.growth.subtitle': 'Verfolgen Sie die Entwicklung von Funktionen und Verbesserungen im Laufe der Zeit',
+    'viz.timeline.title': 'Feature-Implementierungs-Zeitstrahl',
+    'viz.timeline.subtitle': 'Wichtige Meilensteine in CocoPilots KI-gesteuterter Entwicklung',
+    'viz.tech.title': 'Technologie-Stack',
+    'viz.tech.subtitle': 'Moderne Webtechnologien, die CocoPilot antreiben',
+    'viz.legend.features': 'Hinzugefügte Funktionen',
+    'viz.legend.maturity': 'Plattform-Reife'
   }
 };
 
