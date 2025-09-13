@@ -1275,17 +1275,6 @@
                 };
             });
         }
-            }).catch(() => {
-                // Fallback for older browsers
-                const textArea = document.createElement('textarea');
-                textArea.value = window.location.href;
-                document.body.appendChild(textArea);
-                textArea.select();
-                document.execCommand('copy');
-                document.body.removeChild(textArea);
-                alert('Link copied to clipboard!');
-            });
-        }
 
         // Theme management
         function toggleTheme() {
@@ -1362,7 +1351,7 @@
             }
         }
 
-        // Accessibility: Keyboard navigation
+        // Accessibility: Keyboard navigation and shortcuts
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Enter' || e.key === ' ') {
                 if (e.target.classList.contains('share-btn')) {
@@ -1371,13 +1360,136 @@
                 }
             }
 
-            // Toggle theme with 'T' key
-            if (e.key.toLowerCase() === 't' && !e.ctrlKey && !e.metaKey && !e.altKey) {
-                if (document.activeElement.tagName !== 'INPUT' && document.activeElement.tagName !== 'TEXTAREA') {
-                    toggleTheme();
+            // Skip if user is typing in an input field
+            const isTyping = document.activeElement.tagName === 'INPUT' || 
+                           document.activeElement.tagName === 'TEXTAREA' || 
+                           document.activeElement.isContentEditable;
+
+            if (!isTyping && !e.ctrlKey && !e.metaKey && !e.altKey) {
+                switch(e.key.toLowerCase()) {
+                    case 't':
+                        // Toggle theme with 'T' key
+                        e.preventDefault();
+                        toggleTheme();
+                        break;
+                        
+                    case 'r':
+                        // Open RSS feed with 'R' key
+                        e.preventDefault();
+                        const rssButton = document.querySelector('.btn-rss');
+                        if (rssButton && typeof handleRSSFeed === 'function') {
+                            rssButton.focus();
+                            handleRSSFeed();
+                        }
+                        break;
+                        
+                    case 'g':
+                        // Go to GitHub with 'G' key
+                        e.preventDefault();
+                        window.open('https://github.com/acbart/cocopilot', '_blank');
+                        break;
+                        
+                    case 'i':
+                        // Go to Issues with 'I' key
+                        e.preventDefault();
+                        window.open('https://github.com/acbart/cocopilot/issues', '_blank');
+                        break;
+                        
+                    case '?':
+                        // Show keyboard shortcuts help
+                        e.preventDefault();
+                        showKeyboardHelp();
+                        break;
                 }
             }
         });
+
+        // Show keyboard shortcuts help modal
+        function showKeyboardHelp() {
+            const modal = document.createElement('div');
+            modal.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.5);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                z-index: 1000;
+            `;
+            
+            modal.innerHTML = `
+                <div style="
+                    background: var(--container-bg, white);
+                    padding: 30px;
+                    border-radius: 15px;
+                    max-width: 400px;
+                    text-align: left;
+                    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+                    color: var(--text-primary, black);
+                ">
+                    <h3 style="margin-top: 0; color: var(--text-primary); text-align: center;">⌨️ Keyboard Shortcuts</h3>
+                    <div style="display: grid; gap: 10px; margin: 20px 0;">
+                        <div style="display: flex; justify-content: space-between;">
+                            <kbd style="background: var(--feature-bg); padding: 4px 8px; border-radius: 4px; font-family: monospace;">T</kbd>
+                            <span style="color: var(--text-secondary);">Toggle Theme</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between;">
+                            <kbd style="background: var(--feature-bg); padding: 4px 8px; border-radius: 4px; font-family: monospace;">R</kbd>
+                            <span style="color: var(--text-secondary);">RSS Feed</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between;">
+                            <kbd style="background: var(--feature-bg); padding: 4px 8px; border-radius: 4px; font-family: monospace;">G</kbd>
+                            <span style="color: var(--text-secondary);">Go to GitHub</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between;">
+                            <kbd style="background: var(--feature-bg); padding: 4px 8px; border-radius: 4px; font-family: monospace;">I</kbd>
+                            <span style="color: var(--text-secondary);">View Issues</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between;">
+                            <kbd style="background: var(--feature-bg); padding: 4px 8px; border-radius: 4px; font-family: monospace;">?</kbd>
+                            <span style="color: var(--text-secondary);">Show this help</span>
+                        </div>
+                    </div>
+                    <button id="closeHelp" style="
+                        width: 100%;
+                        padding: 12px;
+                        background: linear-gradient(135deg, var(--button-gradient-start), var(--button-gradient-end));
+                        color: white;
+                        border: none;
+                        border-radius: 8px;
+                        cursor: pointer;
+                        font-weight: 600;
+                        margin-top: 15px;
+                    ">Close (Escape)</button>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+            
+            // Close handlers
+            const closeHelp = () => {
+                if (document.body.contains(modal)) {
+                    document.body.removeChild(modal);
+                }
+            };
+            
+            modal.querySelector('#closeHelp').onclick = closeHelp;
+            modal.onclick = (e) => {
+                if (e.target === modal) closeHelp();
+            };
+            
+            // Close with Escape key
+            const escapeHandler = (e) => {
+                if (e.key === 'Escape') {
+                    closeHelp();
+                    document.removeEventListener('keydown', escapeHandler);
+                }
+            };
+            document.addEventListener('keydown', escapeHandler);
+        }
 
         // Display current date as last update
         document.getElementById('lastUpdate').textContent = new Date().toLocaleDateString();
