@@ -15,22 +15,22 @@ const OPTIONAL_CACHE = [
 // Install event - cache resources
 self.addEventListener('install', function(event) {
   console.log('CocoPilot Service Worker: Installing...');
-  
+
   event.waitUntil(
     caches.open(CACHE_NAME)
       .then(function(cache) {
         console.log('CocoPilot cache opened');
-        
+
         // Cache critical resources
         const cachePromise = cache.addAll(urlsToCache);
-        
+
         // Cache optional resources (don't fail if they're not available)
         const optionalCachePromise = OPTIONAL_CACHE.map(url => {
           return cache.add(url).catch(error => {
             console.log('Optional cache failed for:', url, error);
           });
         });
-        
+
         return Promise.all([cachePromise, ...optionalCachePromise]);
       })
       .then(() => {
@@ -44,7 +44,7 @@ self.addEventListener('install', function(event) {
 // Fetch event - serve cached content with network-first strategy for API calls
 self.addEventListener('fetch', function(event) {
   const requestUrl = new URL(event.request.url);
-  
+
   // Handle GitHub API requests with network-first strategy
   if (requestUrl.hostname === 'api.github.com') {
     event.respondWith(
@@ -65,7 +65,7 @@ self.addEventListener('fetch', function(event) {
     );
     return;
   }
-  
+
   // For all other requests, use cache-first strategy
   event.respondWith(
     caches.match(event.request)
@@ -75,7 +75,7 @@ self.addEventListener('fetch', function(event) {
           console.log('Serving from cache:', event.request.url);
           return response;
         }
-        
+
         // Otherwise, fetch from network and cache the response
         return fetch(event.request)
           .then(function(response) {
@@ -83,15 +83,15 @@ self.addEventListener('fetch', function(event) {
             if (!response || response.status !== 200 || response.type !== 'basic') {
               return response;
             }
-            
+
             // Clone the response for caching
             const responseToCache = response.clone();
-            
+
             caches.open(CACHE_NAME)
               .then(function(cache) {
                 cache.put(event.request, responseToCache);
               });
-            
+
             return response;
           });
       })
@@ -101,7 +101,7 @@ self.addEventListener('fetch', function(event) {
 // Activate event - clean up old caches and take control immediately
 self.addEventListener('activate', function(event) {
   console.log('CocoPilot Service Worker: Activating...');
-  
+
   event.waitUntil(
     caches.keys().then(function(cacheNames) {
       return Promise.all(

@@ -58,7 +58,7 @@ describe('Social Sharing', () => {
       document.body.innerHTML = '<button class="share-btn"><span>🔗</span><span>Copy Link</span></button>';
     });
 
-    const copyLink = async () => {
+    const copyLink = async() => {
       try {
         await navigator.clipboard.writeText(window.location.href);
         const btn = document.querySelector('.share-btn');
@@ -79,7 +79,7 @@ describe('Social Sharing', () => {
       }
     };
 
-    test('should copy link using clipboard API', async () => {
+    test('should copy link using clipboard API', async() => {
       navigator.clipboard.writeText.mockResolvedValueOnce();
 
       await copyLink();
@@ -88,7 +88,7 @@ describe('Social Sharing', () => {
       expect(document.querySelector('.share-btn').innerHTML).toBe('<span>✅</span><span>Copied!</span>');
     });
 
-    test('should fallback to document.execCommand when clipboard API fails', async () => {
+    test('should fallback to document.execCommand when clipboard API fails', async() => {
       navigator.clipboard.writeText.mockRejectedValueOnce(new Error('Clipboard not available'));
 
       await copyLink();

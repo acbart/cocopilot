@@ -64,7 +64,7 @@ describe('Main Page Integration', () => {
       expect(document.querySelector('#backgroundAnimation')).toBeTruthy();
     });
 
-    test('should register service worker on page load', async () => {
+    test('should register service worker on page load', async() => {
       // Simulate service worker registration
       if ('serviceWorker' in navigator) {
         await navigator.serviceWorker.register('/sw.js');
@@ -108,7 +108,7 @@ describe('Main Page Integration', () => {
   });
 
   describe('GitHub API Integration', () => {
-    test('should fetch and display repository stats', async () => {
+    test('should fetch and display repository stats', async() => {
       const mockRepoData = {
         stargazers_count: 42,
         forks_count: 10,
@@ -121,30 +121,30 @@ describe('Main Page Integration', () => {
       });
 
       // Simulate fetchRepoStats function
-      const fetchRepoStats = async () => {
+      const fetchRepoStats = async() => {
         try {
           const response = await fetch('https://api.github.com/repos/acbart/cocopilot');
-          
+
           if (!response.ok) {
             throw new Error(`HTTP ${response.status}`);
           }
-          
+
           const data = await response.json();
-          
+
           document.getElementById('stars').textContent = data.stargazers_count || '0';
           document.getElementById('forks').textContent = data.forks_count || '0';
           document.getElementById('issues').textContent = data.open_issues_count || '0';
-          
+
           const statsElement = document.getElementById('repoStats');
           statsElement.setAttribute('aria-label', 'Repository statistics loaded successfully');
-          
+
         } catch (error) {
           console.warn('Could not fetch repository stats:', error);
-          
+
           document.getElementById('stars').textContent = '∞';
           document.getElementById('forks').textContent = '∞';
           document.getElementById('issues').textContent = '∞';
-          
+
           const statsElement = document.getElementById('repoStats');
           statsElement.setAttribute('aria-label', 'Repository statistics unavailable');
         }
@@ -159,25 +159,25 @@ describe('Main Page Integration', () => {
       expect(document.getElementById('repoStats').getAttribute('aria-label')).toBe('Repository statistics loaded successfully');
     });
 
-    test('should handle API failures gracefully', async () => {
+    test('should handle API failures gracefully', async() => {
       fetch.mockRejectedValue(new Error('Network error'));
 
-      const fetchRepoStats = async () => {
+      const fetchRepoStats = async() => {
         try {
           const response = await fetch('https://api.github.com/repos/acbart/cocopilot');
           const data = await response.json();
-          
+
           document.getElementById('stars').textContent = data.stargazers_count || '0';
           document.getElementById('forks').textContent = data.forks_count || '0';
           document.getElementById('issues').textContent = data.open_issues_count || '0';
-          
+
         } catch (error) {
           console.warn('Could not fetch repository stats:', error);
-          
+
           document.getElementById('stars').textContent = '∞';
           document.getElementById('forks').textContent = '∞';
           document.getElementById('issues').textContent = '∞';
-          
+
           const statsElement = document.getElementById('repoStats');
           statsElement.setAttribute('aria-label', 'Repository statistics unavailable');
         }
@@ -222,15 +222,15 @@ describe('Main Page Integration', () => {
       );
     });
 
-    test('should copy link to clipboard', async () => {
-      const copyLink = async (event) => {
+    test('should copy link to clipboard', async() => {
+      const copyLink = async(event) => {
         try {
           await navigator.clipboard.writeText(window.location.href);
-          
+
           const btn = event.target.closest('.share-btn');
           const originalText = btn.innerHTML;
           btn.innerHTML = '✅ Copied!';
-          
+
           setTimeout(() => {
             btn.innerHTML = originalText;
           }, 2000);
@@ -256,7 +256,7 @@ describe('Main Page Integration', () => {
   describe('Online/Offline Status Integration', () => {
     test('should show offline indicator when offline', () => {
       const offlineIndicator = document.getElementById('offlineIndicator');
-      
+
       const updateOnlineStatus = () => {
         if (!navigator.onLine) {
           offlineIndicator.style.display = 'block';
@@ -282,7 +282,7 @@ describe('Main Page Integration', () => {
       const createFloatingElements = () => {
         const backgroundAnimation = document.getElementById('backgroundAnimation');
         const elements = ['🤖', '⚡', '✨', '🔄', '🚀', '💫'];
-        
+
         for (let i = 0; i < 8; i++) {
           const element = document.createElement('div');
           element.className = 'floating-element';
@@ -300,9 +300,9 @@ describe('Main Page Integration', () => {
 
       const backgroundAnimation = document.getElementById('backgroundAnimation');
       const floatingElements = backgroundAnimation.querySelectorAll('.floating-element');
-      
+
       expect(floatingElements.length).toBe(8);
-      
+
       floatingElements.forEach(element => {
         expect(element.className).toBe('floating-element');
         expect(['🤖', '⚡', '✨', '🔄', '🚀', '💫']).toContain(element.textContent);
@@ -315,15 +315,15 @@ describe('Main Page Integration', () => {
   describe('Error Boundary Integration', () => {
     test('should handle unhandled promise rejections', () => {
       const mockErrorHandler = jest.fn();
-      
+
       // Simulate unhandled promise rejection handler
       window.addEventListener('unhandledrejection', mockErrorHandler);
-      
+
       // Simulate an unhandled promise rejection
       const rejectionEvent = new Event('unhandledrejection');
       rejectionEvent.reason = new Error('Test error');
       window.dispatchEvent(rejectionEvent);
-      
+
       expect(mockErrorHandler).toHaveBeenCalled();
     });
   });

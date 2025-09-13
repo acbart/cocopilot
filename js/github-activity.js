@@ -18,25 +18,25 @@ class GitHubActivity {
    */
   async fetchRecentCommits() {
     const url = `${this.baseUrl}/${this.owner}/${this.repo}/commits?per_page=${this.maxCommits}`;
-    
+
     for (let attempt = 1; attempt <= this.retryAttempts; attempt++) {
       try {
         const response = await fetch(url);
-        
+
         if (!response.ok) {
           throw new Error(`HTTP ${response.status}: ${response.statusText}`);
         }
-        
+
         const commits = await response.json();
         return this.processCommits(commits);
       } catch (error) {
         console.warn(`Attempt ${attempt} failed:`, error.message);
-        
+
         if (attempt === this.retryAttempts) {
           console.error('Failed to fetch GitHub activity after all retries');
           return this.getFallbackData();
         }
-        
+
         // Wait before retrying
         await new Promise(resolve => setTimeout(resolve, this.retryDelay * attempt));
       }
@@ -64,7 +64,7 @@ class GitHubActivity {
    */
   categorizeCommit(message) {
     const lowerMessage = message.toLowerCase();
-    
+
     if (lowerMessage.includes('fix') || lowerMessage.includes('bug')) {
       return { icon: '🐛', type: 'fix', color: '#f85149' };
     } else if (lowerMessage.includes('feat') || lowerMessage.includes('add')) {
@@ -169,7 +169,7 @@ class GitHubActivity {
   renderCommitItem(commit, index) {
     const timeAgo = this.getTimeAgo(commit.date);
     const isRecent = commit.isRecent ? 'recent' : '';
-    
+
     return `
       <div class="commit-item ${isRecent}" data-commit-url="${commit.url}" data-index="${index}">
         <div class="commit-indicator">
@@ -214,7 +214,7 @@ class GitHubActivity {
    */
   attachEventListeners(container) {
     const commitItems = container.querySelectorAll('.commit-item');
-    
+
     commitItems.forEach(item => {
       item.addEventListener('click', (e) => {
         e.preventDefault();
@@ -249,14 +249,22 @@ class GitHubActivity {
     const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
     const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
 
-    if (diffMinutes < 1) return 'just now';
-    if (diffMinutes < 60) return `${diffMinutes}m ago`;
-    if (diffHours < 24) return `${diffHours}h ago`;
-    if (diffDays < 7) return `${diffDays}d ago`;
-    
-    return date.toLocaleDateString('en-US', { 
-      month: 'short', 
-      day: 'numeric' 
+    if (diffMinutes < 1) {
+      return 'just now';
+    }
+    if (diffMinutes < 60) {
+      return `${diffMinutes}m ago`;
+    }
+    if (diffHours < 24) {
+      return `${diffHours}h ago`;
+    }
+    if (diffDays < 7) {
+      return `${diffDays}d ago`;
+    }
+
+    return date.toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric'
     });
   }
 
@@ -264,7 +272,9 @@ class GitHubActivity {
    * Truncate commit message to specified length
    */
   truncateMessage(message, maxLength) {
-    if (message.length <= maxLength) return message;
+    if (message.length <= maxLength) {
+      return message;
+    }
     return message.substring(0, maxLength - 3) + '...';
   }
 }

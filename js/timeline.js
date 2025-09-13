@@ -124,8 +124,12 @@ class EvolutionTimeline {
     // Keyboard navigation
     document.addEventListener('keydown', (e) => {
       if (e.target.closest('.timeline-container')) {
-        if (e.key === 'ArrowLeft') this.navigateTimeline(-1);
-        if (e.key === 'ArrowRight') this.navigateTimeline(1);
+        if (e.key === 'ArrowLeft') {
+          this.navigateTimeline(-1);
+        }
+        if (e.key === 'ArrowRight') {
+          this.navigateTimeline(1);
+        }
       }
     });
   }
@@ -139,7 +143,7 @@ class EvolutionTimeline {
 
   goToIndex(index) {
     this.currentIndex = index;
-    
+
     // Update active states
     document.querySelectorAll('.timeline-item').forEach((item, i) => {
       item.classList.toggle('active', i === index);
@@ -164,7 +168,7 @@ class EvolutionTimeline {
     const details = document.getElementById('timelineDetails');
     details.style.opacity = '0';
     details.style.transform = 'translateY(10px)';
-    
+
     setTimeout(() => {
       details.style.opacity = '1';
       details.style.transform = 'translateY(0)';
@@ -173,9 +177,9 @@ class EvolutionTimeline {
 
   formatDate(dateString) {
     const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', { 
-      month: 'short', 
-      day: 'numeric' 
+    return date.toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric'
     });
   }
 
@@ -190,7 +194,9 @@ class EvolutionTimeline {
   }
 
   addTimelineStyles() {
-    if (document.getElementById('timeline-styles')) return;
+    if (document.getElementById('timeline-styles')) {
+      return;
+    }
 
     const styles = document.createElement('style');
     styles.id = 'timeline-styles';

@@ -17,7 +17,7 @@ describe('Performance Monitoring', () => {
       }
     };
 
-    global.PerformanceObserver = jest.fn().mockImplementation((callback) => ({
+    global.PerformanceObserver = jest.fn().mockImplementation((_callback) => ({
       observe: jest.fn(),
       disconnect: jest.fn()
     }));
@@ -29,7 +29,7 @@ describe('Performance Monitoring', () => {
     test('should track Largest Contentful Paint (LCP)', () => {
       const mockCallback = jest.fn();
       const observer = new PerformanceObserver(mockCallback);
-      
+
       expect(PerformanceObserver).toHaveBeenCalledWith(mockCallback);
       expect(observer.observe).toBeDefined();
     });
@@ -37,7 +37,7 @@ describe('Performance Monitoring', () => {
     test('should track First Input Delay (FID)', () => {
       const mockCallback = jest.fn();
       const observer = new PerformanceObserver(mockCallback);
-      
+
       expect(PerformanceObserver).toHaveBeenCalledWith(mockCallback);
       expect(observer.observe).toBeDefined();
     });
@@ -45,7 +45,7 @@ describe('Performance Monitoring', () => {
     test('should track Cumulative Layout Shift (CLS)', () => {
       const mockCallback = jest.fn();
       const observer = new PerformanceObserver(mockCallback);
-      
+
       expect(PerformanceObserver).toHaveBeenCalledWith(mockCallback);
       expect(observer.observe).toBeDefined();
     });
