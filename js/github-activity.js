@@ -24,16 +24,37 @@ class GitHubActivity {
         const response = await fetch(url);
 
         if (!response.ok) {
-          throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+          // Handle specific HTTP status codes
+          if (response.status === 403) {
+            console.warn('GitHub API rate limit exceeded');
+            throw new Error('API rate limit exceeded');
+          } else if (response.status === 404) {
+            console.warn('Repository not found');
+            throw new Error('Repository not found');
+          } else {
+            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+          }
         }
 
         const commits = await response.json();
+        console.log('Successfully fetched GitHub activity');
         return this.processCommits(commits);
       } catch (error) {
-        console.warn(`Attempt ${attempt} failed:`, error.message);
+        // Suppress console warnings for network blocks (common in sandboxed environments)
+        if (!error.message.includes('ERR_BLOCKED_BY_CLIENT') && 
+            !error.message.includes('Failed to fetch')) {
+          console.warn(`Attempt ${attempt} failed:`, error.message);
+        }
 
         if (attempt === this.retryAttempts) {
-          console.error('Failed to fetch GitHub activity after all retries');
+          console.log('Using fallback data due to API unavailability');
+          return this.getFallbackData();
+        }
+
+        // Wait before retrying, but don't retry for certain errors
+        if (error.message.includes('ERR_BLOCKED_BY_CLIENT') || 
+            error.message.includes('rate limit')) {
+          console.log('API access blocked, using fallback data');
           return this.getFallbackData();
         }
 

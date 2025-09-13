@@ -1570,7 +1570,11 @@
                 statsElement.setAttribute('aria-label', 'Repository statistics loaded successfully');
 
             } catch (error) {
-                console.warn('Could not fetch repository stats:', error);
+                // Suppress error reporting for common network restrictions
+                if (!error.message.includes('ERR_BLOCKED_BY_CLIENT') && 
+                    !error.message.includes('Failed to fetch')) {
+                    console.warn('Could not fetch repository stats:', error);
+                }
 
                 // Graceful fallback with helpful error messaging
                 const fallbackValues = {
@@ -1587,8 +1591,9 @@
                 const statsElement = document.getElementById('repoStats');
                 statsElement.setAttribute('aria-label', 'Repository statistics unavailable (offline or network restrictions)');
 
-                // Add retry mechanism for transient failures
-                if (!error.message.includes('ERR_BLOCKED_BY_CLIENT')) {
+                // Only retry for transient failures, not for blocked requests
+                if (!error.message.includes('ERR_BLOCKED_BY_CLIENT') && 
+                    !error.message.includes('Failed to fetch')) {
                     setTimeout(() => {
                         console.log('Retrying repository stats fetch...');
                         fetchRepoStats();
