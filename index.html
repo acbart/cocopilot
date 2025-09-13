@@ -479,6 +479,35 @@
             box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.3);
         }
 
+        /* Help/Tour Button Styles */
+        .help-tour-btn {
+            position: absolute;
+            top: 20px;
+            right: 70px;
+            background: none;
+            border: 2px solid var(--border-color);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .help-tour-btn:hover,
+        .help-tour-btn:focus {
+            transform: scale(1.1);
+            border-color: var(--button-gradient-start);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.3);
+            background: var(--feature-bg);
+        }
+
         /* Language Selector Styles */
         .language-selector {
             position: absolute;
@@ -799,6 +828,14 @@
                 font-size: 1rem;
             }
 
+            .help-tour-btn {
+                top: 15px;
+                right: 55px;
+                width: 35px;
+                height: 35px;
+                font-size: 1rem;
+            }
+
             .language-selector {
                 top: 15px;
                 right: 60px;
@@ -953,6 +990,9 @@
     <div class="background-animation" id="backgroundAnimation"></div>
     <main class="container">
         <button type="button" class="theme-toggle" onclick="toggleTheme()" title="Toggle theme" aria-label="Toggle between light and dark theme" data-i18n-title="theme.toggle" data-i18n-aria="theme.toggle">🌙</button>
+        
+        <!-- Help/Tour Button -->
+        <button type="button" class="help-tour-btn" onclick="window.onboardingTour?.restartTour()" title="Start interactive tour" aria-label="Start interactive tour of CocoPilot features">❓</button>
         <span class="emoji">🤖</span>
         <h1 data-i18n="site.title">Hello from CocoPilot!</h1>
         <p class="subtitle" data-i18n="site.subtitle">A Self-Updating Repository</p>
@@ -1611,5 +1651,9 @@
 
     <!-- RSS Feed Generator JavaScript -->
     <script src="js/rss-generator.js"></script>
+    <!-- Interactive Onboarding System -->
+    <script src="js/onboarding.js"></script>
+    <!-- Advanced Performance Monitoring -->
+    <script src="js/performance-monitor.js"></script>
 </body>
 </html>

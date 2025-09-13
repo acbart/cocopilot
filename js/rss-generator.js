@@ -23,7 +23,7 @@ class RSSGenerator {
       ]);
 
       const items = this.combineAndSortItems(commits, releases);
-      
+
       return this.buildRSSXML({
         title: `${repoInfo.name} - Repository Updates`,
         description: repoInfo.description || 'Repository updates and changes',
@@ -56,7 +56,7 @@ class RSSGenerator {
       throw new Error(`Failed to fetch commits: ${response.status}`);
     }
     const commits = await response.json();
-    
+
     return commits.map(commit => ({
       type: 'commit',
       title: `Commit: ${commit.commit.message.split('\n')[0]}`,
@@ -78,7 +78,7 @@ class RSSGenerator {
         return []; // Releases might not exist
       }
       const releases = await response.json();
-      
+
       return releases.map(release => ({
         type: 'release',
         title: `Release: ${release.name || release.tag_name}`,
@@ -107,7 +107,7 @@ class RSSGenerator {
    */
   buildRSSXML({ title, description, link, items }) {
     const now = new Date().toUTCString();
-    
+
     const itemsXML = items.map(item => `
     <item>
       <title><![CDATA[${this.escapeXML(item.title)}]]></title>
@@ -142,7 +142,7 @@ class RSSGenerator {
    */
   generateErrorFeed() {
     const now = new Date().toUTCString();
-    
+
     return `<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0">
   <channel>
@@ -164,7 +164,9 @@ class RSSGenerator {
    * Escape special XML characters
    */
   escapeXML(str) {
-    if (!str) return '';
+    if (!str) {
+      return '';
+    }
     return str
       .replace(/&/g, '&amp;')
       .replace(/</g, '&lt;')
@@ -181,18 +183,18 @@ class RSSGenerator {
       const rssContent = await this.generateFeed();
       const blob = new Blob([rssContent], { type: 'application/rss+xml' });
       const url = URL.createObjectURL(blob);
-      
+
       const link = document.createElement('a');
       link.href = url;
       link.download = 'cocopilot-updates.xml';
       link.style.display = 'none';
-      
+
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
-      
+
       URL.revokeObjectURL(url);
-      
+
       return true;
     } catch (error) {
       console.error('Error downloading RSS feed:', error);
