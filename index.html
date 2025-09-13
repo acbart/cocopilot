@@ -521,6 +521,239 @@
             cursor: pointer;
             font-size: 1.2rem;
             transition: all 0.3s ease;
+        }
+        
+        /* Analytics Dashboard Styles */
+        .analytics-dashboard {
+            margin: 40px 0;
+            padding: 30px;
+            background: var(--container-bg);
+            border-radius: 20px;
+            border: 2px solid var(--border-color);
+            backdrop-filter: blur(10px);
+        }
+        
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .dashboard-title {
+            margin: 0;
+            color: var(--text-primary);
+            font-size: 1.5rem;
+        }
+        
+        .dashboard-subtitle {
+            margin: 5px 0 0 0;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+        
+        .dashboard-controls {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        
+        .refresh-btn {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 12px;
+            background: linear-gradient(135deg, var(--button-gradient-start), var(--button-gradient-end));
+            color: white;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: all 0.3s ease;
+        }
+        
+        .refresh-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+        
+        .refresh-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .time-range-selector {
+            padding: 8px 12px;
+            background: var(--container-bg);
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            color: var(--text-primary);
+            font-size: 0.8rem;
+            cursor: pointer;
+        }
+        
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .metric-card {
+            background: var(--feature-bg);
+            border: 2px solid var(--border-color);
+            border-radius: 15px;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            transition: all 0.3s ease;
+        }
+        
+        .metric-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(102, 126, 234, 0.1);
+        }
+        
+        .metric-icon {
+            font-size: 2rem;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--button-gradient-start), var(--button-gradient-end));
+            border-radius: 50%;
+            margin: 0;
+        }
+        
+        .metric-content h4 {
+            margin: 0 0 5px 0;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+        
+        .metric-value {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--text-primary);
+            margin-bottom: 5px;
+        }
+        
+        .metric-trend {
+            font-size: 0.8rem;
+        }
+        
+        .trend-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 2px;
+        }
+        
+        .charts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .chart-container {
+            background: var(--feature-bg);
+            border: 2px solid var(--border-color);
+            border-radius: 15px;
+            padding: 20px;
+        }
+        
+        .chart-container h4 {
+            margin: 0 0 15px 0;
+            color: var(--text-primary);
+            font-size: 1.1rem;
+        }
+        
+        .chart-container canvas {
+            width: 100%;
+            height: 200px;
+            border-radius: 10px;
+        }
+        
+        .chart-fallback {
+            padding: 20px;
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+        
+        .chart-fallback ul {
+            text-align: left;
+            margin: 10px 0;
+            padding-left: 20px;
+        }
+        
+        .insights-section {
+            background: var(--feature-bg);
+            border: 2px solid var(--border-color);
+            border-radius: 15px;
+            padding: 20px;
+        }
+        
+        .insights-section h4 {
+            margin: 0 0 15px 0;
+            color: var(--text-primary);
+            font-size: 1.1rem;
+        }
+        
+        .insights-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .insight-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px;
+            background: var(--container-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            font-size: 0.9rem;
+            color: var(--text-primary);
+        }
+        
+        .insight-icon {
+            font-size: 1.2rem;
+            width: 30px;
+            text-align: center;
+        }
+        
+        @media (max-width: 768px) {
+            .analytics-dashboard {
+                margin: 20px 0;
+                padding: 20px;
+            }
+            
+            .dashboard-header {
+                flex-direction: column;
+                align-items: stretch;
+                text-align: center;
+            }
+            
+            .dashboard-controls {
+                justify-content: center;
+            }
+            
+            .metrics-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .charts-grid {
+                grid-template-columns: 1fr;
+            }
+        }
             color: var(--text-primary);
         }
         
@@ -707,6 +940,9 @@
         <div class="evolution-section">
             <div id="evolutionTimeline"></div>
         </div>
+        
+        <!-- Analytics Dashboard Section -->
+        <div id="analyticsDashboard"></div>
         
         <nav class="cta" aria-label="Main actions">
             <a href="https://github.com/acbart/cocopilot" class="btn" aria-describedby="github-desc">View on GitHub</a>
@@ -1023,6 +1259,9 @@
     
     <!-- Evolution Timeline JavaScript -->
     <script src="js/timeline.js"></script>
+    
+    <!-- Analytics Dashboard JavaScript -->
+    <script src="js/analytics.js"></script>
     
     <!-- Internationalization Support -->
     <script src="js/i18n.js"></script>
