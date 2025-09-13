@@ -94,6 +94,7 @@ jobs:
           - Keep commits focused and reviewable
           - Reference this issue in your PR
           - Feel free to update tomorrow.md with your own ideas for future development
+          - You may not remove the Google Analytics tracking code, and that code must be replicated across any additional pages.
 
           Use your best judgment and creativity!
 
@@ -187,30 +188,3 @@ jobs:
             --body  "${{ steps.meta.outputs.body }}" \
             --label "needs-copilot")
           echo "Created issue: $issue_url"
-
-  merge-copilot-prs:
-    if: github.event_name == 'pull_request'
-    runs-on: ubuntu-latest
-    steps:
-      - name: Guardrail — block if PR modifies this workflow
-        id: guard
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          set -euo pipefail
-          PR="${{ github.event.pull_request.number }}"
-          files=$(gh pr view "$PR" --json files --jq '.files[].path')
-          if echo "$files" | grep -qx "${WORKFLOW_PATH}"; then
-            echo "::error::Refusing to merge: PR changes ${WORKFLOW_PATH}"
-            exit 1
-          fi
-
-      - name: Prefer auto-merge; fall back to immediate merge if allowed
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          set -euo pipefail
-          PR="${{ github.event.pull_request.number }}"
-          # If required checks not yet passed, this enables auto-merge; otherwise it queues/merges. 
-          # Uses repo's default merge strategy or squash via flag.
-          gh pr merge "$PR" --squash --auto || gh pr merge "$PR" --squash --admin
