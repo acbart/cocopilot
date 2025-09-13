@@ -1,0 +1,24 @@
+name: Auto-merge PRs from a specific user
+
+on:
+  pull_request:
+    types: [ready_for_review]
+
+permissions:
+  contents: write          # needed to merge
+  pull-requests: write     # needed to set auto-merge
+
+jobs:
+  automerge:
+    if: >
+      github.event.pull_request.user.login == 'copilot-swe-agent' &&
+      github.event.pull_request.base.ref == 'main' &&
+      github.event.pull_request.draft == false
+    runs-on: ubuntu-latest
+    steps:
+      - name: Enable auto-merge (merge commit) when checks pass
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh pr merge ${{ github.event.pull_request.number }} \
+            --auto --merge --delete-branch
