@@ -108,7 +108,7 @@ jobs:
           echo "today=$today_iso" >> "$GITHUB_OUTPUT"
           echo "tomorrow=$tomorrow_iso" >> "$GITHUB_OUTPUT"
 
-      - name: Look up Copilot coding agent ID (copilot-swe-agent)
+      - name: Look up Copilot coding agent ID (Copilot)
         id: copilot
         env:
           GH_TOKEN: ${{ github.token }}
@@ -132,7 +132,7 @@ jobs:
               }
             }' -F owner="$owner" -F repo="$repo")
           repo_id=$(jq -r '.data.repository.id' <<<"$data")
-          copilot_id=$(jq -r '.data.repository.suggestedActors.nodes[] | select(.login=="copilot-swe-agent") | .id' <<<"$data")
+          copilot_id=$(jq -r '.data.repository.suggestedActors.nodes[] | select(.login=="Copilot") | .id' <<<"$data")
 
           if [[ -z "$copilot_id" || "$copilot_id" == "null" ]]; then
             echo "::warning::Copilot coding agent is not available to assign in this repo. See GitHub Docs."
@@ -179,7 +179,7 @@ jobs:
           issue_url=$(gh issue create \
             --title "${{ steps.meta.outputs.title }}" \
             --body  "${{ steps.meta.outputs.body }}" \
-            --assignee "copilot" || \
+            --assignee "Copilot" || \
           gh issue create \
             --title "${{ steps.meta.outputs.title }}" \
             --body  "${{ steps.meta.outputs.body }}" \
