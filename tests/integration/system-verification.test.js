@@ -71,7 +71,7 @@ describe('Complete System Verification', () => {
     test('should have proper project metadata', () => {
       const title = document.querySelector('title');
       const description = document.querySelector('meta[name="description"]');
-      
+
       expect(title.textContent).toBe('CocoPilot - Self-Updating Repository');
       expect(description.getAttribute('content')).toBe('A self-modifying repository that evolves through AI-driven daily improvements');
     });
@@ -83,7 +83,7 @@ describe('Complete System Verification', () => {
       const features = document.querySelector('[aria-labelledby="features-heading"]');
       const navigation = document.querySelector('[aria-label="Main actions"]');
       const footer = document.querySelector('[role="contentinfo"]');
-      
+
       expect(main).toBeTruthy();
       expect(features).toBeTruthy();
       expect(navigation).toBeTruthy();
@@ -95,7 +95,7 @@ describe('Complete System Verification', () => {
       const statusRegion = document.querySelector('[role="status"]');
       const shareButtons = document.querySelectorAll('[aria-label*="Share"]');
       const footerNav = document.querySelector('[aria-label*="Documentation"]');
-      
+
       expect(themeToggle.getAttribute('aria-label')).toContain('Toggle between light and dark theme');
       expect(statusRegion.getAttribute('aria-label')).toBe('Repository statistics');
       expect(shareButtons.length).toBeGreaterThan(0);
@@ -104,12 +104,12 @@ describe('Complete System Verification', () => {
 
     test('should handle all interactive elements accessibly', () => {
       const interactiveElements = document.querySelectorAll('button, a[href], [role="button"]');
-      
+
       interactiveElements.forEach(element => {
         const hasAriaLabel = element.getAttribute('aria-label');
         const hasText = element.textContent.trim().length > 0;
         const hasAriaLabelledBy = element.getAttribute('aria-labelledby');
-        
+
         expect(hasAriaLabel || hasText || hasAriaLabelledBy).toBeTruthy();
       });
     });
@@ -122,20 +122,20 @@ describe('Complete System Verification', () => {
       expect(manifestLink.getAttribute('href')).toBe('manifest.json');
     });
 
-    test('should register service worker', async () => {
+    test('should register service worker', async() => {
       if ('serviceWorker' in navigator) {
         await navigator.serviceWorker.register('/sw.js');
       }
-      
+
       expect(navigator.serviceWorker.register).toHaveBeenCalledWith('/sw.js');
     });
 
     test('should handle offline state', () => {
       const offlineIndicator = document.getElementById('offlineIndicator');
-      
+
       // Simulate offline state
       Object.defineProperty(navigator, 'onLine', { value: false, configurable: true });
-      
+
       const updateOnlineStatus = () => {
         if (!navigator.onLine) {
           offlineIndicator.style.display = 'block';
@@ -143,7 +143,7 @@ describe('Complete System Verification', () => {
           offlineIndicator.style.display = 'none';
         }
       };
-      
+
       updateOnlineStatus();
       expect(offlineIndicator.style.display).toBe('block');
       expect(offlineIndicator.getAttribute('role')).toBe('alert');
@@ -151,7 +151,7 @@ describe('Complete System Verification', () => {
   });
 
   describe('API Integration and Error Handling', () => {
-    test('should handle successful API responses', async () => {
+    test('should handle successful API responses', async() => {
       const mockData = {
         stargazers_count: 5,
         forks_count: 2,
@@ -166,7 +166,7 @@ describe('Complete System Verification', () => {
       // Simulate API call
       const response = await fetch('https://api.github.com/repos/acbart/cocopilot');
       const data = await response.json();
-      
+
       document.getElementById('stars').textContent = data.stargazers_count;
       document.getElementById('forks').textContent = data.forks_count;
       document.getElementById('issues').textContent = data.open_issues_count;
@@ -176,7 +176,7 @@ describe('Complete System Verification', () => {
       expect(document.getElementById('issues').textContent).toBe('3');
     });
 
-    test('should handle API failures gracefully', async () => {
+    test('should handle API failures gracefully', async() => {
       fetch.mockRejectedValue(new Error('Network error'));
 
       try {
@@ -221,8 +221,8 @@ describe('Complete System Verification', () => {
       expect(themeToggle.textContent).toBe('🌙');
     });
 
-    test('should handle social sharing', async () => {
-      const copyLink = async () => {
+    test('should handle social sharing', async() => {
+      const copyLink = async() => {
         await navigator.clipboard.writeText('http://localhost:8000');
       };
 

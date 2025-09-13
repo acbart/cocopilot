@@ -7,7 +7,7 @@ const localStorageMock = {
   getItem: jest.fn(),
   setItem: jest.fn(),
   removeItem: jest.fn(),
-  clear: jest.fn(),
+  clear: jest.fn()
 };
 global.localStorage = localStorageMock;
 
@@ -35,7 +35,7 @@ describe('Internationalization (i18n)', () => {
     // Reset localStorage mock
     localStorageMock.getItem.mockClear();
     localStorageMock.setItem.mockClear();
-    
+
     // Reset the global i18n instance
     global.i18nInstance = null;
 
@@ -47,19 +47,19 @@ describe('Internationalization (i18n)', () => {
   describe('Language Detection', () => {
     test('should default to English when no language is saved', () => {
       localStorageMock.getItem.mockReturnValue(null);
-      
+
       const { I18n } = i18nModule;
       const i18n = new I18n();
-      
+
       expect(i18n.getCurrentLanguage()).toBe('en');
     });
 
     test('should use saved language from localStorage', () => {
       localStorageMock.getItem.mockReturnValue('es');
-      
+
       const { I18n } = i18nModule;
       const i18n = new I18n();
-      
+
       expect(i18n.getCurrentLanguage()).toBe('es');
     });
 
@@ -69,10 +69,10 @@ describe('Internationalization (i18n)', () => {
         writable: true,
         value: 'fr-FR'
       });
-      
+
       const { I18n } = i18nModule;
       const i18n = new I18n();
-      
+
       expect(i18n.getCurrentLanguage()).toBe('fr');
     });
 
@@ -82,10 +82,10 @@ describe('Internationalization (i18n)', () => {
         writable: true,
         value: 'zh-CN'
       });
-      
+
       const { I18n } = i18nModule;
       const i18n = new I18n();
-      
+
       expect(i18n.getCurrentLanguage()).toBe('en');
     });
   });
@@ -94,44 +94,44 @@ describe('Internationalization (i18n)', () => {
     test('should translate text correctly', () => {
       const { I18n } = i18nModule;
       const i18n = new I18n();
-      
+
       expect(i18n.t('site.title')).toBe('CocoPilot - Self-Updating Repository');
       expect(i18n.t('site.subtitle')).toBe('A Self-Updating Repository');
     });
 
     test('should translate to Spanish correctly', () => {
       localStorageMock.getItem.mockReturnValue('es');
-      
+
       const { I18n } = i18nModule;
       const i18n = new I18n();
-      
+
       expect(i18n.t('site.title')).toBe('CocoPilot - Repositorio Autoactualizable');
       expect(i18n.t('site.subtitle')).toBe('Un Repositorio Autoactualizable');
     });
 
     test('should translate to French correctly', () => {
       localStorageMock.getItem.mockReturnValue('fr');
-      
+
       const { I18n } = i18nModule;
       const i18n = new I18n();
-      
+
       expect(i18n.t('site.title')).toBe('CocoPilot - Dépôt Auto-Mise à Jour');
       expect(i18n.t('site.subtitle')).toBe('Un Dépôt Auto-Mise à Jour');
     });
 
     test('should fallback to English for missing translations', () => {
       localStorageMock.getItem.mockReturnValue('es');
-      
+
       const { I18n } = i18nModule;
       const i18n = new I18n();
-      
+
       expect(i18n.t('nonexistent.key')).toBe('nonexistent.key');
     });
 
     test('should return key if translation not found in any language', () => {
       const { I18n } = i18nModule;
       const i18n = new I18n();
-      
+
       expect(i18n.t('completely.missing.key')).toBe('completely.missing.key');
     });
   });
@@ -140,11 +140,11 @@ describe('Internationalization (i18n)', () => {
     test('should change language correctly', () => {
       const { I18n } = i18nModule;
       const i18n = new I18n();
-      
+
       expect(i18n.getCurrentLanguage()).toBe('en');
-      
+
       i18n.changeLanguage('es');
-      
+
       expect(i18n.getCurrentLanguage()).toBe('es');
       expect(localStorageMock.setItem).toHaveBeenCalledWith('cocopilot-language', 'es');
     });
@@ -152,9 +152,9 @@ describe('Internationalization (i18n)', () => {
     test('should update HTML lang attribute when changing language', () => {
       const { I18n } = i18nModule;
       const i18n = new I18n();
-      
+
       i18n.changeLanguage('fr');
-      
+
       expect(document.documentElement.lang).toBe('fr');
       expect(document.documentElement.dir).toBe('ltr');
     });
@@ -162,19 +162,19 @@ describe('Internationalization (i18n)', () => {
     test('should update page title when changing language', () => {
       const { I18n } = i18nModule;
       const i18n = new I18n();
-      
+
       i18n.changeLanguage('es');
-      
+
       expect(document.title).toBe('CocoPilot - Repositorio Autoactualizable');
     });
 
     test('should not change to unsupported language', () => {
       const { I18n } = i18nModule;
       const i18n = new I18n();
-      
+
       const originalLang = i18n.getCurrentLanguage();
       i18n.changeLanguage('unsupported');
-      
+
       expect(i18n.getCurrentLanguage()).toBe(originalLang);
     });
   });
@@ -183,12 +183,12 @@ describe('Internationalization (i18n)', () => {
     test('should update elements with data-i18n attributes', () => {
       const { I18n } = i18nModule;
       const i18n = new I18n();
-      
+
       i18n.changeLanguage('es');
-      
+
       const titleElement = document.querySelector('[data-i18n="site.title"]');
       const subtitleElement = document.querySelector('[data-i18n="site.subtitle"]');
-      
+
       expect(titleElement.textContent).toBe('CocoPilot - Repositorio Autoactualizable');
       expect(subtitleElement.textContent).toBe('Un Repositorio Autoactualizable');
     });
@@ -196,9 +196,9 @@ describe('Internationalization (i18n)', () => {
     test('should update aria-label attributes', () => {
       const { I18n } = i18nModule;
       const i18n = new I18n();
-      
+
       i18n.changeLanguage('es');
-      
+
       const buttonElement = document.querySelector('[data-i18n-aria="language.select"]');
       expect(buttonElement.getAttribute('aria-label')).toBe('Seleccionar idioma');
     });
@@ -206,9 +206,9 @@ describe('Internationalization (i18n)', () => {
     test('should update title attributes', () => {
       const { I18n } = i18nModule;
       const i18n = new I18n();
-      
+
       i18n.changeLanguage('fr');
-      
+
       const buttonElement = document.querySelector('[data-i18n-title="language.select"]');
       expect(buttonElement.title).toBe('Sélectionner la langue');
     });
@@ -218,14 +218,14 @@ describe('Internationalization (i18n)', () => {
     test('should return correct list of available languages', () => {
       const { I18n } = i18nModule;
       const i18n = new I18n();
-      
+
       const languages = i18n.getAvailableLanguages();
       expect(languages).toEqual(['en', 'es', 'fr']);
     });
 
     test('should have correct language configurations', () => {
       const { LANGUAGES } = i18nModule;
-      
+
       expect(LANGUAGES.en.name).toBe('English');
       expect(LANGUAGES.en.flag).toBe('🇺🇸');
       expect(LANGUAGES.es.name).toBe('Español');
@@ -239,11 +239,13 @@ describe('Internationalization (i18n)', () => {
     test('should handle missing meta description gracefully', () => {
       // Remove meta description
       const metaDesc = document.querySelector('meta[name="description"]');
-      if (metaDesc) metaDesc.remove();
-      
+      if (metaDesc) {
+        metaDesc.remove();
+      }
+
       const { I18n } = i18nModule;
       const i18n = new I18n();
-      
+
       // Should not throw error
       expect(() => i18n.changeLanguage('es')).not.toThrow();
     });
@@ -251,10 +253,12 @@ describe('Internationalization (i18n)', () => {
     test('should handle missing theme toggle gracefully', () => {
       // Remove theme toggle
       const themeToggle = document.querySelector('.theme-toggle');
-      if (themeToggle) themeToggle.remove();
-      
+      if (themeToggle) {
+        themeToggle.remove();
+      }
+
       const { I18n } = i18nModule;
-      
+
       // Should not throw error during initialization
       expect(() => new I18n()).not.toThrow();
     });

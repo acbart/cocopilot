@@ -9,19 +9,19 @@ export default defineConfig({
   reporter: 'html',
   use: {
     baseURL: 'http://localhost:8000',
-    trace: 'on-first-retry',
+    trace: 'on-first-retry'
   },
 
   projects: [
     {
       name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
-    },
+      use: { ...devices['Desktop Chrome'] }
+    }
   ],
 
   webServer: {
     command: 'python3 -m http.server 8000',
     port: 8000,
-    reuseExistingServer: !process.env.CI,
-  },
+    reuseExistingServer: !process.env.CI
+  }
 });

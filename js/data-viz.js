@@ -11,10 +11,10 @@ class DataVisualization {
   initializeVisualization() {
     // Create repository growth chart
     this.createGrowthChart();
-    
+
     // Create feature evolution timeline
     this.createFeatureTimeline();
-    
+
     // Create technology distribution chart
     this.createTechChart();
   }
@@ -178,24 +178,24 @@ class DataVisualization {
   insertVisualization(container, position) {
     // Find appropriate insertion point
     let insertionPoint;
-    
-    switch(position) {
-      case 'after-features':
-        insertionPoint = document.querySelector('.features');
-        break;
-      case 'after-about':
-        insertionPoint = document.querySelector('.about-section');
-        break;
-      case 'after-timeline':
-        insertionPoint = document.querySelector('.evolution-section');
-        break;
-      default:
-        insertionPoint = document.querySelector('main');
+
+    switch (position) {
+    case 'after-features':
+      insertionPoint = document.querySelector('.features');
+      break;
+    case 'after-about':
+      insertionPoint = document.querySelector('.about-section');
+      break;
+    case 'after-timeline':
+      insertionPoint = document.querySelector('.evolution-section');
+      break;
+    default:
+      insertionPoint = document.querySelector('main');
     }
 
     if (insertionPoint) {
       insertionPoint.parentNode.insertBefore(container, insertionPoint.nextSibling);
-      
+
       // Add animation
       setTimeout(() => {
         container.classList.add('animated');
@@ -417,7 +417,7 @@ class DataVisualization {
         }
       }
     `;
-    
+
     document.head.appendChild(style);
   }
 }

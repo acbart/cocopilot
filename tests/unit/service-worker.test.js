@@ -4,7 +4,7 @@
 
 describe('Service Worker', () => {
   const CACHE_NAME = 'cocopilot-v2';
-  
+
   beforeEach(() => {
     // Mock service worker environment
     global.self = {
@@ -31,7 +31,7 @@ describe('Service Worker', () => {
   });
 
   describe('Service Worker Installation', () => {
-    test('should cache critical resources during installation', async () => {
+    test('should cache critical resources during installation', async() => {
       const urlsToCache = [
         '/',
         '/index.html',
@@ -61,7 +61,7 @@ describe('Service Worker', () => {
       expect(installEvent.waitUntil).toHaveBeenCalled();
     });
 
-    test('should handle cache failures gracefully', async () => {
+    test('should handle cache failures gracefully', async() => {
       const mockCache = {
         addAll: jest.fn(() => Promise.reject(new Error('Cache failed'))),
         add: jest.fn(() => Promise.resolve())
@@ -78,9 +78,9 @@ describe('Service Worker', () => {
   });
 
   describe('Service Worker Activation', () => {
-    test('should clean up old caches during activation', async () => {
+    test('should clean up old caches during activation', async() => {
       const cacheNames = ['cocopilot-v1', 'cocopilot-v2', 'other-cache'];
-      
+
       caches.keys = jest.fn(() => Promise.resolve(cacheNames));
       caches.delete.mockResolvedValue(true);
 
@@ -108,7 +108,7 @@ describe('Service Worker', () => {
   });
 
   describe('Fetch Event Handling', () => {
-    test('should use network-first strategy for GitHub API requests', async () => {
+    test('should use network-first strategy for GitHub API requests', async() => {
       const apiRequest = new Request('https://api.github.com/repos/acbart/cocopilot');
       const mockResponse = new Response('{"stars": 42}', { status: 200 });
 
@@ -123,7 +123,7 @@ describe('Service Worker', () => {
 
       // Simulate the fetch handler logic for API requests
       const response = await fetch(apiRequest);
-      
+
       if (response.ok) {
         const cache = await caches.open(CACHE_NAME);
         await cache.put(apiRequest, response.clone());
@@ -134,7 +134,7 @@ describe('Service Worker', () => {
       expect(mockCache.put).toHaveBeenCalledWith(apiRequest, expect.any(Response));
     });
 
-    test('should fallback to cache when network fails for API requests', async () => {
+    test('should fallback to cache when network fails for API requests', async() => {
       const apiRequest = new Request('https://api.github.com/repos/acbart/cocopilot');
       const cachedResponse = new Response('{"stars": 42}', { status: 200 });
 
@@ -153,7 +153,7 @@ describe('Service Worker', () => {
       expect(caches.match).toHaveBeenCalledWith(apiRequest);
     });
 
-    test('should use cache-first strategy for static assets', async () => {
+    test('should use cache-first strategy for static assets', async() => {
       const staticRequest = new Request('/index.html');
       const cachedResponse = new Response('<html></html>', { status: 200 });
 
@@ -166,7 +166,7 @@ describe('Service Worker', () => {
       expect(caches.match).toHaveBeenCalledWith(staticRequest);
     });
 
-    test('should fetch from network when cache miss occurs', async () => {
+    test('should fetch from network when cache miss occurs', async() => {
       const staticRequest = new Request('/new-file.html');
       const networkResponse = new Response('<html>New</html>', { status: 200 });
 
@@ -180,7 +180,7 @@ describe('Service Worker', () => {
 
       // Simulate the fetch handler logic for cache miss
       const cachedResponse = await caches.match(staticRequest);
-      
+
       if (!cachedResponse) {
         const networkResponse = await fetch(staticRequest);
         if (networkResponse.ok) {
@@ -196,7 +196,7 @@ describe('Service Worker', () => {
   });
 
   describe('Background Sync', () => {
-    test('should handle background sync events', async () => {
+    test('should handle background sync events', async() => {
       const syncEvent = {
         tag: 'github-stats-sync',
         waitUntil: jest.fn()
@@ -219,7 +219,7 @@ describe('Service Worker', () => {
       expect(syncEvent.waitUntil).toHaveBeenCalled();
     });
 
-    test('should handle sync failures gracefully', async () => {
+    test('should handle sync failures gracefully', async() => {
       const syncEvent = {
         tag: 'github-stats-sync',
         waitUntil: jest.fn()

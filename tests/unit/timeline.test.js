@@ -62,7 +62,7 @@ describe('Evolution Timeline', () => {
       const prevBtn = document.getElementById('prevBtn');
       const nextBtn = document.getElementById('nextBtn');
       const timelineItems = document.querySelectorAll('.timeline-item');
-      
+
       expect(prevBtn).toHaveAttribute('disabled');
       expect(nextBtn).not.toHaveAttribute('disabled');
       expect(timelineItems).toHaveLength(4);
@@ -70,25 +70,25 @@ describe('Evolution Timeline', () => {
 
     test('should navigate between timeline items', () => {
       const timelineItems = document.querySelectorAll('.timeline-item');
-      
+
       // Simulate clicking on different timeline items
       timelineItems.forEach((item, index) => {
         const event = new Event('click');
         item.dispatchEvent(event);
-        
+
         expect(item.dataset.version).toBeTruthy();
       });
     });
 
     test('should update navigation buttons based on current position', () => {
-      let currentIndex = 0;
+      const currentIndex = 0;
       const totalItems = 4;
-      
+
       // Simulate navigation logic
       const updateNavigation = (index) => {
         const prevBtn = document.getElementById('prevBtn');
         const nextBtn = document.getElementById('nextBtn');
-        
+
         prevBtn.disabled = index === 0;
         nextBtn.disabled = index === totalItems - 1;
       };
@@ -113,13 +113,13 @@ describe('Evolution Timeline', () => {
   describe('Timeline Data Structure', () => {
     test('should have valid version information', () => {
       const timelineItems = document.querySelectorAll('.timeline-item');
-      
+
       timelineItems.forEach(item => {
         const version = item.dataset.version;
         const versionElement = item.querySelector('.timeline-version');
         const titleElement = item.querySelector('.timeline-title');
         const dateElement = item.querySelector('.timeline-date');
-        
+
         expect(version).toMatch(/^\d+\.\d+\.\d+$/); // Semantic versioning pattern
         expect(versionElement.textContent).toBe(version);
         expect(titleElement.textContent.length).toBeGreaterThan(0);
@@ -130,16 +130,16 @@ describe('Evolution Timeline', () => {
     test('should have proper chronological order', () => {
       const timelineItems = document.querySelectorAll('.timeline-item');
       const versions = Array.from(timelineItems).map(item => item.dataset.version);
-      
+
       // Check if versions are in ascending order
       for (let i = 0; i < versions.length - 1; i++) {
         const current = versions[i].split('.').map(Number);
         const next = versions[i + 1].split('.').map(Number);
-        
+
         // Compare version numbers
         const currentValue = current[0] * 10000 + current[1] * 100 + current[2];
         const nextValue = next[0] * 10000 + next[1] * 100 + next[2];
-        
+
         expect(currentValue).toBeLessThanOrEqual(nextValue);
       }
     });
@@ -151,7 +151,7 @@ describe('Evolution Timeline', () => {
       const detailVersion = detailCard.querySelector('.detail-version');
       const detailTitle = detailCard.querySelector('h4');
       const detailDescription = detailCard.querySelector('p');
-      
+
       expect(detailVersion.textContent).toBe('1.0.0');
       expect(detailTitle.textContent).toBe('Initial Release');
       expect(detailDescription.textContent).toBe('Basic repository structure with self-updating workflow');
@@ -160,7 +160,7 @@ describe('Evolution Timeline', () => {
     test('should have feature list for each version', () => {
       const featuresList = document.querySelector('.detail-features ul');
       const features = featuresList.querySelectorAll('li');
-      
+
       expect(features.length).toBeGreaterThan(0);
       features.forEach(feature => {
         expect(feature.textContent).toContain('✨');
@@ -174,7 +174,7 @@ describe('Evolution Timeline', () => {
       const timelineContainer = document.querySelector('.timeline-container');
       const timelineItems = document.querySelectorAll('.timeline-item');
       const navigationButtons = document.querySelectorAll('.timeline-nav-btn');
-      
+
       expect(timelineContainer).toBeTruthy();
       expect(timelineItems.length).toBeGreaterThan(0);
       expect(navigationButtons.length).toBe(2);
@@ -183,7 +183,7 @@ describe('Evolution Timeline', () => {
     test('should have accessible navigation buttons', () => {
       const prevBtn = document.getElementById('prevBtn');
       const nextBtn = document.getElementById('nextBtn');
-      
+
       expect(prevBtn.textContent).toContain('Previous');
       expect(nextBtn.textContent).toContain('Next');
       expect(prevBtn.tagName).toBe('BUTTON');
