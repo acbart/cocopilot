@@ -386,6 +386,26 @@
             color: white;
         }
 
+        .btn-rss {
+            background: linear-gradient(135deg, #ff6b35, #f7931e);
+            border: none;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: inherit;
+            position: relative;
+        }
+
+        .btn-rss:hover {
+            background: linear-gradient(135deg, #f7931e, #ff6b35);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(255, 107, 53, 0.3);
+        }
+
+        .btn-rss:focus {
+            outline: 2px solid var(--button-gradient-start);
+            outline-offset: 2px;
+        }
+
         .footer {
             margin-top: 40px;
             padding-top: 20px;
@@ -1014,8 +1034,12 @@
         <nav class="cta" aria-label="Main actions">
             <a href="https://github.com/acbart/cocopilot" class="btn" aria-describedby="github-desc" data-i18n="nav.github">View on GitHub</a>
             <a href="https://github.com/acbart/cocopilot/issues" class="btn btn-secondary" aria-describedby="issues-desc" data-i18n="nav.issues">See Daily Issues</a>
+            <button type="button" class="btn btn-rss" onclick="handleRSSFeed()" aria-describedby="rss-desc" data-i18n="nav.rss">
+                <span aria-hidden="true">📡</span> RSS Feed
+            </button>
             <div id="github-desc" class="sr-only" data-i18n="nav.github.desc">View the complete source code and development history</div>
             <div id="issues-desc" class="sr-only" data-i18n="nav.issues.desc">Browse daily improvement issues and discussions</div>
+            <div id="rss-desc" class="sr-only" data-i18n="nav.rss.desc">Subscribe to RSS feed for repository updates</div>
         </nav>
 
         <section class="social-share" aria-labelledby="social-heading">
@@ -1114,6 +1138,143 @@
                 setTimeout(() => {
                     btn.innerHTML = originalText;
                 }, 2000);
+            }).catch(err => {
+                console.error('Failed to copy: ', err);
+            });
+        }
+
+        // RSS Feed functions
+        async function handleRSSFeed() {
+            const btn = event.target;
+            const originalContent = btn.innerHTML;
+            
+            try {
+                // Show loading state
+                btn.innerHTML = '<span aria-hidden="true">⏳</span> Generating...';
+                btn.disabled = true;
+                
+                // Create RSS generator instance
+                const rssGenerator = new RSSGenerator('acbart', 'cocopilot');
+                
+                // Show options to user
+                const action = await showRSSOptions();
+                
+                if (action === 'download') {
+                    const success = await rssGenerator.downloadRSSFeed();
+                    if (success) {
+                        btn.innerHTML = '<span aria-hidden="true">✅</span> Downloaded!';
+                        setTimeout(() => {
+                            btn.innerHTML = originalContent;
+                            btn.disabled = false;
+                        }, 2000);
+                    } else {
+                        throw new Error('Download failed');
+                    }
+                } else if (action === 'subscribe') {
+                    const feedUrl = rssGenerator.getRSSFeedURL();
+                    window.open(feedUrl, '_blank');
+                    btn.innerHTML = originalContent;
+                    btn.disabled = false;
+                } else {
+                    // User cancelled
+                    btn.innerHTML = originalContent;
+                    btn.disabled = false;
+                }
+                
+            } catch (error) {
+                console.error('RSS feed error:', error);
+                btn.innerHTML = '<span aria-hidden="true">❌</span> Error';
+                setTimeout(() => {
+                    btn.innerHTML = originalContent;
+                    btn.disabled = false;
+                }, 3000);
+            }
+        }
+
+        function showRSSOptions() {
+            return new Promise((resolve) => {
+                const modal = document.createElement('div');
+                modal.style.cssText = `
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    background: rgba(0, 0, 0, 0.5);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    z-index: 1000;
+                `;
+                
+                modal.innerHTML = `
+                    <div style="
+                        background: var(--container-bg, white);
+                        padding: 30px;
+                        border-radius: 15px;
+                        max-width: 400px;
+                        text-align: center;
+                        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+                        color: var(--text-primary, black);
+                    ">
+                        <h3 style="margin-top: 0; color: var(--text-primary);">📡 RSS Feed Options</h3>
+                        <p style="color: var(--text-secondary); margin: 15px 0;">How would you like to access the RSS feed?</p>
+                        <div style="display: flex; flex-direction: column; gap: 10px;">
+                            <button id="downloadRSS" style="
+                                padding: 12px 20px;
+                                background: linear-gradient(135deg, #ff6b35, #f7931e);
+                                color: white;
+                                border: none;
+                                border-radius: 8px;
+                                cursor: pointer;
+                                font-weight: 600;
+                            ">📥 Download RSS File</button>
+                            <button id="subscribeRSS" style="
+                                padding: 12px 20px;
+                                background: transparent;
+                                color: var(--text-primary);
+                                border: 2px solid #ff6b35;
+                                border-radius: 8px;
+                                cursor: pointer;
+                                font-weight: 600;
+                            ">🔗 Open Subscription Link</button>
+                            <button id="cancelRSS" style="
+                                padding: 8px 16px;
+                                background: transparent;
+                                color: var(--text-tertiary);
+                                border: none;
+                                cursor: pointer;
+                                margin-top: 10px;
+                            ">Cancel</button>
+                        </div>
+                    </div>
+                `;
+                
+                document.body.appendChild(modal);
+                
+                modal.querySelector('#downloadRSS').onclick = () => {
+                    document.body.removeChild(modal);
+                    resolve('download');
+                };
+                
+                modal.querySelector('#subscribeRSS').onclick = () => {
+                    document.body.removeChild(modal);
+                    resolve('subscribe');
+                };
+                
+                modal.querySelector('#cancelRSS').onclick = () => {
+                    document.body.removeChild(modal);
+                    resolve('cancel');
+                };
+                
+                modal.onclick = (e) => {
+                    if (e.target === modal) {
+                        document.body.removeChild(modal);
+                        resolve('cancel');
+                    }
+                };
+            });
+        }
             }).catch(() => {
                 // Fallback for older browsers
                 const textArea = document.createElement('textarea');
@@ -1335,5 +1496,8 @@
 
     <!-- Evolution Timeline JavaScript -->
     <script src="js/timeline.js"></script>
+
+    <!-- RSS Feed Generator JavaScript -->
+    <script src="js/rss-generator.js"></script>
 </body>
 </html>

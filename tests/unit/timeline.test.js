@@ -72,7 +72,7 @@ describe('Evolution Timeline', () => {
       const timelineItems = document.querySelectorAll('.timeline-item');
 
       // Simulate clicking on different timeline items
-      timelineItems.forEach((item, index) => {
+      timelineItems.forEach((item, _index) => {
         const event = new Event('click');
         item.dispatchEvent(event);
 
@@ -81,7 +81,7 @@ describe('Evolution Timeline', () => {
     });
 
     test('should update navigation buttons based on current position', () => {
-      const currentIndex = 0;
+      // Test current navigation state
       const totalItems = 4;
 
       // Simulate navigation logic

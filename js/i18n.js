@@ -64,8 +64,10 @@ const TRANSLATIONS = {
     // Navigation and actions
     'nav.github': 'View on GitHub',
     'nav.issues': 'See Daily Issues',
+    'nav.rss': 'RSS Feed',
     'nav.github.desc': 'View the complete source code and development history',
     'nav.issues.desc': 'Browse daily improvement issues and discussions',
+    'nav.rss.desc': 'Subscribe to RSS feed for repository updates',
 
     // Social sharing
     'share.title': 'Share CocoPilot',

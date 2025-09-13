@@ -108,7 +108,7 @@ describe('Accessibility Features', () => {
     test('should have proper tab order for interactive elements', () => {
       const interactiveElements = document.querySelectorAll('button, a[href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
 
-      interactiveElements.forEach(element => {
+      interactiveElements.forEach((element, _index) => {
         // Elements should either have no tabindex (default behavior) or a valid tabindex
         const tabIndex = element.getAttribute('tabindex');
         if (tabIndex !== null) {
@@ -170,7 +170,7 @@ describe('Accessibility Features', () => {
     test('should have descriptive link text', () => {
       const links = document.querySelectorAll('a[href]');
 
-      links.forEach((link, index) => {
+      links.forEach((link, _index) => {
         const text = link.textContent.trim();
         const ariaLabel = link.getAttribute('aria-label');
 

@@ -17,7 +17,7 @@ describe('Performance Monitoring', () => {
       }
     };
 
-    global.PerformanceObserver = jest.fn().mockImplementation((callback) => ({
+    global.PerformanceObserver = jest.fn().mockImplementation((_callback) => ({
       observe: jest.fn(),
       disconnect: jest.fn()
     }));
