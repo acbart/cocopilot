@@ -1,0 +1,10 @@
+# ESLint ignore file
+node_modules/
+coverage/
+dist/
+build/
+*.min.js
+playwright-report/
+test-results/
+lighthouse-report.json
+.github/
