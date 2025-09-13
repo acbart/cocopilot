@@ -19,6 +19,11 @@ const LANGUAGES = {
     name: 'Français',
     flag: '🇫🇷',
     direction: 'ltr'
+  },
+  de: {
+    name: 'Deutsch',
+    flag: '🇩🇪',
+    direction: 'ltr'
   }
 };
 
@@ -97,7 +102,17 @@ const TRANSLATIONS = {
     'version.1.2.0.title': 'Performance & Analytics',
     'version.1.2.0.description': 'Added performance monitoring and analytics features',
     'version.2.0.0.title': 'Testing Infrastructure',
-    'version.2.0.0.description': 'Comprehensive testing framework and quality assurance'
+    'version.2.0.0.description': 'Comprehensive testing framework and quality assurance',
+    
+    // Data Visualization
+    'viz.growth.title': 'Repository Growth',
+    'viz.growth.subtitle': 'Track the evolution of features and improvements over time',
+    'viz.timeline.title': 'Feature Implementation Timeline',
+    'viz.timeline.subtitle': 'Major milestones in CocoPilot\'s AI-driven development',
+    'viz.tech.title': 'Technology Stack',
+    'viz.tech.subtitle': 'Modern web technologies powering CocoPilot',
+    'viz.legend.features': 'Features Added',
+    'viz.legend.maturity': 'Platform Maturity'
   },
   
   es: {
@@ -173,7 +188,17 @@ const TRANSLATIONS = {
     'version.1.2.0.title': 'Rendimiento y Análisis',
     'version.1.2.0.description': 'Monitoreo de rendimiento y características de análisis añadidas',
     'version.2.0.0.title': 'Infraestructura de Pruebas',
-    'version.2.0.0.description': 'Marco de pruebas integral y aseguramiento de calidad'
+    'version.2.0.0.description': 'Marco de pruebas integral y aseguramiento de calidad',
+    
+    // Data Visualization
+    'viz.growth.title': 'Crecimiento del Repositorio',
+    'viz.growth.subtitle': 'Seguimiento de la evolución de características y mejoras a lo largo del tiempo',
+    'viz.timeline.title': 'Cronología de Implementación de Características',
+    'viz.timeline.subtitle': 'Hitos principales en el desarrollo de CocoPilot impulsado por IA',
+    'viz.tech.title': 'Stack Tecnológico',
+    'viz.tech.subtitle': 'Tecnologías web modernas que impulsan CocoPilot',
+    'viz.legend.features': 'Características Añadidas',
+    'viz.legend.maturity': 'Madurez de la Plataforma'
   },
   
   fr: {
@@ -249,7 +274,103 @@ const TRANSLATIONS = {
     'version.1.2.0.title': 'Performance et Analytique',
     'version.1.2.0.description': 'Surveillance des performances et fonctionnalités analytiques ajoutées',
     'version.2.0.0.title': 'Infrastructure de Tests',
-    'version.2.0.0.description': 'Cadre de tests complet et assurance qualité'
+    'version.2.0.0.description': 'Cadre de tests complet et assurance qualité',
+    
+    // Data Visualization
+    'viz.growth.title': 'Croissance du Dépôt',
+    'viz.growth.subtitle': 'Suivre l\'évolution des fonctionnalités et améliorations au fil du temps',
+    'viz.timeline.title': 'Chronologie d\'Implémentation des Fonctionnalités',
+    'viz.timeline.subtitle': 'Étapes majeures du développement de CocoPilot piloté par l\'IA',
+    'viz.tech.title': 'Stack Technologique',
+    'viz.tech.subtitle': 'Technologies web modernes alimentant CocoPilot',
+    'viz.legend.features': 'Fonctionnalités Ajoutées',
+    'viz.legend.maturity': 'Maturité de la Plateforme'
+  },
+  
+  de: {
+    // Main content
+    'site.title': 'CocoPilot - Selbstaktualisierendes Repository',
+    'site.subtitle': 'Ein Selbstaktualisierendes Repository',
+    'site.description': 'Dieses Repository entwickelt sich autonom durch KI-gesteuerte tägliche Verbesserungen. Jeden Tag analysiert GitHub Copilot die Codebasis und schlägt Verbesserungen vor, um dieses Projekt besser, nützlicher und interessanter zu machen.',
+    'status.active': 'Aktiv & Selbstverbessernd',
+    
+    // About section
+    'about.title': 'Über Dieses Experiment',
+    'about.description': 'CocoPilot stellt ein faszinierendes Experiment zur autonomen Software-Evolution dar. Dieses Repository nutzt KI, um sich kontinuierlich zu verbessern durch:',
+    'about.feature1': 'Tägliche automatisierte Analyse durch GitHub Copilot',
+    'about.feature2': 'Selbstgenerierte Verbesserungsvorschläge und -implementierungen',
+    'about.feature3': 'Kontinuierliches Lernen aus Benutzerinteraktionen und Feedback',
+    'about.feature4': 'Transparenter Entwicklungsprozess durch öffentliche Issues und PRs',
+    'about.conclusion': 'Jeder Tag bringt neue Verbesserungen und schafft ein lebendiges Beispiel für KI-unterstützte Entwicklung in Aktion.',
+    
+    // Features section
+    'features.title': 'Hauptfunktionen',
+    'features.updates.title': 'Auto-Updates',
+    'features.updates.description': 'Tägliche KI-gesteuerte Verbesserungen',
+    'features.actions.title': 'GitHub Actions',
+    'features.actions.description': 'Automatisierte Workflow-Verwaltung',
+    'features.goals.title': 'Fokussierte Ziele',
+    'features.goals.description': 'Schrittweise, durchdachte Änderungen',
+    
+    // Timeline section
+    'timeline.title': 'Entwicklungs-Zeitstrahl',
+    'timeline.description': 'Erkunden Sie, wie CocoPilot durch KI-gesteuerte Verbesserungen entwickelt hat',
+    'timeline.previous': '← Vorherige',
+    'timeline.next': 'Nächste →',
+    'timeline.features': 'Hauptfunktionen:',
+    
+    // Navigation and actions
+    'nav.github': 'Auf GitHub anzeigen',
+    'nav.issues': 'Tägliche Issues anzeigen',
+    'nav.github.desc': 'Den vollständigen Quellcode und die Entwicklungsgeschichte anzeigen',
+    'nav.issues.desc': 'Tägliche Verbesserungs-Issues und Diskussionen durchsuchen',
+    
+    // Social sharing
+    'share.title': 'CocoPilot Teilen',
+    'share.twitter': 'Auf Twitter teilen',
+    'share.linkedin': 'Auf LinkedIn teilen',
+    'share.copy': 'URL kopieren',
+    'share.twitter.text': 'Schauen Sie sich CocoPilot an - ein selbstaktualisierendes Repository, das sich durch KI entwickelt! 🤖✨',
+    
+    // Footer
+    'footer.powered': 'Angetrieben von GitHub Copilot',
+    'footer.updated': 'Zuletzt aktualisiert:',
+    'footer.docs': 'Dokumentation',
+    'footer.dev': 'Entwicklungsleitfaden',
+    'footer.changelog': 'Änderungsprotokoll',
+    'footer.plans': 'Zukunftspläne',
+    
+    // Accessibility and UI
+    'theme.toggle': 'Zwischen hellem und dunklem Theme wechseln',
+    'language.select': 'Sprache auswählen',
+    'stats.loading': 'Wird geladen...',
+    'stats.stars': 'Anzahl der Sterne',
+    'stats.forks': 'Anzahl der Forks',
+    'stats.issues': 'Anzahl offener Issues',
+    'stats.updates': 'Update-Häufigkeit',
+    'stats.daily': 'Täglich',
+    'stats.unavailable': 'Repository-Statistiken nicht verfügbar (offline oder Netzwerkbeschränkungen)',
+    'stats.loaded': 'Repository-Statistiken erfolgreich geladen',
+    
+    // Timeline versions
+    'version.1.0.0.title': 'Erste Version',
+    'version.1.0.0.description': 'Grundlegende Repository-Struktur mit selbstaktualisierendem Workflow',
+    'version.1.1.0.title': 'Verbesserte UI & PWA-Funktionen',
+    'version.1.1.0.description': 'Verbesserte Benutzeroberfläche und Progressive Web App-Funktionen',
+    'version.1.2.0.title': 'Leistung & Analytik',
+    'version.1.2.0.description': 'Leistungsüberwachung und Analytics-Funktionen hinzugefügt',
+    'version.2.0.0.title': 'Test-Infrastruktur',
+    'version.2.0.0.description': 'Umfassendes Test-Framework und Qualitätssicherung',
+    
+    // Data Visualization
+    'viz.growth.title': 'Repository-Wachstum',
+    'viz.growth.subtitle': 'Verfolgen Sie die Entwicklung von Funktionen und Verbesserungen im Laufe der Zeit',
+    'viz.timeline.title': 'Feature-Implementierungs-Zeitstrahl',
+    'viz.timeline.subtitle': 'Wichtige Meilensteine in CocoPilots KI-gesteuterter Entwicklung',
+    'viz.tech.title': 'Technologie-Stack',
+    'viz.tech.subtitle': 'Moderne Webtechnologien, die CocoPilot antreiben',
+    'viz.legend.features': 'Hinzugefügte Funktionen',
+    'viz.legend.maturity': 'Plattform-Reife'
   }
 };
 
