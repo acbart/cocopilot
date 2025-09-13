@@ -1,0 +1,16 @@
+{
+  "name": "CoCopilot - Self-Updating Repository",
+  "short_name": "CoCopilot",
+  "description": "A fascinating experiment in autonomous software evolution powered by GitHub Copilot",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#667eea",
+  "theme_color": "#667eea",
+  "icons": [
+    {
+      "src": "favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}

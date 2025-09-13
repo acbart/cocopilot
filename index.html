@@ -1,7 +1,233 @@
 <!doctype html>
-<html lang="en"><meta charset="utf-8">
-<title>Self-updating site</title>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CoCopilot - Self-Updating Repository</title>
+    <meta name="description" content="A fascinating experiment in autonomous software evolution powered by GitHub Copilot">
+    <meta name="keywords" content="AI, GitHub Copilot, autonomous development, self-updating, repository, automation">
+    <meta name="author" content="CoCopilot AI">
+    <meta property="og:title" content="CoCopilot - Self-Updating Repository">
+    <meta property="og:description" content="Watch AI autonomously improve this repository through daily Copilot-driven updates">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="CoCopilot - Self-Updating Repository">
+    <meta name="twitter:description" content="A fascinating experiment in autonomous software evolution">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="alternate icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><text y='48' font-size='48'>🤖</text></svg>">
+    <link rel="manifest" href="manifest.json">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #333;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            padding: 3rem;
+            max-width: 800px;
+            margin: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4, #feca57);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: #2c3e50;
+        }
+
+        .emoji {
+            font-size: 3rem;
+            animation: wave 2s ease-in-out infinite;
+        }
+
+        @keyframes wave {
+            0%, 50%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(20deg); }
+            75% { transform: rotate(-20deg); }
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: #7f8c8d;
+            margin-bottom: 2rem;
+        }
+
+        .description {
+            font-size: 1.1rem;
+            line-height: 1.7;
+            margin-bottom: 2rem;
+            color: #2c3e50;
+        }
+
+        .features {
+            display: grid;
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .feature {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 12px;
+            border-left: 4px solid #667eea;
+        }
+
+        .feature h3 {
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+            font-size: 1.2rem;
+        }
+
+        .feature p {
+            color: #5a6c7d;
+        }
+
+        .status {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: #e8f5e8;
+            color: #2d7738;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: 500;
+            margin: 1rem 0;
+        }
+
+        .pulse {
+            width: 8px;
+            height: 8px;
+            background: #2d7738;
+            border-radius: 50%;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid #e9ecef;
+            color: #6c757d;
+        }
+
+        .github-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .github-link:hover {
+            color: #764ba2;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                margin: 1rem;
+                padding: 2rem;
+            }
+            
+            .title {
+                font-size: 2rem;
+            }
+            
+            .emoji {
+                font-size: 2.5rem;
+            }
+        }
+    </style>
+</head>
 <body>
-<h1>👋 Hello from a self-updating repo</h1>
-<p>This site proposes changes via a daily Copilot-assigned issue.</p>
-</body></html>
+    <div class="container">
+        <div class="header">
+            <div class="emoji">🤖</div>
+            <h1 class="title">CoCopilot</h1>
+            <p class="subtitle">A Self-Evolving Repository</p>
+        </div>
+
+        <div class="status">
+            <div class="pulse"></div>
+            Actively Self-Updating
+        </div>
+
+        <div class="description">
+            <p>Welcome to an extraordinary experiment in autonomous software evolution! This repository leverages GitHub Copilot's coding capabilities to continuously improve and update itself through daily automated issues and pull requests.</p>
+        </div>
+
+        <div class="features">
+            <div class="feature">
+                <h3>🔄 Autonomous Evolution</h3>
+                <p>Every day, GitHub Actions creates a new issue assigned to Copilot, requesting improvements to the repository. Copilot analyzes the current state and implements enhancements.</p>
+            </div>
+            
+            <div class="feature">
+                <h3>🎯 AI-Driven Development</h3>
+                <p>Each update is crafted by AI intelligence, resulting in creative and often unexpected improvements to code, documentation, and user experience.</p>
+            </div>
+            
+            <div class="feature">
+                <h3>🚀 Continuous Innovation</h3>
+                <p>This repository serves as a living example of what's possible when AI development tools are given creative freedom to enhance projects autonomously.</p>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>Powered by <a href="https://github.com/features/copilot" class="github-link">GitHub Copilot</a></p>
+            <p><small>Last updated: <span id="timestamp">Loading...</span></small></p>
+        </div>
+    </div>
+
+    <script>
+        // Display current timestamp
+        document.getElementById('timestamp').textContent = new Date().toLocaleString();
+        
+        // Add some interactivity
+        document.querySelector('.emoji').addEventListener('click', function() {
+            this.style.transform = 'scale(1.2)';
+            setTimeout(() => {
+                this.style.transform = 'scale(1)';
+            }, 200);
+        });
+    </script>
+</body>
+</html>
