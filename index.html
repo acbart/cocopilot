@@ -997,6 +997,179 @@
             border-radius: 20px;
             border: 1px solid var(--border-color);
         }
+
+        /* Quick Guide Section */
+        .quick-guide-section {
+            margin: 3rem 0;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.05), rgba(118, 75, 162, 0.05));
+            border-radius: 20px;
+            border: 1px solid var(--border-color);
+            padding: 2rem;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .quick-guide-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--button-gradient-start), var(--button-gradient-end));
+        }
+
+        .guide-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .guide-header h3 {
+            color: var(--text-primary);
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .guide-header p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        .guide-steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .guide-step {
+            background: var(--container-bg);
+            border-radius: 15px;
+            padding: 1.5rem;
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .guide-step:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.15);
+            border-color: var(--button-gradient-start);
+        }
+
+        .guide-step::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(180deg, var(--button-gradient-start), var(--button-gradient-end));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .guide-step:hover::before {
+            opacity: 1;
+        }
+
+        .step-number {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--button-gradient-start), var(--button-gradient-end));
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 1.1rem;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .step-content h4 {
+            color: var(--text-primary);
+            margin-bottom: 0.8rem;
+            font-size: 1.2rem;
+            padding-right: 2rem;
+        }
+
+        .step-content p {
+            color: var(--text-description);
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .step-content kbd {
+            background: var(--feature-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            padding: 2px 6px;
+            font-family: 'Monaco', 'Menlo', 'Consolas', monospace;
+            font-size: 0.85rem;
+            color: var(--text-primary);
+        }
+
+        .try-it-btn {
+            background: linear-gradient(135deg, var(--button-gradient-start), var(--button-gradient-end));
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 8px 16px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-weight: 500;
+        }
+
+        .try-it-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+
+        .try-it-btn:active {
+            transform: translateY(0);
+        }
+
+        @media (max-width: 768px) {
+            .quick-guide-section {
+                margin: 2rem 0;
+                padding: 1.5rem;
+            }
+
+            .guide-steps {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .guide-step {
+                padding: 1.25rem;
+            }
+
+            .step-number {
+                width: 35px;
+                height: 35px;
+                font-size: 1rem;
+            }
+
+            .step-content h4 {
+                font-size: 1.1rem;
+                padding-right: 3rem;
+            }
+
+            .guide-header h3 {
+                font-size: 1.5rem;
+            }
+
+            .guide-header p {
+                font-size: 1rem;
+            }
+        }
     </style>
 </head>
 <body>
@@ -1050,6 +1223,48 @@
                 </ul>
 
                 <span data-i18n="about.conclusion">Each day brings new enhancements, creating a living example of AI-assisted development in action.</span>
+            </div>
+        </div>
+
+        <!-- Quick Start Guide Section -->
+        <div class="quick-guide-section">
+            <div class="guide-header">
+                <h3>🚀 Quick Start Guide</h3>
+                <p>Get the most out of CocoPilot with these essential features</p>
+            </div>
+            <div class="guide-steps">
+                <div class="guide-step" data-step="1">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h4>🔍 Search Everything</h4>
+                        <p>Press <kbd>Ctrl+K</kbd> or click the search icon to find features, documentation, and shortcuts instantly.</p>
+                        <button type="button" class="try-it-btn" onclick="advancedSearch?.openSearch()">Try it now</button>
+                    </div>
+                </div>
+                <div class="guide-step" data-step="2">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h4>🌙 Customize Your Experience</h4>
+                        <p>Toggle between light and dark themes with <kbd>T</kbd> key or the theme button.</p>
+                        <button type="button" class="try-it-btn" onclick="toggleTheme()">Toggle theme</button>
+                    </div>
+                </div>
+                <div class="guide-step" data-step="3">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h4>📱 Mobile Features</h4>
+                        <p>On mobile: Pull down to refresh, double-tap to toggle theme, or use the floating toolbar.</p>
+                        <button type="button" class="try-it-btn mobile-only" onclick="mobileExperienceEnhancer?.showQuickMenu()">Show quick menu</button>
+                    </div>
+                </div>
+                <div class="guide-step" data-step="4">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <h4>🎓 Take the Tour</h4>
+                        <p>New here? Take the interactive tour to discover all features and capabilities.</p>
+                        <button type="button" class="try-it-btn" onclick="window.onboardingTour?.restartTour()">Start tour</button>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -1878,10 +2093,16 @@
     <!-- Advanced Performance Monitoring -->
     <script src="js/performance-monitor.js"></script>
     <!-- Enhanced Error Handling System -->
+    <script src="js/enhanced-error-handler.js"></script>
+    <!-- Enhanced Error Handling System -->
     <script src="js/error-handler.js"></script>
     <!-- Performance Optimizer -->
     <script src="js/performance-optimizer.js"></script>
     <!-- Mobile Experience Enhancer -->
     <script src="js/mobile-experience.js"></script>
+    <!-- Advanced Search Functionality -->
+    <script src="js/advanced-search.js"></script>
+    <!-- Enhanced Mobile Experience -->
+    <script src="js/enhanced-mobile.js"></script>
 </body>
 </html>
