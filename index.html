@@ -41,6 +41,13 @@
 
     <!-- Resource Preloads -->
     <link rel="preload" href="favicon.svg" as="image" type="image/svg+xml">
+    <link rel="preload" href="js/i18n.js" as="script">
+    <link rel="preload" href="js/enhanced-error-handler.js" as="script">
+    <link rel="preload" href="js/performance-monitor.js" as="script">
+    
+    <!-- DNS Prefetch for external resources -->
+    <link rel="dns-prefetch" href="//api.github.com">
+    <link rel="dns-prefetch" href="//www.googletagmanager.com">
     
     <!-- RSS Feed Discovery -->
     <link rel="alternate" type="application/rss+xml" title="CocoPilot Updates" href="feed.xml">
@@ -120,10 +127,33 @@
 
         /* Enhanced focus indicators */
         a:focus,
-        button:focus {
-            outline: 2px solid var(--button-gradient-start);
+        button:focus,
+        input:focus,
+        select:focus,
+        textarea:focus,
+        [tabindex]:focus {
+            outline: 3px solid var(--button-gradient-start);
             outline-offset: 2px;
-            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.3);
+            box-shadow: 0 0 0 5px rgba(102, 126, 234, 0.3);
+            transition: outline 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        /* Skip link for screen readers */
+        .skip-link {
+            position: absolute;
+            top: -40px;
+            left: 6px;
+            background: var(--button-gradient-start);
+            color: white;
+            padding: 8px;
+            text-decoration: none;
+            border-radius: 4px;
+            z-index: 9999;
+            transition: top 0.3s ease;
+        }
+
+        .skip-link:focus {
+            top: 6px;
         }
 
         /* High contrast mode support */
@@ -186,6 +216,12 @@
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
             text-rendering: optimizeLegibility;
+        }
+
+        /* Smooth theme transitions */
+        .theme-transitioning,
+        .theme-transitioning * {
+            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease !important;
         }
 
         .background-animation {
@@ -1173,8 +1209,9 @@
     </style>
 </head>
 <body>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
     <div class="background-animation" id="backgroundAnimation"></div>
-    <main class="container">
+    <main class="container" id="main-content">
         <button type="button" class="theme-toggle" onclick="toggleTheme()" title="Toggle theme" aria-label="Toggle between light and dark theme" data-i18n-title="theme.toggle" data-i18n-aria="theme.toggle">🌙</button>
         
         <!-- Help/Tour Button -->
@@ -1254,7 +1291,7 @@
                     <div class="step-content">
                         <h4>📱 Mobile Features</h4>
                         <p>On mobile: Pull down to refresh, double-tap to toggle theme, or use the floating toolbar.</p>
-                        <button type="button" class="try-it-btn mobile-only" onclick="mobileExperienceEnhancer?.showQuickMenu()">Show quick menu</button>
+                        <button type="button" class="try-it-btn mobile-only" onclick="enhancedMobileExperience?.showQuickMenu()">Show quick menu</button>
                     </div>
                 </div>
                 <div class="guide-step" data-step="4">
@@ -1398,37 +1435,98 @@
             window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${url}`, '_blank');
         }
 
-        function copyLink() {
-            navigator.clipboard.writeText(window.location.href).then(() => {
-                const btn = event.target.closest('.share-btn');
-                const originalText = btn.innerHTML;
-                btn.innerHTML = '<span>✅</span><span>Copied!</span>';
+        function copyLink(event) {
+            const btn = event.target.closest('.share-btn');
+            const originalText = btn.innerHTML;
+            
+            // Add visual feedback
+            btn.style.transform = 'scale(0.95)';
+            btn.style.transition = 'transform 0.1s ease';
+            
+            setTimeout(() => {
+                btn.style.transform = 'scale(1)';
+            }, 100);
+            
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(window.location.href).then(() => {
+                    btn.innerHTML = '<span aria-hidden="true">✅</span><span>Copied!</span>';
+                    btn.setAttribute('aria-label', 'URL copied to clipboard successfully');
+                    
+                    // Add subtle success animation
+                    btn.style.background = 'linear-gradient(135deg, #28a745, #20c997)';
+                    
+                    setTimeout(() => {
+                        btn.innerHTML = originalText;
+                        btn.style.background = '';
+                        btn.removeAttribute('aria-label');
+                    }, 2000);
+                }).catch(err => {
+                    console.error('Failed to copy: ', err);
+                    // Fallback for copy failure
+                    btn.innerHTML = '<span aria-hidden="true">❌</span><span>Copy failed</span>';
+                    setTimeout(() => {
+                        btn.innerHTML = originalText;
+                    }, 2000);
+                });
+            } else {
+                // Fallback for older browsers
+                const textArea = document.createElement('textarea');
+                textArea.value = window.location.href;
+                textArea.style.position = 'fixed';
+                textArea.style.left = '-999999px';
+                textArea.style.top = '-999999px';
+                document.body.appendChild(textArea);
+                textArea.focus();
+                textArea.select();
+                
+                try {
+                    const successful = document.execCommand('copy');
+                    if (successful) {
+                        btn.innerHTML = '<span aria-hidden="true">✅</span><span>Copied!</span>';
+                    } else {
+                        btn.innerHTML = '<span aria-hidden="true">❌</span><span>Copy failed</span>';
+                    }
+                } catch (err) {
+                    btn.innerHTML = '<span aria-hidden="true">❌</span><span>Copy failed</span>';
+                }
+                
+                document.body.removeChild(textArea);
+                
                 setTimeout(() => {
                     btn.innerHTML = originalText;
                 }, 2000);
-            }).catch(err => {
-                console.error('Failed to copy: ', err);
-            });
+            }
         }
 
-        // Enhanced RSS Feed functions
+        // Enhanced RSS Feed functions with better UX
         async function handleRSSFeed() {
             const btn = event.target.closest('button');
             const originalContent = btn.innerHTML;
             
             try {
-                // Show loading state with better UX
-                btn.innerHTML = '<span aria-hidden="true">⏳</span> <span data-i18n="rss.generating">Generating...</span>';
+                // Show loading state with improved accessibility
+                btn.innerHTML = '<span aria-hidden="true">⏳</span> <span>Generating...</span>';
                 btn.disabled = true;
                 btn.setAttribute('aria-busy', 'true');
+                btn.setAttribute('aria-describedby', 'rss-loading-desc');
+                
+                // Add loading description for screen readers
+                let loadingDesc = document.getElementById('rss-loading-desc');
+                if (!loadingDesc) {
+                    loadingDesc = document.createElement('div');
+                    loadingDesc.id = 'rss-loading-desc';
+                    loadingDesc.className = 'sr-only';
+                    document.body.appendChild(loadingDesc);
+                }
+                loadingDesc.textContent = 'Generating RSS feed options, please wait...';
                 
                 // Create enhanced RSS feed builder
-                const rssBuilder = new RSSFeedBuilder('acbart', 'cocopilot');
+                const rssBuilder = window.RSSFeedBuilder ? new RSSFeedBuilder('acbart', 'cocopilot') : null;
                 
                 // Show enhanced options to user
                 const action = await showEnhancedRSSOptions();
                 
-                if (action === 'download') {
+                if (action === 'download' && rssBuilder) {
                     const result = await rssBuilder.createRSSFile();
                     if (result.success) {
                         // Download the file
@@ -1441,11 +1539,15 @@
                         document.body.removeChild(link);
                         URL.revokeObjectURL(result.url);
                         
-                        btn.innerHTML = '<span aria-hidden="true">✅</span> <span data-i18n="rss.downloaded">Downloaded!</span>';
+                        btn.innerHTML = '<span aria-hidden="true">✅</span> <span>Downloaded!</span>';
+                        btn.style.background = 'linear-gradient(135deg, #28a745, #20c997)';
+                        
                         setTimeout(() => {
                             btn.innerHTML = originalContent;
+                            btn.style.background = '';
                             btn.disabled = false;
                             btn.removeAttribute('aria-busy');
+                            btn.removeAttribute('aria-describedby');
                         }, 2500);
                     } else {
                         throw new Error(result.error || 'Download failed');
@@ -1454,43 +1556,60 @@
                     // Open GitHub releases feed as primary option
                     const feedUrl = `https://github.com/acbart/cocopilot/releases.atom`;
                     window.open(feedUrl, '_blank');
-                    btn.innerHTML = '<span aria-hidden="true">📡</span> <span data-i18n="rss.opened">Feed Opened!</span>';
+                    btn.innerHTML = '<span aria-hidden="true">📡</span> <span>Feed Opened!</span>';
+                    btn.style.background = 'linear-gradient(135deg, #667eea, #764ba2)';
+                    
                     setTimeout(() => {
                         btn.innerHTML = originalContent;
+                        btn.style.background = '';
                         btn.disabled = false;
                         btn.removeAttribute('aria-busy');
+                        btn.removeAttribute('aria-describedby');
                     }, 2000);
-                } else if (action === 'copy') {
+                } else if (action === 'copy' && rssBuilder) {
                     // Copy RSS content to clipboard
                     const rssContent = await rssBuilder.generateRSSFeed();
                     try {
                         await navigator.clipboard.writeText(rssContent);
-                        btn.innerHTML = '<span aria-hidden="true">📋</span> <span data-i18n="rss.copied">Copied to Clipboard!</span>';
+                        btn.innerHTML = '<span aria-hidden="true">📋</span> <span>Copied to Clipboard!</span>';
                     } catch (clipboardError) {
                         // Fallback for clipboard API
                         const textarea = document.createElement('textarea');
                         textarea.value = rssContent;
+                        textarea.style.position = 'fixed';
+                        textarea.style.left = '-999999px';
                         document.body.appendChild(textarea);
                         textarea.select();
                         document.execCommand('copy');
                         document.body.removeChild(textarea);
-                        btn.innerHTML = '<span aria-hidden="true">📋</span> <span data-i18n="rss.copied">Copied to Clipboard!</span>';
+                        btn.innerHTML = '<span aria-hidden="true">📋</span> <span>Copied to Clipboard!</span>';
                     }
+                    btn.style.background = 'linear-gradient(135deg, #ff6b35, #f7931e)';
+                    
                     setTimeout(() => {
                         btn.innerHTML = originalContent;
+                        btn.style.background = '';
                         btn.disabled = false;
                         btn.removeAttribute('aria-busy');
+                        btn.removeAttribute('aria-describedby');
                     }, 2500);
                 } else {
                     // User cancelled
                     btn.innerHTML = originalContent;
                     btn.disabled = false;
                     btn.removeAttribute('aria-busy');
+                    btn.removeAttribute('aria-describedby');
+                }
+                
+                // Clean up loading description
+                if (loadingDesc) {
+                    loadingDesc.remove();
                 }
                 
             } catch (error) {
                 console.error('RSS feed error:', error);
-                btn.innerHTML = '<span aria-hidden="true">❌</span> <span data-i18n="rss.error">Error</span>';
+                btn.innerHTML = '<span aria-hidden="true">❌</span> <span>Error</span>';
+                btn.style.background = 'linear-gradient(135deg, #dc3545, #e74c3c)';
                 btn.setAttribute('aria-describedby', 'rss-error-desc');
                 
                 // Show user-friendly error message
@@ -1498,10 +1617,17 @@
                 
                 setTimeout(() => {
                     btn.innerHTML = originalContent;
+                    btn.style.background = '';
                     btn.disabled = false;
                     btn.removeAttribute('aria-busy');
                     btn.removeAttribute('aria-describedby');
                 }, 4000);
+                
+                // Clean up loading description
+                const loadingDesc = document.getElementById('rss-loading-desc');
+                if (loadingDesc) {
+                    loadingDesc.remove();
+                }
             }
         }
 
@@ -1746,21 +1872,36 @@
             }, 5000);
         }
 
-        // Theme management
+        // Theme management with improved animations
         function toggleTheme() {
             const body = document.body;
             const themeToggle = document.querySelector('.theme-toggle');
             const currentTheme = body.getAttribute('data-theme');
 
+            // Add transition class for smooth animation
+            body.classList.add('theme-transitioning');
+
             if (currentTheme === 'dark') {
                 body.removeAttribute('data-theme');
                 themeToggle.textContent = '🌙';
+                themeToggle.setAttribute('title', 'Switch to dark theme');
                 localStorage.setItem('theme', 'light');
             } else {
                 body.setAttribute('data-theme', 'dark');
                 themeToggle.textContent = '☀️';
+                themeToggle.setAttribute('title', 'Switch to light theme');
                 localStorage.setItem('theme', 'dark');
             }
+
+            // Remove transition class after animation completes
+            setTimeout(() => {
+                body.classList.remove('theme-transitioning');
+            }, 300);
+
+            // Dispatch custom event for other modules
+            window.dispatchEvent(new CustomEvent('themeChanged', {
+                detail: { theme: currentTheme === 'dark' ? 'light' : 'dark' }
+            }));
         }
 
         // Initialize theme from localStorage
@@ -1774,10 +1915,26 @@
             }
         }
 
-        // Fetch GitHub repository statistics
+        // Fetch GitHub repository statistics with improved error handling
         async function fetchRepoStats() {
+            const statsElement = document.getElementById('repoStats');
+            const statsButtons = ['stars', 'forks', 'issues'];
+            
             try {
-                const response = await fetch('https://api.github.com/repos/acbart/cocopilot');
+                // Add loading state
+                statsButtons.forEach(stat => {
+                    const element = document.getElementById(stat);
+                    if (element) {
+                        element.textContent = '⏳';
+                        element.setAttribute('aria-label', `Loading ${stat} count`);
+                    }
+                });
+
+                const response = await fetch('https://api.github.com/repos/acbart/cocopilot', {
+                    headers: {
+                        'Accept': 'application/vnd.github.v3+json'
+                    }
+                });
 
                 if (!response.ok) {
                     throw new Error(`HTTP ${response.status}: ${response.statusText}`);
@@ -1785,43 +1942,51 @@
 
                 const data = await response.json();
 
+                // Update with fetched data
                 document.getElementById('stars').textContent = data.stargazers_count || '0';
                 document.getElementById('forks').textContent = data.forks_count || '0';
                 document.getElementById('issues').textContent = data.open_issues_count || '0';
 
+                // Update aria labels
+                document.getElementById('stars').setAttribute('aria-label', `${data.stargazers_count || 0} stars`);
+                document.getElementById('forks').setAttribute('aria-label', `${data.forks_count || 0} forks`);
+                document.getElementById('issues').setAttribute('aria-label', `${data.open_issues_count || 0} open issues`);
+
                 // Add success indicator
-                const statsElement = document.getElementById('repoStats');
                 statsElement.setAttribute('aria-label', 'Repository statistics loaded successfully');
 
             } catch (error) {
-                // Suppress error reporting for common network restrictions
-                if (!error.message.includes('ERR_BLOCKED_BY_CLIENT') && 
-                    !error.message.includes('Failed to fetch')) {
-                    console.warn('Could not fetch repository stats:', error);
+                // Enhanced error handling
+                console.warn('Could not fetch repository stats:', error);
+
+                // Provide meaningful fallback based on error type
+                let fallbackValues = { stars: '∞', forks: '∞', issues: '∞' };
+                let ariaMessage = 'Repository statistics unavailable';
+
+                if (error.name === 'TypeError' || error.message.includes('Failed to fetch')) {
+                    fallbackValues = { stars: '🔒', forks: '🔒', issues: '🔒' };
+                    ariaMessage = 'Repository statistics unavailable (network restricted)';
+                } else if (error.message.includes('403')) {
+                    fallbackValues = { stars: '🚫', forks: '🚫', issues: '🚫' };
+                    ariaMessage = 'Repository statistics unavailable (rate limited)';
                 }
 
-                // Graceful fallback with helpful error messaging
-                const fallbackValues = {
-                    stars: error.message.includes('ERR_BLOCKED_BY_CLIENT') ? '🔒' : '∞',
-                    forks: error.message.includes('ERR_BLOCKED_BY_CLIENT') ? '🔒' : '∞',
-                    issues: error.message.includes('ERR_BLOCKED_BY_CLIENT') ? '🔒' : '∞'
-                };
-
+                // Update UI with fallback values
                 document.getElementById('stars').textContent = fallbackValues.stars;
                 document.getElementById('forks').textContent = fallbackValues.forks;
                 document.getElementById('issues').textContent = fallbackValues.issues;
 
-                // Update ARIA label for accessibility
-                const statsElement = document.getElementById('repoStats');
-                statsElement.setAttribute('aria-label', 'Repository statistics unavailable (offline or network restrictions)');
+                // Update accessibility
+                statsElement.setAttribute('aria-label', ariaMessage);
 
-                // Only retry for transient failures, not for blocked requests
+                // Add retry mechanism for transient failures only
                 if (!error.message.includes('ERR_BLOCKED_BY_CLIENT') && 
-                    !error.message.includes('Failed to fetch')) {
+                    !error.message.includes('Failed to fetch') &&
+                    !error.message.includes('403')) {
+                    console.log('Scheduling retry for repository stats...');
                     setTimeout(() => {
-                        console.log('Retrying repository stats fetch...');
                         fetchRepoStats();
-                    }, 10000); // Retry after 10 seconds
+                    }, 15000); // Retry after 15 seconds
                 }
             }
         }
@@ -2072,37 +2237,25 @@
         });
     </script>
 
-    <!-- Internationalization (i18n) JavaScript -->
+    <!-- Core JavaScript Modules (Critical) -->
     <script src="js/i18n.js"></script>
-
-    <!-- Data Visualization JavaScript -->
-    <script src="js/data-viz.js"></script>
-
-    <!-- GitHub Activity Visualization JavaScript -->
-    <script src="js/github-activity.js"></script>
-
-    <!-- Evolution Timeline JavaScript -->
-    <script src="js/timeline.js"></script>
-
-    <!-- RSS Feed Generator JavaScript -->
-    <script src="js/rss-generator.js"></script>
-    <!-- Enhanced RSS Feed Builder JavaScript -->
-    <script src="js/rss-feed-builder.js"></script>
-    <!-- Interactive Onboarding System -->
-    <script src="js/onboarding.js"></script>
-    <!-- Advanced Performance Monitoring -->
-    <script src="js/performance-monitor.js"></script>
-    <!-- Enhanced Error Handling System -->
     <script src="js/enhanced-error-handler.js"></script>
-    <!-- Enhanced Error Handling System -->
-    <script src="js/error-handler.js"></script>
-    <!-- Performance Optimizer -->
-    <script src="js/performance-optimizer.js"></script>
-    <!-- Mobile Experience Enhancer -->
-    <script src="js/mobile-experience.js"></script>
-    <!-- Advanced Search Functionality -->
-    <script src="js/advanced-search.js"></script>
-    <!-- Enhanced Mobile Experience -->
-    <script src="js/enhanced-mobile.js"></script>
+    <script src="js/performance-monitor.js"></script>
+
+    <!-- UI and Interaction Modules (Deferred) -->
+    <script src="js/advanced-search.js" defer></script>
+    <script src="js/onboarding.js" defer></script>
+    <script src="js/mobile-experience.js" defer></script>
+    <script src="js/enhanced-mobile.js" defer></script>
+
+    <!-- Data and Visualization Modules (Async) -->
+    <script src="js/data-viz.js" async></script>
+    <script src="js/github-activity.js" async></script>
+    <script src="js/timeline.js" async></script>
+
+    <!-- Utility Modules (Async) -->
+    <script src="js/rss-generator.js" async></script>
+    <script src="js/rss-feed-builder.js" async></script>
+    <script src="js/performance-optimizer.js" async></script>
 </body>
 </html>
