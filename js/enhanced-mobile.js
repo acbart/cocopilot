@@ -3,7 +3,7 @@
  * Provides advanced touch interactions and mobile-specific optimizations
  */
 
-class MobileExperienceEnhancer {
+class EnhancedMobileExperience {
     constructor() {
         this.isMobile = this.detectMobile();
         this.touchStartY = 0;
@@ -725,14 +725,36 @@ class MobileExperienceEnhancer {
         if (navigator.share) {
             navigator.share({
                 title: 'CocoPilot - Self-Updating Repository',
-                text: 'Check out this AI-powered repository that evolves daily!',
+                text: 'Check out this AI-powered repository that evolves daily through GitHub Copilot!',
                 url: window.location.href
-            }).catch(console.error);
+            }).then(() => {
+                this.showMobileToast('Shared successfully!');
+            }).catch(err => {
+                if (err.name !== 'AbortError') {
+                    console.log('Share failed:', err);
+                    this.fallbackShare();
+                }
+            });
         } else {
-            // Fallback to copy URL
+            this.fallbackShare();
+        }
+    }
+
+    fallbackShare() {
+        // Fallback to copy URL
+        if (navigator.clipboard) {
             navigator.clipboard.writeText(window.location.href).then(() => {
                 this.showMobileToast('URL copied to clipboard');
             });
+        } else {
+            // Fallback for older browsers
+            const textArea = document.createElement('textarea');
+            textArea.value = window.location.href;
+            document.body.appendChild(textArea);
+            textArea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textArea);
+            this.showMobileToast('URL copied to clipboard');
         }
     }
 
@@ -851,10 +873,10 @@ class MobileExperienceEnhancer {
 // Initialize mobile experience enhancer
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', () => {
-        window.mobileExperienceEnhancer = new MobileExperienceEnhancer();
+        window.enhancedMobileExperience = new EnhancedMobileExperience();
     });
 } else {
-    window.mobileExperienceEnhancer = new MobileExperienceEnhancer();
+    window.enhancedMobileExperience = new EnhancedMobileExperience();
 }
 
 // Add mobile-specific CSS animations
