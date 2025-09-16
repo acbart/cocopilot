@@ -149,7 +149,37 @@ const TRANSLATIONS = {
     'viz.tech.title': 'Technology Stack',
     'viz.tech.subtitle': 'Modern web technologies powering CocoPilot',
     'viz.legend.features': 'Features Added',
-    'viz.legend.maturity': 'Platform Maturity'
+    'viz.legend.maturity': 'Platform Maturity',
+
+    // Analytics Dashboard
+    'dashboard.title': 'AI Evolution Analytics',
+    'dashboard.subtitle': 'Interactive insights into CocoPilot\'s autonomous improvements',
+    'dashboard.toggle': 'Show Analytics',
+    'metrics.ai_improvements': 'AI Improvements',
+    'metrics.performance': 'Performance Score',
+    'metrics.growth_rate': 'Growth Rate',
+    'metrics.success_rate': 'Success Rate',
+    'charts.commit_activity': 'Commit Activity Heat Map',
+    'charts.improvement_types': 'Improvement Types Distribution',
+    'charts.impact_timeline': 'AI Impact Timeline',
+    'charts.less': 'Less',
+    'charts.more': 'More',
+    'insights.title': 'AI Insights',
+    'insights.loading': 'Analyzing repository patterns...',
+
+    // Code Diff Viewer
+    'diff.title': 'AI Code Evolution',
+    'diff.subtitle': 'See how AI improves code quality over time',
+    'diff.toggle': 'View Code Changes',
+    'diff.previous': 'Previous',
+    'diff.next': 'Next',
+    'diff.insights_title': 'AI Insights',
+
+    // AI Recommendations
+    'recommendations.title': 'AI Suggestions',
+    'recommendations.subtitle': 'Personalized recommendations to enhance your experience',
+    'recommendations.dismiss': 'Not now',
+    'recommendations.view_all': 'View all suggestions'
   },
 
   es: {
