@@ -4,211 +4,211 @@
  */
 
 class EnhancedErrorHandler {
-    constructor() {
-        this.errorQueue = [];
-        this.retryAttempts = new Map();
-        this.maxRetries = 3;
-        this.retryDelay = 1000;
-        this.userNotified = new Set();
-        
-        this.init();
-    }
+  constructor() {
+    this.errorQueue = [];
+    this.retryAttempts = new Map();
+    this.maxRetries = 3;
+    this.retryDelay = 1000;
+    this.userNotified = new Set();
 
-    init() {
-        this.setupGlobalErrorHandling();
-        this.setupNetworkErrorHandling();
-        this.setupResourceErrorHandling();
-        this.createErrorUI();
-    }
+    this.init();
+  }
 
-    setupGlobalErrorHandling() {
-        // Enhance existing error handling
-        window.addEventListener('error', (event) => {
-            this.handleError({
-                type: 'javascript',
-                message: event.message,
-                filename: event.filename,
-                lineno: event.lineno,
-                colno: event.colno,
-                stack: event.error?.stack,
-                timestamp: new Date().toISOString()
-            });
+  init() {
+    this.setupGlobalErrorHandling();
+    this.setupNetworkErrorHandling();
+    this.setupResourceErrorHandling();
+    this.createErrorUI();
+  }
+
+  setupGlobalErrorHandling() {
+    // Enhance existing error handling
+    window.addEventListener('error', (event) => {
+      this.handleError({
+        type: 'javascript',
+        message: event.message,
+        filename: event.filename,
+        lineno: event.lineno,
+        colno: event.colno,
+        stack: event.error?.stack,
+        timestamp: new Date().toISOString()
+      });
+    });
+
+    window.addEventListener('unhandledrejection', (event) => {
+      this.handleError({
+        type: 'promise',
+        message: event.reason?.message || 'Unhandled promise rejection',
+        reason: event.reason,
+        timestamp: new Date().toISOString()
+      });
+    });
+  }
+
+  setupNetworkErrorHandling() {
+    // Intercept fetch requests for better error handling
+    const originalFetch = window.fetch;
+    window.fetch = async(...args) => {
+      try {
+        const response = await originalFetch(...args);
+
+        if (!response.ok) {
+          this.handleNetworkError({
+            url: args[0],
+            status: response.status,
+            statusText: response.statusText
+          });
+        }
+
+        return response;
+      } catch (error) {
+        this.handleNetworkError({
+          url: args[0],
+          error: error.message,
+          type: 'fetch-failure'
         });
+        throw error;
+      }
+    };
+  }
 
-        window.addEventListener('unhandledrejection', (event) => {
-            this.handleError({
-                type: 'promise',
-                message: event.reason?.message || 'Unhandled promise rejection',
-                reason: event.reason,
-                timestamp: new Date().toISOString()
-            });
+  setupResourceErrorHandling() {
+    // Handle resource loading errors
+    document.addEventListener('error', (event) => {
+      if (event.target !== window) {
+        this.handleResourceError({
+          type: 'resource',
+          element: event.target.tagName.toLowerCase(),
+          source: event.target.src || event.target.href,
+          message: 'Resource failed to load'
         });
+      }
+    }, true);
+  }
+
+  handleError(errorInfo) {
+    // Prevent duplicate notifications for the same error
+    const errorSignature = this.createErrorSignature(errorInfo);
+
+    if (this.userNotified.has(errorSignature)) {
+      return; // Already notified user about this error
     }
 
-    setupNetworkErrorHandling() {
-        // Intercept fetch requests for better error handling
-        const originalFetch = window.fetch;
-        window.fetch = async (...args) => {
-            try {
-                const response = await originalFetch(...args);
-                
-                if (!response.ok) {
-                    this.handleNetworkError({
-                        url: args[0],
-                        status: response.status,
-                        statusText: response.statusText
-                    });
-                }
-                
-                return response;
-            } catch (error) {
-                this.handleNetworkError({
-                    url: args[0],
-                    error: error.message,
-                    type: 'fetch-failure'
-                });
-                throw error;
-            }
-        };
+    console.error('Enhanced Error Handler:', errorInfo);
+
+    // Add to error queue for potential retry
+    this.errorQueue.push({
+      ...errorInfo,
+      signature: errorSignature,
+      timestamp: Date.now()
+    });
+
+    // Handle specific error types
+    switch (errorInfo.type) {
+    case 'network':
+      this.handleNetworkError(errorInfo);
+      break;
+    case 'javascript':
+      this.handleJavaScriptError(errorInfo);
+      break;
+    case 'resource':
+      this.handleResourceError(errorInfo);
+      break;
+    default:
+      this.handleGenericError(errorInfo);
     }
+  }
 
-    setupResourceErrorHandling() {
-        // Handle resource loading errors
-        document.addEventListener('error', (event) => {
-            if (event.target !== window) {
-                this.handleResourceError({
-                    type: 'resource',
-                    element: event.target.tagName.toLowerCase(),
-                    source: event.target.src || event.target.href,
-                    message: 'Resource failed to load'
-                });
-            }
-        }, true);
+  handleNetworkError(errorInfo) {
+    // Check if it's a known API that we can provide fallbacks for
+    if (errorInfo.url?.includes('api.github.com')) {
+      this.handleGitHubAPIError(errorInfo);
+    } else if (errorInfo.url?.includes('google-analytics.com')) {
+      this.handleAnalyticsError(errorInfo);
+    } else {
+      this.showUserFriendlyError('network', 'Connection Issue',
+        'Unable to fetch data. Please check your internet connection.');
     }
+  }
 
-    handleError(errorInfo) {
-        // Prevent duplicate notifications for the same error
-        const errorSignature = this.createErrorSignature(errorInfo);
-        
-        if (this.userNotified.has(errorSignature)) {
-            return; // Already notified user about this error
-        }
+  handleGitHubAPIError(errorInfo) {
+    // Provide fallback for GitHub API failures
+    this.showUserFriendlyError('github', 'GitHub API Unavailable',
+      'Repository data temporarily unavailable. Showing cached information.');
 
-        console.error('Enhanced Error Handler:', errorInfo);
-        
-        // Add to error queue for potential retry
-        this.errorQueue.push({
-            ...errorInfo,
-            signature: errorSignature,
-            timestamp: Date.now()
-        });
+    // Use fallback data
+    this.useFallbackRepoData();
 
-        // Handle specific error types
-        switch (errorInfo.type) {
-            case 'network':
-                this.handleNetworkError(errorInfo);
-                break;
-            case 'javascript':
-                this.handleJavaScriptError(errorInfo);
-                break;
-            case 'resource':
-                this.handleResourceError(errorInfo);
-                break;
-            default:
-                this.handleGenericError(errorInfo);
-        }
+    // Attempt retry with exponential backoff
+    this.scheduleRetry(() => {
+      if (typeof fetchRepoStats === 'function') {
+        fetchRepoStats();
+      }
+    }, errorInfo);
+  }
+
+  handleAnalyticsError(errorInfo) {
+    // Analytics failures shouldn't impact user experience
+    console.info('Analytics unavailable - continuing without tracking');
+
+    // Disable analytics gracefully
+    if (window.gtag) {
+      window.gtag = () => {}; // No-op function
     }
+  }
 
-    handleNetworkError(errorInfo) {
-        // Check if it's a known API that we can provide fallbacks for
-        if (errorInfo.url?.includes('api.github.com')) {
-            this.handleGitHubAPIError(errorInfo);
-        } else if (errorInfo.url?.includes('google-analytics.com')) {
-            this.handleAnalyticsError(errorInfo);
-        } else {
-            this.showUserFriendlyError('network', 'Connection Issue', 
-                'Unable to fetch data. Please check your internet connection.');
-        }
+  handleJavaScriptError(errorInfo) {
+    // Check if it's a feature that can degrade gracefully
+    if (errorInfo.message?.includes('advancedSearch')) {
+      this.disableFeatureGracefully('search', 'Advanced search temporarily unavailable');
+    } else if (errorInfo.message?.includes('onboardingTour')) {
+      this.disableFeatureGracefully('tour', 'Interactive tour temporarily unavailable');
+    } else {
+      this.handleGenericError(errorInfo);
     }
+  }
 
-    handleGitHubAPIError(errorInfo) {
-        // Provide fallback for GitHub API failures
-        this.showUserFriendlyError('github', 'GitHub API Unavailable', 
-            'Repository data temporarily unavailable. Showing cached information.');
-        
-        // Use fallback data
-        this.useFallbackRepoData();
-        
-        // Attempt retry with exponential backoff
-        this.scheduleRetry(() => {
-            if (typeof fetchRepoStats === 'function') {
-                fetchRepoStats();
-            }
-        }, errorInfo);
+  handleResourceError(errorInfo) {
+    // Handle different resource types
+    if (errorInfo.element === 'script') {
+      this.handleScriptError(errorInfo);
+    } else if (errorInfo.element === 'img') {
+      this.handleImageError(errorInfo);
+    } else {
+      console.warn('Resource failed to load:', errorInfo.source);
     }
+  }
 
-    handleAnalyticsError(errorInfo) {
-        // Analytics failures shouldn't impact user experience
-        console.info('Analytics unavailable - continuing without tracking');
-        
-        // Disable analytics gracefully
-        if (window.gtag) {
-            window.gtag = () => {}; // No-op function
-        }
+  handleScriptError(errorInfo) {
+    // Identify which script failed and provide fallbacks
+    const scriptName = this.identifyScript(errorInfo.source);
+
+    switch (scriptName) {
+    case 'advanced-search':
+      this.disableFeatureGracefully('search', 'Search feature temporarily unavailable');
+      break;
+    case 'enhanced-mobile':
+      console.info('Enhanced mobile features unavailable');
+      break;
+    case 'performance-monitor':
+      console.info('Performance monitoring unavailable');
+      break;
+    default:
+      console.warn('Script failed to load:', errorInfo.source);
     }
+  }
 
-    handleJavaScriptError(errorInfo) {
-        // Check if it's a feature that can degrade gracefully
-        if (errorInfo.message?.includes('advancedSearch')) {
-            this.disableFeatureGracefully('search', 'Advanced search temporarily unavailable');
-        } else if (errorInfo.message?.includes('onboardingTour')) {
-            this.disableFeatureGracefully('tour', 'Interactive tour temporarily unavailable');
-        } else {
-            this.handleGenericError(errorInfo);
-        }
-    }
+  handleImageError(errorInfo) {
+    // Provide fallback for missing images
+    const img = document.querySelector(`img[src="${errorInfo.source}"]`);
+    if (img) {
+      img.style.display = 'none';
 
-    handleResourceError(errorInfo) {
-        // Handle different resource types
-        if (errorInfo.element === 'script') {
-            this.handleScriptError(errorInfo);
-        } else if (errorInfo.element === 'img') {
-            this.handleImageError(errorInfo);
-        } else {
-            console.warn('Resource failed to load:', errorInfo.source);
-        }
-    }
-
-    handleScriptError(errorInfo) {
-        // Identify which script failed and provide fallbacks
-        const scriptName = this.identifyScript(errorInfo.source);
-        
-        switch (scriptName) {
-            case 'advanced-search':
-                this.disableFeatureGracefully('search', 'Search feature temporarily unavailable');
-                break;
-            case 'enhanced-mobile':
-                console.info('Enhanced mobile features unavailable');
-                break;
-            case 'performance-monitor':
-                console.info('Performance monitoring unavailable');
-                break;
-            default:
-                console.warn('Script failed to load:', errorInfo.source);
-        }
-    }
-
-    handleImageError(errorInfo) {
-        // Provide fallback for missing images
-        const img = document.querySelector(`img[src="${errorInfo.source}"]`);
-        if (img) {
-            img.style.display = 'none';
-            
-            // Add fallback content
-            const fallback = document.createElement('div');
-            fallback.className = 'image-fallback';
-            fallback.innerHTML = '🖼️';
-            fallback.style.cssText = `
+      // Add fallback content
+      const fallback = document.createElement('div');
+      fallback.className = 'image-fallback';
+      fallback.innerHTML = '🖼️';
+      fallback.style.cssText = `
                 display: inline-flex;
                 align-items: center;
                 justify-content: center;
@@ -218,57 +218,57 @@ class EnhancedErrorHandler {
                 border-radius: 4px;
                 font-size: 1.2rem;
             `;
-            img.parentNode.insertBefore(fallback, img);
-        }
+      img.parentNode.insertBefore(fallback, img);
+    }
+  }
+
+  disableFeatureGracefully(featureName, message) {
+    // Hide or disable feature UI elements
+    const featureElements = document.querySelectorAll(`[data-feature="${featureName}"], .${featureName}-btn`);
+    featureElements.forEach(element => {
+      element.style.opacity = '0.5';
+      element.style.pointerEvents = 'none';
+      element.title = message;
+    });
+
+    // Show informational message
+    this.showUserFriendlyError('feature', `${featureName} Unavailable`, message);
+  }
+
+  useFallbackRepoData() {
+    // Provide static fallback data when GitHub API is unavailable
+    const fallbackData = {
+      stars: '★',
+      forks: '⑂',
+      issues: '◦',
+      description: 'Repository data temporarily unavailable'
+    };
+
+    // Update UI with fallback data
+    document.getElementById('stars').textContent = fallbackData.stars;
+    document.getElementById('forks').textContent = fallbackData.forks;
+    document.getElementById('issues').textContent = fallbackData.issues;
+
+    // Update ARIA labels
+    const statsElement = document.getElementById('repoStats');
+    if (statsElement) {
+      statsElement.setAttribute('aria-label', fallbackData.description);
+    }
+  }
+
+  showUserFriendlyError(category, title, message) {
+    const errorSignature = `${category}-${title}`;
+
+    if (this.userNotified.has(errorSignature)) {
+      return; // Already shown this error
     }
 
-    disableFeatureGracefully(featureName, message) {
-        // Hide or disable feature UI elements
-        const featureElements = document.querySelectorAll(`[data-feature="${featureName}"], .${featureName}-btn`);
-        featureElements.forEach(element => {
-            element.style.opacity = '0.5';
-            element.style.pointerEvents = 'none';
-            element.title = message;
-        });
+    this.userNotified.add(errorSignature);
 
-        // Show informational message
-        this.showUserFriendlyError('feature', `${featureName} Unavailable`, message);
-    }
-
-    useFallbackRepoData() {
-        // Provide static fallback data when GitHub API is unavailable
-        const fallbackData = {
-            stars: '★',
-            forks: '⑂',
-            issues: '◦',
-            description: 'Repository data temporarily unavailable'
-        };
-
-        // Update UI with fallback data
-        document.getElementById('stars').textContent = fallbackData.stars;
-        document.getElementById('forks').textContent = fallbackData.forks;
-        document.getElementById('issues').textContent = fallbackData.issues;
-
-        // Update ARIA labels
-        const statsElement = document.getElementById('repoStats');
-        if (statsElement) {
-            statsElement.setAttribute('aria-label', fallbackData.description);
-        }
-    }
-
-    showUserFriendlyError(category, title, message) {
-        const errorSignature = `${category}-${title}`;
-        
-        if (this.userNotified.has(errorSignature)) {
-            return; // Already shown this error
-        }
-
-        this.userNotified.add(errorSignature);
-
-        // Create non-intrusive error notification
-        const notification = document.createElement('div');
-        notification.className = 'error-notification';
-        notification.innerHTML = `
+    // Create non-intrusive error notification
+    const notification = document.createElement('div');
+    notification.className = 'error-notification';
+    notification.innerHTML = `
             <div class="error-content">
                 <div class="error-icon">${this.getErrorIcon(category)}</div>
                 <div class="error-text">
@@ -279,55 +279,55 @@ class EnhancedErrorHandler {
             </div>
         `;
 
-        // Add styles if not already present
-        this.ensureErrorStyles();
+    // Add styles if not already present
+    this.ensureErrorStyles();
 
-        // Add to page
-        document.body.appendChild(notification);
+    // Add to page
+    document.body.appendChild(notification);
 
-        // Auto-remove after delay
-        setTimeout(() => {
-            if (notification.parentNode) {
-                notification.remove();
-            }
-        }, 10000);
-    }
+    // Auto-remove after delay
+    setTimeout(() => {
+      if (notification.parentNode) {
+        notification.remove();
+      }
+    }, 10000);
+  }
 
-    getErrorIcon(category) {
-        const icons = {
-            network: '🌐',
-            github: '🐙',
-            feature: '⚙️',
-            javascript: '⚠️',
-            resource: '📁',
-            generic: '❌'
-        };
-        return icons[category] || icons.generic;
-    }
+  getErrorIcon(category) {
+    const icons = {
+      network: '🌐',
+      github: '🐙',
+      feature: '⚙️',
+      javascript: '⚠️',
+      resource: '📁',
+      generic: '❌'
+    };
+    return icons[category] || icons.generic;
+  }
 
-    createErrorUI() {
-        // Create error status indicator
-        const errorIndicator = document.createElement('div');
-        errorIndicator.id = 'error-status-indicator';
-        errorIndicator.className = 'error-status-indicator hidden';
-        errorIndicator.innerHTML = `
+  createErrorUI() {
+    // Create error status indicator
+    const errorIndicator = document.createElement('div');
+    errorIndicator.id = 'error-status-indicator';
+    errorIndicator.className = 'error-status-indicator hidden';
+    errorIndicator.innerHTML = `
             <div class="indicator-content">
                 <span class="indicator-icon">⚠️</span>
                 <span class="indicator-text">Issues detected</span>
                 <button class="indicator-details" onclick="enhancedErrorHandler.showErrorDetails()">Details</button>
             </div>
         `;
-        document.body.appendChild(errorIndicator);
-    }
+    document.body.appendChild(errorIndicator);
+  }
 
-    showErrorDetails() {
-        // Show detailed error information for debugging
-        const modal = document.createElement('div');
-        modal.className = 'error-details-modal';
-        
-        const recentErrors = this.errorQueue.slice(-5); // Show last 5 errors
-        
-        modal.innerHTML = `
+  showErrorDetails() {
+    // Show detailed error information for debugging
+    const modal = document.createElement('div');
+    modal.className = 'error-details-modal';
+
+    const recentErrors = this.errorQueue.slice(-5); // Show last 5 errors
+
+    modal.innerHTML = `
             <div class="modal-content">
                 <div class="modal-header">
                     <h3>System Status</h3>
@@ -349,56 +349,70 @@ class EnhancedErrorHandler {
                 </div>
             </div>
         `;
-        
-        document.body.appendChild(modal);
+
+    document.body.appendChild(modal);
+  }
+
+  scheduleRetry(retryFunction, errorInfo) {
+    const key = errorInfo.signature || errorInfo.url || 'generic';
+    const currentAttempts = this.retryAttempts.get(key) || 0;
+
+    if (currentAttempts >= this.maxRetries) {
+      console.warn('Max retry attempts reached for:', key);
+      return;
     }
 
-    scheduleRetry(retryFunction, errorInfo) {
-        const key = errorInfo.signature || errorInfo.url || 'generic';
-        const currentAttempts = this.retryAttempts.get(key) || 0;
-        
-        if (currentAttempts >= this.maxRetries) {
-            console.warn('Max retry attempts reached for:', key);
-            return;
-        }
-        
-        this.retryAttempts.set(key, currentAttempts + 1);
-        
-        // Exponential backoff
-        const delay = this.retryDelay * Math.pow(2, currentAttempts);
-        
-        setTimeout(() => {
-            try {
-                retryFunction();
-            } catch (error) {
-                console.error('Retry failed:', error);
-            }
-        }, delay);
+    this.retryAttempts.set(key, currentAttempts + 1);
+
+    // Exponential backoff
+    const delay = this.retryDelay * Math.pow(2, currentAttempts);
+
+    setTimeout(() => {
+      try {
+        retryFunction();
+      } catch (error) {
+        console.error('Retry failed:', error);
+      }
+    }, delay);
+  }
+
+  createErrorSignature(errorInfo) {
+    // Create unique signature for error deduplication
+    return `${errorInfo.type}-${errorInfo.message?.substring(0, 50)}-${errorInfo.url || ''}`;
+  }
+
+  identifyScript(scriptSrc) {
+    if (!scriptSrc) {
+      return 'unknown';
     }
 
-    createErrorSignature(errorInfo) {
-        // Create unique signature for error deduplication
-        return `${errorInfo.type}-${errorInfo.message?.substring(0, 50)}-${errorInfo.url || ''}`;
+    if (scriptSrc.includes('advanced-search')) {
+      return 'advanced-search';
+    }
+    if (scriptSrc.includes('enhanced-mobile')) {
+      return 'enhanced-mobile';
+    }
+    if (scriptSrc.includes('performance-monitor')) {
+      return 'performance-monitor';
+    }
+    if (scriptSrc.includes('onboarding')) {
+      return 'onboarding';
+    }
+    if (scriptSrc.includes('github-activity')) {
+      return 'github-activity';
     }
 
-    identifyScript(scriptSrc) {
-        if (!scriptSrc) return 'unknown';
-        
-        if (scriptSrc.includes('advanced-search')) return 'advanced-search';
-        if (scriptSrc.includes('enhanced-mobile')) return 'enhanced-mobile';
-        if (scriptSrc.includes('performance-monitor')) return 'performance-monitor';
-        if (scriptSrc.includes('onboarding')) return 'onboarding';
-        if (scriptSrc.includes('github-activity')) return 'github-activity';
-        
-        return 'unknown';
+    return 'unknown';
+  }
+
+  ensureErrorStyles() {
+    if (document.getElementById('error-handler-styles')) {
+      return;
     }
 
-    ensureErrorStyles() {
-        if (document.getElementById('error-handler-styles')) return;
-        
-        const style = document.createElement('style');
-        style.id = 'error-handler-styles';
-        style.textContent = `
+    const style = document.createElement('style');
+    style.id = 'error-handler-styles';
+    style.textContent = `
             .error-notification {
                 position: fixed;
                 top: 20px;
@@ -583,43 +597,43 @@ class EnhancedErrorHandler {
                 }
             }
         `;
-        document.head.appendChild(style);
+    document.head.appendChild(style);
+  }
+
+  clearErrors() {
+    this.errorQueue = [];
+    this.userNotified.clear();
+    this.retryAttempts.clear();
+
+    // Remove error notifications
+    document.querySelectorAll('.error-notification, .error-details-modal').forEach(el => el.remove());
+
+    // Hide error indicator
+    const indicator = document.getElementById('error-status-indicator');
+    if (indicator) {
+      indicator.classList.add('hidden');
     }
 
-    clearErrors() {
-        this.errorQueue = [];
-        this.userNotified.clear();
-        this.retryAttempts.clear();
-        
-        // Remove error notifications
-        document.querySelectorAll('.error-notification, .error-details-modal').forEach(el => el.remove());
-        
-        // Hide error indicator
-        const indicator = document.getElementById('error-status-indicator');
-        if (indicator) {
-            indicator.classList.add('hidden');
-        }
-        
-        console.info('Error history cleared');
-    }
+    console.info('Error history cleared');
+  }
 
-    getErrorSummary() {
-        return {
-            totalErrors: this.errorQueue.length,
-            recentErrors: this.errorQueue.slice(-5),
-            errorTypes: [...new Set(this.errorQueue.map(e => e.type))],
-            retryAttempts: Object.fromEntries(this.retryAttempts)
-        };
-    }
+  getErrorSummary() {
+    return {
+      totalErrors: this.errorQueue.length,
+      recentErrors: this.errorQueue.slice(-5),
+      errorTypes: [...new Set(this.errorQueue.map(e => e.type))],
+      retryAttempts: Object.fromEntries(this.retryAttempts)
+    };
+  }
 }
 
 // Initialize enhanced error handler
 if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => {
-        window.enhancedErrorHandler = new EnhancedErrorHandler();
-    });
-} else {
+  document.addEventListener('DOMContentLoaded', () => {
     window.enhancedErrorHandler = new EnhancedErrorHandler();
+  });
+} else {
+  window.enhancedErrorHandler = new EnhancedErrorHandler();
 }
 
 // Expose for debugging

@@ -13,7 +13,7 @@ class ErrorHandler {
     this.activeNotifications = new Map(); // Track active notifications to prevent duplicates
     this.notificationDelay = 1000; // Minimum delay between notifications
     this.lastNotificationTime = 0;
-    
+
     this.init();
   }
 
@@ -73,10 +73,10 @@ class ErrorHandler {
    */
   setupNetworkErrorHandler() {
     const originalFetch = window.fetch;
-    window.fetch = async (...args) => {
+    window.fetch = async(...args) => {
       try {
         const response = await originalFetch(...args);
-        
+
         // Log failed HTTP requests
         if (!response.ok) {
           this.handleError({
@@ -87,7 +87,7 @@ class ErrorHandler {
             timestamp: new Date().toISOString()
           });
         }
-        
+
         return response;
       } catch (error) {
         this.handleError({
@@ -108,7 +108,7 @@ class ErrorHandler {
   handleError(errorInfo) {
     // Add to error queue
     this.errorQueue.push(errorInfo);
-    
+
     // Limit queue size
     if (this.errorQueue.length > this.maxErrors) {
       this.errorQueue.shift();
@@ -139,7 +139,7 @@ class ErrorHandler {
       /script error/i
     ];
 
-    return criticalPatterns.some(pattern => 
+    return criticalPatterns.some(pattern =>
       pattern.test(errorInfo.message) || pattern.test(errorInfo.type)
     );
   }
@@ -151,21 +151,21 @@ class ErrorHandler {
     // Create a unique key for this type of error to prevent duplicates
     const errorKey = `${errorInfo.type}-${this.getErrorTitle(errorInfo)}`;
     const now = Date.now();
-    
+
     // Check if we already have an active notification for this error type
     if (this.activeNotifications.has(errorKey)) {
       console.log('Suppressing duplicate error notification:', errorKey);
       return;
     }
-    
+
     // Rate limit notifications
     if (now - this.lastNotificationTime < this.notificationDelay) {
       console.log('Rate limiting error notification');
       return;
     }
-    
+
     this.lastNotificationTime = now;
-    
+
     const notification = document.createElement('div');
     notification.className = 'error-notification';
     notification.setAttribute('data-error-key', errorKey);
@@ -182,7 +182,7 @@ class ErrorHandler {
     `;
 
     document.body.appendChild(notification);
-    
+
     // Track active notification
     this.activeNotifications.set(errorKey, notification);
 
@@ -199,7 +199,7 @@ class ErrorHandler {
       notification.classList.add('error-notification-visible');
     });
   }
-  
+
   /**
    * Remove active notification tracking
    */
@@ -212,16 +212,16 @@ class ErrorHandler {
    */
   getErrorTitle(errorInfo) {
     switch (errorInfo.type) {
-      case 'network':
-        return 'Connection Issue';
-      case 'resource':
-        return 'Resource Loading Error';
-      case 'javascript':
-        return 'Application Error';
-      case 'promise':
-        return 'Processing Error';
-      default:
-        return 'Unexpected Error';
+    case 'network':
+      return 'Connection Issue';
+    case 'resource':
+      return 'Resource Loading Error';
+    case 'javascript':
+      return 'Application Error';
+    case 'promise':
+      return 'Processing Error';
+    default:
+      return 'Unexpected Error';
     }
   }
 
@@ -230,23 +230,23 @@ class ErrorHandler {
    */
   getErrorMessage(errorInfo) {
     switch (errorInfo.type) {
-      case 'network':
-        if (errorInfo.message.includes('GitHub API') || errorInfo.url?.includes('github.com')) {
-          return 'Unable to fetch repository data. This might be due to network restrictions or rate limiting.';
-        }
-        return 'Network connection issue. Please check your internet connection.';
-      
-      case 'resource':
-        return 'Some resources failed to load. The page may not function correctly.';
-      
-      case 'javascript':
-        return 'A script error occurred. The page should continue to work normally.';
-      
-      case 'promise':
-        return 'A background operation failed. Some features may be temporarily unavailable.';
-      
-      default:
-        return 'An unexpected error occurred. Please try refreshing the page.';
+    case 'network':
+      if (errorInfo.message.includes('GitHub API') || errorInfo.url?.includes('github.com')) {
+        return 'Unable to fetch repository data. This might be due to network restrictions or rate limiting.';
+      }
+      return 'Network connection issue. Please check your internet connection.';
+
+    case 'resource':
+      return 'Some resources failed to load. The page may not function correctly.';
+
+    case 'javascript':
+      return 'A script error occurred. The page should continue to work normally.';
+
+    case 'promise':
+      return 'A background operation failed. Some features may be temporarily unavailable.';
+
+    default:
+      return 'An unexpected error occurred. Please try refreshing the page.';
     }
   }
 
@@ -255,17 +255,17 @@ class ErrorHandler {
    */
   getErrorActions(errorInfo) {
     const actions = [];
-    
+
     if (errorInfo.type === 'network') {
       actions.push('<button class="error-action" onclick="window.errorHandler.retryLastAction()">Retry</button>');
     }
-    
+
     if (errorInfo.type === 'resource' || errorInfo.type === 'javascript') {
       actions.push('<button class="error-action" onclick="window.location.reload()">Refresh Page</button>');
     }
 
-    return actions.length > 0 ? 
-      `<div class="error-actions">${actions.join('')}</div>` : 
+    return actions.length > 0 ?
+      `<div class="error-actions">${actions.join('')}</div>` :
       '';
   }
 
@@ -274,13 +274,13 @@ class ErrorHandler {
    */
   attemptErrorRecovery(errorInfo) {
     switch (errorInfo.type) {
-      case 'network':
-        this.scheduleNetworkRetry(errorInfo);
-        break;
-      
-      case 'resource':
-        this.attemptResourceReload(errorInfo);
-        break;
+    case 'network':
+      this.scheduleNetworkRetry(errorInfo);
+      break;
+
+    case 'resource':
+      this.attemptResourceReload(errorInfo);
+      break;
     }
   }
 
@@ -289,16 +289,20 @@ class ErrorHandler {
    */
   scheduleNetworkRetry(errorInfo) {
     const url = errorInfo.url;
-    if (!url) return;
+    if (!url) {
+      return;
+    }
 
     const retryCount = this.retryAttempts.get(url) || 0;
-    if (retryCount >= this.maxRetries) return;
+    if (retryCount >= this.maxRetries) {
+      return;
+    }
 
     this.retryAttempts.set(url, retryCount + 1);
-    
+
     // Exponential backoff
     const delay = Math.pow(2, retryCount) * 1000;
-    
+
     setTimeout(() => {
       if (url.includes('api.github.com')) {
         // Trigger repository stats refresh
@@ -361,7 +365,7 @@ class ErrorHandler {
   clearErrors() {
     this.errorQueue = [];
     this.retryAttempts.clear();
-    
+
     // Remove all active error notifications
     this.activeNotifications.forEach((notification, key) => {
       if (notification.parentElement) {
@@ -375,7 +379,7 @@ class ErrorHandler {
    * Check if running in development mode
    */
   isDevelopment() {
-    return window.location.hostname === 'localhost' || 
+    return window.location.hostname === 'localhost' ||
            window.location.hostname === '127.0.0.1' ||
            window.location.hostname.includes('dev');
   }
@@ -504,7 +508,7 @@ class ErrorHandler {
         }
       }
     `;
-    
+
     document.head.appendChild(style);
   }
 
@@ -521,7 +525,7 @@ class ErrorHandler {
         stack: error.stack,
         timestamp: new Date().toISOString()
       });
-      
+
       const fallback = document.createElement('div');
       fallback.className = 'error-boundary';
       fallback.innerHTML = `

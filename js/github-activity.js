@@ -41,7 +41,7 @@ class GitHubActivity {
         return this.processCommits(commits);
       } catch (error) {
         // Suppress console warnings for network blocks (common in sandboxed environments)
-        if (!error.message.includes('ERR_BLOCKED_BY_CLIENT') && 
+        if (!error.message.includes('ERR_BLOCKED_BY_CLIENT') &&
             !error.message.includes('Failed to fetch')) {
           console.warn(`Attempt ${attempt} failed:`, error.message);
         }
@@ -52,7 +52,7 @@ class GitHubActivity {
         }
 
         // Wait before retrying, but don't retry for certain errors
-        if (error.message.includes('ERR_BLOCKED_BY_CLIENT') || 
+        if (error.message.includes('ERR_BLOCKED_BY_CLIENT') ||
             error.message.includes('rate limit')) {
           console.log('API access blocked, using fallback data');
           return this.getFallbackData();

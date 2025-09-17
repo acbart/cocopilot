@@ -10,8 +10,10 @@ class VisualEnhancer {
   }
 
   init() {
-    if (this.isInitialized) return;
-    
+    if (this.isInitialized) {
+      return;
+    }
+
     try {
       this.addEnhancedAnimations();
       this.addInteractiveElements();
@@ -26,10 +28,10 @@ class VisualEnhancer {
   addEnhancedAnimations() {
     // Add subtle parallax effect to the background
     this.addParallaxEffect();
-    
+
     // Add scroll-triggered animations
     this.addScrollAnimations();
-    
+
     // Add hover animations to feature cards
     this.enhanceFeatureCards();
   }
@@ -41,12 +43,12 @@ class VisualEnhancer {
     function updateParallax() {
       const scrolled = window.pageYOffset;
       const rate = scrolled * -0.5;
-      
+
       particles.forEach((particle, index) => {
         const speed = 0.5 + (index * 0.1);
         particle.style.transform = `translateY(${rate * speed}px)`;
       });
-      
+
       ticking = false;
     }
 
@@ -326,13 +328,13 @@ class VisualEnhancer {
   addInteractiveElements() {
     // Add floating back-to-top button
     this.createFloatingAction();
-    
+
     // Add reading progress indicator
     this.addProgressIndicator();
-    
+
     // Add sparkle effects to important elements
     this.addSparkleEffects();
-    
+
     // Add glow effects to CTA buttons
     this.addGlowEffects();
   }
@@ -343,7 +345,7 @@ class VisualEnhancer {
     floatingButton.innerHTML = '↑';
     floatingButton.title = 'Back to top';
     floatingButton.setAttribute('aria-label', 'Scroll to top');
-    
+
     floatingButton.addEventListener('click', () => {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     });
@@ -373,7 +375,7 @@ class VisualEnhancer {
 
   addSparkleEffects() {
     const sparkleTargets = document.querySelectorAll('.status, h1, .feature-icon');
-    
+
     sparkleTargets.forEach(target => {
       if (target) {
         target.addEventListener('mouseenter', () => {
@@ -386,14 +388,14 @@ class VisualEnhancer {
   createSparkle(element) {
     const sparkle = document.createElement('div');
     sparkle.className = 'sparkle';
-    
+
     const rect = element.getBoundingClientRect();
     sparkle.style.left = `${Math.random() * rect.width}px`;
     sparkle.style.top = `${Math.random() * rect.height}px`;
-    
+
     element.style.position = 'relative';
     element.appendChild(sparkle);
-    
+
     setTimeout(() => {
       if (sparkle.parentNode) {
         sparkle.parentNode.removeChild(sparkle);
@@ -412,7 +414,9 @@ class VisualEnhancer {
 
   addMouseTrail() {
     // Skip on mobile devices
-    if (window.innerWidth <= 768) return;
+    if (window.innerWidth <= 768) {
+      return;
+    }
 
     const trail = document.createElement('div');
     trail.className = 'mouse-trail';
@@ -436,13 +440,13 @@ class VisualEnhancer {
     function updateTrail() {
       const dx = mouseX - trailX;
       const dy = mouseY - trailY;
-      
+
       trailX += dx * 0.1;
       trailY += dy * 0.1;
-      
+
       trail.style.left = `${trailX - 10}px`;
       trail.style.top = `${trailY - 10}px`;
-      
+
       requestAnimationFrame(updateTrail);
     }
 
@@ -452,17 +456,17 @@ class VisualEnhancer {
   addProgressiveEnhancements() {
     // Enhance stats display with counting animation
     this.animateStats();
-    
+
     // Add keyboard navigation enhancements
     this.addKeyboardEnhancements();
-    
+
     // Add focus indicators
     this.addFocusIndicators();
   }
 
   animateStats() {
     const statElements = document.querySelectorAll('#stars, #forks, #issues');
-    
+
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting && !entry.target.dataset.animated) {
@@ -482,12 +486,14 @@ class VisualEnhancer {
   countUpAnimation(element) {
     const finalValue = element.textContent;
     const numericValue = parseInt(finalValue) || 0;
-    
-    if (numericValue === 0) return;
-    
+
+    if (numericValue === 0) {
+      return;
+    }
+
     let currentValue = 0;
     const increment = Math.ceil(numericValue / 20);
-    
+
     const counter = setInterval(() => {
       currentValue += increment;
       if (currentValue >= numericValue) {

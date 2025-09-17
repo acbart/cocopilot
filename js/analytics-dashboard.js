@@ -16,8 +16,10 @@ class AnalyticsDashboard {
   }
 
   init() {
-    if (this.isInitialized) return;
-    
+    if (this.isInitialized) {
+      return;
+    }
+
     try {
       this.createDashboard();
       this.bindEvents();
@@ -445,10 +447,10 @@ class AnalyticsDashboard {
     if (toggleBtn && dashboardContent) {
       toggleBtn.addEventListener('click', () => {
         const isExpanded = toggleBtn.getAttribute('aria-expanded') === 'true';
-        
+
         toggleBtn.setAttribute('aria-expanded', !isExpanded);
         dashboardContent.hidden = isExpanded;
-        
+
         const toggleText = toggleBtn.querySelector('[data-i18n]');
         if (toggleText) {
           toggleText.textContent = isExpanded ? '📈 Show Analytics' : '📉 Hide Analytics';
@@ -483,12 +485,12 @@ class AnalyticsDashboard {
   generateCommitData() {
     const commits = [];
     const now = new Date();
-    
+
     // Generate commit data for the last 30 days
     for (let i = 0; i < 30; i++) {
       const date = new Date(now);
       date.setDate(date.getDate() - i);
-      
+
       const activity = Math.floor(Math.random() * 5); // 0-4 activity level
       commits.push({
         date: date.toISOString().split('T')[0],
@@ -496,7 +498,7 @@ class AnalyticsDashboard {
         commits: activity > 0 ? Math.floor(Math.random() * activity * 3) + 1 : 0
       });
     }
-    
+
     return commits.reverse();
   }
 
@@ -540,30 +542,32 @@ class AnalyticsDashboard {
     const numericValue = parseFloat(String(targetValue).replace(/[^0-9.]/g, ''));
     let currentValue = 0;
     const increment = numericValue / 30;
-    
+
     const timer = setInterval(() => {
       currentValue += increment;
       if (currentValue >= numericValue) {
         currentValue = numericValue;
         clearInterval(timer);
       }
-      
-      const displayValue = isPercentage 
-        ? `${Math.round(currentValue)}%` 
-        : String(targetValue).includes('+') 
+
+      const displayValue = isPercentage
+        ? `${Math.round(currentValue)}%`
+        : String(targetValue).includes('+')
           ? `+${Math.round(currentValue)}%`
           : Math.round(currentValue);
-          
+
       element.textContent = displayValue;
     }, 50);
   }
 
   renderCommitHeatmap() {
     const grid = document.getElementById('heatmap-grid');
-    if (!grid) return;
+    if (!grid) {
+      return;
+    }
 
     grid.innerHTML = '';
-    
+
     this.data.commits.forEach(commit => {
       const cell = document.createElement('div');
       cell.className = 'heatmap-cell';
@@ -576,7 +580,9 @@ class AnalyticsDashboard {
   renderImprovementPieChart() {
     const chart = document.querySelector('.pie-chart g');
     const legend = document.getElementById('pie-legend');
-    if (!chart || !legend) return;
+    if (!chart || !legend) {
+      return;
+    }
 
     chart.innerHTML = '';
     legend.innerHTML = '';
@@ -587,11 +593,11 @@ class AnalyticsDashboard {
     this.data.improvements.forEach((item, index) => {
       const percentage = (item.count / total) * 100;
       const angle = (item.count / total) * 360;
-      
+
       // Create pie slice
       const slice = this.createPieSlice(currentAngle, angle, item.color);
       chart.appendChild(slice);
-      
+
       // Create legend item
       const legendItem = document.createElement('div');
       legendItem.className = 'legend-item';
@@ -600,7 +606,7 @@ class AnalyticsDashboard {
         <span>${item.type} (${percentage.toFixed(1)}%)</span>
       `;
       legend.appendChild(legendItem);
-      
+
       currentAngle += angle;
     });
   }
@@ -609,36 +615,38 @@ class AnalyticsDashboard {
     const radius = 80;
     const centerX = 0;
     const centerY = 0;
-    
+
     const startAngleRad = (startAngle * Math.PI) / 180;
     const endAngleRad = ((startAngle + angle) * Math.PI) / 180;
-    
+
     const x1 = centerX + radius * Math.cos(startAngleRad);
     const y1 = centerY + radius * Math.sin(startAngleRad);
     const x2 = centerX + radius * Math.cos(endAngleRad);
     const y2 = centerY + radius * Math.sin(endAngleRad);
-    
+
     const largeArcFlag = angle > 180 ? 1 : 0;
-    
+
     const pathData = [
       `M ${centerX} ${centerY}`,
       `L ${x1} ${y1}`,
       `A ${radius} ${radius} 0 ${largeArcFlag} 1 ${x2} ${y2}`,
       'Z'
     ].join(' ');
-    
+
     const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
     path.setAttribute('d', pathData);
     path.setAttribute('fill', color);
     path.setAttribute('stroke', '#fff');
     path.setAttribute('stroke-width', '2');
-    
+
     return path;
   }
 
   renderImpactTimeline() {
     const container = document.getElementById('timeline-events');
-    if (!container) return;
+    if (!container) {
+      return;
+    }
 
     container.innerHTML = '';
 
@@ -671,7 +679,7 @@ class AnalyticsDashboard {
     const container = document.getElementById('insights-list');
     if (container) {
       container.innerHTML = '';
-      
+
       insights.forEach(insight => {
         const item = document.createElement('div');
         item.className = 'insight-item';

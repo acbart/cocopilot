@@ -12,8 +12,10 @@ class CodeDiffViewer {
   }
 
   init() {
-    if (this.isInitialized) return;
-    
+    if (this.isInitialized) {
+      return;
+    }
+
     try {
       this.createDiffViewer();
       this.loadSampleDiffs();
@@ -485,10 +487,10 @@ class CodeDiffViewer {
     if (toggleBtn && diffContent) {
       toggleBtn.addEventListener('click', () => {
         const isExpanded = toggleBtn.getAttribute('aria-expanded') === 'true';
-        
+
         toggleBtn.setAttribute('aria-expanded', !isExpanded);
         diffContent.hidden = isExpanded;
-        
+
         const toggleText = toggleBtn.querySelector('[data-i18n]');
         if (toggleText) {
           toggleText.textContent = isExpanded ? '🔍 View Code Changes' : '🔒 Hide Code Changes';
@@ -620,7 +622,9 @@ class CodeDiffViewer {
 
   updateDiffDisplay() {
     const diff = this.diffs[this.currentDiff];
-    if (!diff) return;
+    if (!diff) {
+      return;
+    }
 
     // Update meta information
     document.getElementById('diff-counter').textContent = `${this.currentDiff + 1} / ${this.diffs.length}`;
@@ -631,7 +635,7 @@ class CodeDiffViewer {
     // Update file information
     const file = diff.files[0];
     document.getElementById('file-name').textContent = file.name;
-    
+
     const fileStatus = document.querySelector('.file-status');
     fileStatus.textContent = file.status === 'added' ? 'new file' : file.status;
     fileStatus.className = `file-status ${file.status}`;
@@ -657,7 +661,7 @@ class CodeDiffViewer {
     const container = document.getElementById('diff-lines');
     const leftNumbers = document.querySelector('.line-numbers-left');
     const rightNumbers = document.querySelector('.line-numbers-right');
-    
+
     container.innerHTML = '';
     leftNumbers.innerHTML = '';
     rightNumbers.innerHTML = '';
@@ -669,7 +673,7 @@ class CodeDiffViewer {
       // Line numbers
       const leftNum = document.createElement('div');
       const rightNum = document.createElement('div');
-      
+
       if (line.type === 'removed') {
         leftNum.textContent = leftLineNum++;
         rightNum.textContent = '';
@@ -680,18 +684,18 @@ class CodeDiffViewer {
         leftNum.textContent = leftLineNum++;
         rightNum.textContent = rightLineNum++;
       }
-      
+
       leftNumbers.appendChild(leftNum);
       rightNumbers.appendChild(rightNum);
 
       // Diff line
       const diffLine = document.createElement('div');
       diffLine.className = `diff-line ${line.type}`;
-      
+
       const content = document.createElement('div');
       content.className = 'line-content';
       content.textContent = line.content;
-      
+
       diffLine.appendChild(content);
       container.appendChild(diffLine);
     });
