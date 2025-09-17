@@ -41,10 +41,10 @@ class RSSFeedBuilder {
       };
 
       const rssXML = this.buildEnhancedRSSXML(feedData);
-      
+
       // Cache the result
       this.cacheFeed(rssXML);
-      
+
       return rssXML;
     } catch (error) {
       console.error('Error generating RSS feed:', error);
@@ -58,14 +58,14 @@ class RSSFeedBuilder {
   async createRSSFile() {
     try {
       const rssContent = await this.generateRSSFeed();
-      
+
       // Create blob and object URL for serving
       const blob = new Blob([rssContent], { type: 'application/rss+xml; charset=utf-8' });
       const url = URL.createObjectURL(blob);
-      
+
       // Store in cache for serving
       this.cacheRSSBlob(blob);
-      
+
       return {
         success: true,
         url: url,
@@ -163,19 +163,19 @@ class RSSFeedBuilder {
     const message = commit.commit.message;
     const firstLine = message.split('\n')[0];
     const body = message.substring(firstLine.length).trim();
-    
+
     let description = `<strong>Commit:</strong> ${this.escapeHTML(firstLine)}<br/>`;
     description += `<strong>Author:</strong> ${this.escapeHTML(commit.commit.author.name)}<br/>`;
     description += `<strong>Date:</strong> ${new Date(commit.commit.author.date).toLocaleString()}<br/>`;
-    
+
     if (body) {
       description += `<br/><strong>Details:</strong><br/>${this.escapeHTML(body).replace(/\n/g, '<br/>')}`;
     }
-    
+
     if (commit.stats) {
       description += `<br/><br/><strong>Changes:</strong> +${commit.stats.additions} -${commit.stats.deletions}`;
     }
-    
+
     return description;
   }
 
@@ -187,19 +187,19 @@ class RSSFeedBuilder {
     description += `<strong>State:</strong> ${issue.state}<br/>`;
     description += `<strong>Author:</strong> ${this.escapeHTML(issue.user.login)}<br/>`;
     description += `<strong>Updated:</strong> ${new Date(issue.updated_at).toLocaleString()}<br/>`;
-    
+
     if (issue.body && issue.body.trim()) {
-      const truncatedBody = issue.body.length > 200 ? 
-        issue.body.substring(0, 200) + '...' : 
+      const truncatedBody = issue.body.length > 200 ?
+        issue.body.substring(0, 200) + '...' :
         issue.body;
       description += `<br/><strong>Description:</strong><br/>${this.escapeHTML(truncatedBody).replace(/\n/g, '<br/>')}`;
     }
-    
+
     if (issue.labels && issue.labels.length > 0) {
       const labels = issue.labels.map(label => `<span style="background: #${label.color}; color: white; padding: 2px 6px; border-radius: 3px; font-size: 0.8em;">${this.escapeHTML(label.name)}</span>`).join(' ');
       description += `<br/><br/><strong>Labels:</strong> ${labels}`;
     }
-    
+
     return description;
   }
 
@@ -209,14 +209,14 @@ class RSSFeedBuilder {
   formatReleaseDescription(release) {
     let description = `<strong>Release ${this.escapeHTML(release.tag_name)}</strong><br/>`;
     description += `<strong>Published:</strong> ${new Date(release.published_at || release.created_at).toLocaleString()}<br/>`;
-    
+
     if (release.body && release.body.trim()) {
-      const truncatedBody = release.body.length > 300 ? 
-        release.body.substring(0, 300) + '...' : 
+      const truncatedBody = release.body.length > 300 ?
+        release.body.substring(0, 300) + '...' :
         release.body;
       description += `<br/><strong>Release Notes:</strong><br/>${this.escapeHTML(truncatedBody).replace(/\n/g, '<br/>')}`;
     }
-    
+
     return description;
   }
 
@@ -234,7 +234,7 @@ class RSSFeedBuilder {
    */
   buildEnhancedRSSXML(feedData) {
     const now = new Date().toUTCString();
-    
+
     const itemsXML = feedData.items.map(item => `
     <item>
       <title><![CDATA[${item.title}]]></title>
@@ -278,7 +278,7 @@ class RSSFeedBuilder {
    */
   generateFallbackFeed() {
     const now = new Date().toUTCString();
-    
+
     return `<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0">
   <channel>
@@ -360,7 +360,9 @@ class RSSFeedBuilder {
    * Utility functions
    */
   escapeXML(str) {
-    if (!str) return '';
+    if (!str) {
+      return '';
+    }
     return String(str)
       .replace(/&/g, '&amp;')
       .replace(/</g, '&lt;')
@@ -370,7 +372,9 @@ class RSSFeedBuilder {
   }
 
   escapeHTML(str) {
-    if (!str) return '';
+    if (!str) {
+      return '';
+    }
     return String(str)
       .replace(/&/g, '&amp;')
       .replace(/</g, '&lt;')

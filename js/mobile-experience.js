@@ -10,20 +10,22 @@ class MobileExperienceEnhancer {
     this.touchStartX = 0;
     this.gestureHandlers = new Map();
     this.isInitialized = false;
-    
+
     this.init();
   }
 
   init() {
-    if (this.isInitialized) return;
-    
+    if (this.isInitialized) {
+      return;
+    }
+
     this.addMobileOptimizations();
     this.implementTouchGestures();
     this.optimizeViewport();
     this.enhanceMobileNavigation();
     this.addPullToRefresh();
     this.optimizeTouchTargets();
-    
+
     this.isInitialized = true;
   }
 
@@ -39,7 +41,9 @@ class MobileExperienceEnhancer {
    * Add mobile-specific optimizations
    */
   addMobileOptimizations() {
-    if (!this.isMobile) return;
+    if (!this.isMobile) {
+      return;
+    }
 
     // Add mobile-specific CSS optimizations
     const style = document.createElement('style');
@@ -180,7 +184,7 @@ class MobileExperienceEnhancer {
         100% { transform: translateX(-50%) scale(1); }
       }
     `;
-    
+
     document.head.appendChild(style);
   }
 
@@ -188,14 +192,16 @@ class MobileExperienceEnhancer {
    * Implement touch gestures
    */
   implementTouchGestures() {
-    if (!this.isMobile) return;
+    if (!this.isMobile) {
+      return;
+    }
 
     // Add touch feedback to interactive elements
     this.addTouchFeedback();
-    
+
     // Implement swipe gestures
     this.implementSwipeGestures();
-    
+
     // Add pinch-to-zoom for images
     this.addPinchToZoom();
   }
@@ -205,11 +211,11 @@ class MobileExperienceEnhancer {
    */
   addTouchFeedback() {
     const interactiveElements = document.querySelectorAll('button, .btn, a, .feature-card, .timeline-item');
-    
+
     interactiveElements.forEach(element => {
       if (!element.classList.contains('touch-feedback')) {
         element.classList.add('touch-feedback');
-        
+
         element.addEventListener('touchstart', (e) => {
           element.classList.add('active');
           setTimeout(() => {
@@ -224,8 +230,8 @@ class MobileExperienceEnhancer {
       mutations.forEach(mutation => {
         mutation.addedNodes.forEach(node => {
           if (node.nodeType === 1) {
-            const newInteractiveElements = node.querySelectorAll ? 
-              node.querySelectorAll('button, .btn, a, .feature-card, .timeline-item') : 
+            const newInteractiveElements = node.querySelectorAll ?
+              node.querySelectorAll('button, .btn, a, .feature-card, .timeline-item') :
               [];
             newInteractiveElements.forEach(element => {
               if (!element.classList.contains('touch-feedback')) {
@@ -255,7 +261,9 @@ class MobileExperienceEnhancer {
     }, { passive: true });
 
     document.addEventListener('touchend', (e) => {
-      if (!startX || !startY) return;
+      if (!startX || !startY) {
+        return;
+      }
 
       endX = e.changedTouches[0].clientX;
       endY = e.changedTouches[0].clientY;
@@ -330,11 +338,11 @@ class MobileExperienceEnhancer {
    */
   addPinchToZoom() {
     const images = document.querySelectorAll('img');
-    
+
     images.forEach(img => {
       let scale = 1;
       let initialDistance = 0;
-      
+
       img.addEventListener('touchstart', (e) => {
         if (e.touches.length === 2) {
           initialDistance = this.getDistance(e.touches[0], e.touches[1]);
@@ -381,7 +389,7 @@ class MobileExperienceEnhancer {
       viewport.name = 'viewport';
       document.head.appendChild(viewport);
     }
-    
+
     viewport.content = 'width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes';
 
     // Add mobile-specific meta tags
@@ -406,7 +414,9 @@ class MobileExperienceEnhancer {
    * Enhance mobile navigation
    */
   enhanceMobileNavigation() {
-    if (!this.isMobile) return;
+    if (!this.isMobile) {
+      return;
+    }
 
     // Add mobile navigation helper
     const navHelper = document.createElement('div');
@@ -423,12 +433,12 @@ class MobileExperienceEnhancer {
       setTimeout(() => {
         navHelper.style.opacity = '1';
       }, 1000);
-      
+
       setTimeout(() => {
         navHelper.style.opacity = '0';
         setTimeout(() => navHelper.remove(), 300);
       }, 4000);
-      
+
       localStorage.setItem('mobileNavHintShown', 'true');
     }
 
@@ -465,7 +475,9 @@ class MobileExperienceEnhancer {
    * Add pull-to-refresh functionality
    */
   addPullToRefresh() {
-    if (!this.isMobile) return;
+    if (!this.isMobile) {
+      return;
+    }
 
     const pullToRefreshElement = document.createElement('div');
     pullToRefreshElement.className = 'pull-to-refresh';
@@ -490,11 +502,11 @@ class MobileExperienceEnhancer {
       if (window.scrollY === 0 && startY) {
         const currentY = e.touches[0].clientY;
         pullDistance = currentY - startY;
-        
+
         if (pullDistance > 0) {
           isPulling = true;
           pullToRefreshElement.style.top = `${Math.min(pullDistance - 60, 20)}px`;
-          
+
           if (pullDistance > pullThreshold) {
             pullToRefreshElement.classList.add('visible');
             pullToRefreshElement.querySelector('.refresh-text').textContent = 'Release to refresh';
@@ -510,7 +522,7 @@ class MobileExperienceEnhancer {
       if (isPulling && pullDistance > pullThreshold) {
         this.triggerPullToRefresh();
       }
-      
+
       isPulling = false;
       pullDistance = 0;
       startY = 0;
@@ -552,10 +564,12 @@ class MobileExperienceEnhancer {
    * Optimize touch targets
    */
   optimizeTouchTargets() {
-    if (!this.isMobile) return;
+    if (!this.isMobile) {
+      return;
+    }
 
     const smallTargets = document.querySelectorAll('button, a, input, select');
-    
+
     smallTargets.forEach(target => {
       const rect = target.getBoundingClientRect();
       if (rect.width < 44 || rect.height < 44) {
@@ -580,7 +594,7 @@ class MobileExperienceEnhancer {
         success: [10, 50, 10],
         error: [50, 50, 50]
       };
-      
+
       navigator.vibrate(patterns[type] || patterns.light);
     }
   }
@@ -606,7 +620,9 @@ class MobileExperienceEnhancer {
    * Optimize for specific mobile scenarios
    */
   optimizeForMobile() {
-    if (!this.isMobile) return;
+    if (!this.isMobile) {
+      return;
+    }
 
     // Disable hover effects on touch devices
     const style = document.createElement('style');
@@ -624,7 +640,7 @@ class MobileExperienceEnhancer {
 
     // Optimize scroll behavior
     document.documentElement.style.scrollBehavior = 'smooth';
-    
+
     // Prevent double-tap zoom on specific elements
     const preventZoomElements = document.querySelectorAll('button, .btn, input, select');
     preventZoomElements.forEach(element => {

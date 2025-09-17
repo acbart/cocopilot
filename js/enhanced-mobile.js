@@ -4,41 +4,41 @@
  */
 
 class EnhancedMobileExperience {
-    constructor() {
-        this.isMobile = this.detectMobile();
-        this.touchStartY = 0;
-        this.touchStartX = 0;
-        this.currentTouch = null;
-        this.lastTap = 0;
-        this.init();
-    }
+  constructor() {
+    this.isMobile = this.detectMobile();
+    this.touchStartY = 0;
+    this.touchStartX = 0;
+    this.currentTouch = null;
+    this.lastTap = 0;
+    this.init();
+  }
 
-    detectMobile() {
-        return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) 
+  detectMobile() {
+    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
             || window.innerWidth <= 768;
+  }
+
+  init() {
+    if (this.isMobile) {
+      this.enhanceMobileInterface();
+      this.addTouchGestures();
+      this.optimizeForMobile();
+      this.addMobileFeatures();
     }
 
-    init() {
-        if (this.isMobile) {
-            this.enhanceMobileInterface();
-            this.addTouchGestures();
-            this.optimizeForMobile();
-            this.addMobileFeatures();
-        }
-        
-        // Listen for orientation changes
-        window.addEventListener('orientationchange', () => {
-            setTimeout(() => this.handleOrientationChange(), 100);
-        });
+    // Listen for orientation changes
+    window.addEventListener('orientationchange', () => {
+      setTimeout(() => this.handleOrientationChange(), 100);
+    });
 
-        // Listen for viewport changes
-        window.addEventListener('resize', () => this.handleViewportChange());
-    }
+    // Listen for viewport changes
+    window.addEventListener('resize', () => this.handleViewportChange());
+  }
 
-    enhanceMobileInterface() {
-        // Add mobile-specific CSS
-        const mobileStyles = document.createElement('style');
-        mobileStyles.textContent = `
+  enhanceMobileInterface() {
+    // Add mobile-specific CSS
+    const mobileStyles = document.createElement('style');
+    mobileStyles.textContent = `
             /* Enhanced Mobile Styles */
             @media (max-width: 768px) {
                 /* Improved touch targets */
@@ -273,189 +273,189 @@ class EnhancedMobileExperience {
                 }
             }
         `;
-        document.head.appendChild(mobileStyles);
+    document.head.appendChild(mobileStyles);
+  }
+
+  addTouchGestures() {
+    // Add swipe gestures for timeline navigation
+    const timeline = document.querySelector('.evolution-section');
+    if (timeline) {
+      this.addSwipeSupport(timeline);
     }
 
-    addTouchGestures() {
-        // Add swipe gestures for timeline navigation
-        const timeline = document.querySelector('.evolution-section');
-        if (timeline) {
-            this.addSwipeSupport(timeline);
+    // Add pull-to-refresh
+    this.addPullToRefresh();
+
+    // Add double-tap to toggle theme
+    this.addDoubleTapThemeToggle();
+
+    // Add long press for context menus
+    this.addLongPressSupport();
+  }
+
+  addSwipeSupport(element) {
+    let startX = 0;
+    let startY = 0;
+    let distX = 0;
+    let distY = 0;
+    const threshold = 50;
+    const restraint = 100;
+
+    element.addEventListener('touchstart', (e) => {
+      startX = e.touches[0].pageX;
+      startY = e.touches[0].pageY;
+    }, { passive: true });
+
+    element.addEventListener('touchmove', (e) => {
+      distX = e.touches[0].pageX - startX;
+      distY = e.touches[0].pageY - startY;
+
+      // Show swipe indicators
+      if (Math.abs(distX) > 20 && Math.abs(distY) < restraint) {
+        this.showSwipeIndicator(distX > 0 ? 'right' : 'left');
+      }
+    }, { passive: true });
+
+    element.addEventListener('touchend', () => {
+      if (Math.abs(distX) >= threshold && Math.abs(distY) <= restraint) {
+        if (distX > 0) {
+          this.navigateTimeline('prev');
+        } else {
+          this.navigateTimeline('next');
         }
+      }
+      this.hideSwipeIndicators();
+    });
+  }
 
-        // Add pull-to-refresh
-        this.addPullToRefresh();
+  addPullToRefresh() {
+    let startY = 0;
+    let pullDistance = 0;
+    let isPulling = false;
+    const pullThreshold = 100;
 
-        // Add double-tap to toggle theme
-        this.addDoubleTapThemeToggle();
-
-        // Add long press for context menus
-        this.addLongPressSupport();
-    }
-
-    addSwipeSupport(element) {
-        let startX = 0;
-        let startY = 0;
-        let distX = 0;
-        let distY = 0;
-        let threshold = 50;
-        let restraint = 100;
-
-        element.addEventListener('touchstart', (e) => {
-            startX = e.touches[0].pageX;
-            startY = e.touches[0].pageY;
-        }, { passive: true });
-
-        element.addEventListener('touchmove', (e) => {
-            distX = e.touches[0].pageX - startX;
-            distY = e.touches[0].pageY - startY;
-
-            // Show swipe indicators
-            if (Math.abs(distX) > 20 && Math.abs(distY) < restraint) {
-                this.showSwipeIndicator(distX > 0 ? 'right' : 'left');
-            }
-        }, { passive: true });
-
-        element.addEventListener('touchend', () => {
-            if (Math.abs(distX) >= threshold && Math.abs(distY) <= restraint) {
-                if (distX > 0) {
-                    this.navigateTimeline('prev');
-                } else {
-                    this.navigateTimeline('next');
-                }
-            }
-            this.hideSwipeIndicators();
-        });
-    }
-
-    addPullToRefresh() {
-        let startY = 0;
-        let pullDistance = 0;
-        let isPulling = false;
-        const pullThreshold = 100;
-
-        // Create pull-to-refresh indicator
-        const pullIndicator = document.createElement('div');
-        pullIndicator.className = 'pull-to-refresh';
-        pullIndicator.innerHTML = `
+    // Create pull-to-refresh indicator
+    const pullIndicator = document.createElement('div');
+    pullIndicator.className = 'pull-to-refresh';
+    pullIndicator.innerHTML = `
             <div class="spinner">🔄</div>
             <span>Pull to refresh</span>
         `;
-        document.body.appendChild(pullIndicator);
+    document.body.appendChild(pullIndicator);
 
-        document.addEventListener('touchstart', (e) => {
-            if (window.scrollY === 0) {
-                startY = e.touches[0].pageY;
-                isPulling = true;
-            }
-        }, { passive: true });
+    document.addEventListener('touchstart', (e) => {
+      if (window.scrollY === 0) {
+        startY = e.touches[0].pageY;
+        isPulling = true;
+      }
+    }, { passive: true });
 
-        document.addEventListener('touchmove', (e) => {
-            if (isPulling && window.scrollY === 0) {
-                pullDistance = e.touches[0].pageY - startY;
-                
-                if (pullDistance > 0) {
-                    e.preventDefault();
-                    
-                    if (pullDistance > 20) {
-                        pullIndicator.classList.add('visible');
-                        pullIndicator.style.transform = `translateX(-50%) translateY(${Math.min(pullDistance, pullThreshold)}px)`;
-                        
-                        if (pullDistance >= pullThreshold) {
-                            pullIndicator.innerHTML = `
+    document.addEventListener('touchmove', (e) => {
+      if (isPulling && window.scrollY === 0) {
+        pullDistance = e.touches[0].pageY - startY;
+
+        if (pullDistance > 0) {
+          e.preventDefault();
+
+          if (pullDistance > 20) {
+            pullIndicator.classList.add('visible');
+            pullIndicator.style.transform = `translateX(-50%) translateY(${Math.min(pullDistance, pullThreshold)}px)`;
+
+            if (pullDistance >= pullThreshold) {
+              pullIndicator.innerHTML = `
                                 <div class="spinner">✨</div>
                                 <span>Release to refresh</span>
                             `;
-                        }
-                    }
-                }
             }
-        });
+          }
+        }
+      }
+    });
 
-        document.addEventListener('touchend', () => {
-            if (isPulling && pullDistance >= pullThreshold) {
-                this.handleRefresh();
-            }
-            
-            isPulling = false;
-            pullDistance = 0;
-            pullIndicator.classList.remove('visible');
-            pullIndicator.innerHTML = `
+    document.addEventListener('touchend', () => {
+      if (isPulling && pullDistance >= pullThreshold) {
+        this.handleRefresh();
+      }
+
+      isPulling = false;
+      pullDistance = 0;
+      pullIndicator.classList.remove('visible');
+      pullIndicator.innerHTML = `
                 <div class="spinner">🔄</div>
                 <span>Pull to refresh</span>
             `;
-        });
-    }
+    });
+  }
 
-    addDoubleTapThemeToggle() {
-        document.addEventListener('touchend', (e) => {
-            const currentTime = new Date().getTime();
-            const tapLength = currentTime - this.lastTap;
-            
-            if (tapLength < 500 && tapLength > 0) {
-                // Double tap detected
-                if (e.target.closest('.container') && !e.target.closest('button') && !e.target.closest('a')) {
-                    if (typeof toggleTheme === 'function') {
-                        toggleTheme();
-                        this.showMobileToast('Theme toggled');
-                    }
-                }
-            }
-            this.lastTap = currentTime;
-        });
-    }
+  addDoubleTapThemeToggle() {
+    document.addEventListener('touchend', (e) => {
+      const currentTime = new Date().getTime();
+      const tapLength = currentTime - this.lastTap;
 
-    addLongPressSupport() {
-        let pressTimer;
-
-        document.addEventListener('touchstart', (e) => {
-            pressTimer = setTimeout(() => {
-                if (e.target.closest('.feature')) {
-                    this.showFeatureDetails(e.target.closest('.feature'));
-                }
-            }, 800);
-        });
-
-        document.addEventListener('touchend', () => {
-            clearTimeout(pressTimer);
-        });
-
-        document.addEventListener('touchmove', () => {
-            clearTimeout(pressTimer);
-        });
-    }
-
-    optimizeForMobile() {
-        // Add touch device class
-        document.body.classList.add('touch-device');
-
-        // Optimize viewport
-        this.optimizeViewport();
-
-        // Reduce animations for better performance
-        if (this.isMobile) {
-            this.reduceAnimations();
+      if (tapLength < 500 && tapLength > 0) {
+        // Double tap detected
+        if (e.target.closest('.container') && !e.target.closest('button') && !e.target.closest('a')) {
+          if (typeof toggleTheme === 'function') {
+            toggleTheme();
+            this.showMobileToast('Theme toggled');
+          }
         }
+      }
+      this.lastTap = currentTime;
+    });
+  }
 
-        // Add mobile-specific meta tags
-        this.addMobileMeta();
+  addLongPressSupport() {
+    let pressTimer;
+
+    document.addEventListener('touchstart', (e) => {
+      pressTimer = setTimeout(() => {
+        if (e.target.closest('.feature')) {
+          this.showFeatureDetails(e.target.closest('.feature'));
+        }
+      }, 800);
+    });
+
+    document.addEventListener('touchend', () => {
+      clearTimeout(pressTimer);
+    });
+
+    document.addEventListener('touchmove', () => {
+      clearTimeout(pressTimer);
+    });
+  }
+
+  optimizeForMobile() {
+    // Add touch device class
+    document.body.classList.add('touch-device');
+
+    // Optimize viewport
+    this.optimizeViewport();
+
+    // Reduce animations for better performance
+    if (this.isMobile) {
+      this.reduceAnimations();
     }
 
-    addMobileFeatures() {
-        // Add mobile toolbar
-        this.createMobileToolbar();
+    // Add mobile-specific meta tags
+    this.addMobileMeta();
+  }
 
-        // Add quick actions
-        this.addQuickActions();
+  addMobileFeatures() {
+    // Add mobile toolbar
+    this.createMobileToolbar();
 
-        // Add mobile-specific keyboard shortcuts
-        this.addMobileKeyboardShortcuts();
-    }
+    // Add quick actions
+    this.addQuickActions();
 
-    createMobileToolbar() {
-        const toolbar = document.createElement('div');
-        toolbar.className = 'mobile-toolbar mobile-only';
-        toolbar.innerHTML = `
+    // Add mobile-specific keyboard shortcuts
+    this.addMobileKeyboardShortcuts();
+  }
+
+  createMobileToolbar() {
+    const toolbar = document.createElement('div');
+    toolbar.className = 'mobile-toolbar mobile-only';
+    toolbar.innerHTML = `
             <div class="mobile-toolbar-content">
                 <button type="button" class="mobile-action" onclick="window.scrollTo({top: 0, behavior: 'smooth'})" title="Scroll to top">
                     ⬆️
@@ -472,9 +472,9 @@ class EnhancedMobileExperience {
             </div>
         `;
 
-        // Add toolbar styles
-        const toolbarStyles = document.createElement('style');
-        toolbarStyles.textContent = `
+    // Add toolbar styles
+    const toolbarStyles = document.createElement('style');
+    toolbarStyles.textContent = `
             .mobile-toolbar {
                 position: fixed;
                 bottom: 20px;
@@ -516,39 +516,39 @@ class EnhancedMobileExperience {
                 background: var(--feature-bg);
             }
         `;
-        document.head.appendChild(toolbarStyles);
-        document.body.appendChild(toolbar);
-    }
+    document.head.appendChild(toolbarStyles);
+    document.body.appendChild(toolbar);
+  }
 
-    addQuickActions() {
-        // Add quick action gestures
-        const quickActions = {
-            'three-finger-tap': () => this.showQuickMenu(),
-            'edge-swipe-right': () => this.openSidebar(),
-            'edge-swipe-left': () => this.closeSidebar()
-        };
+  addQuickActions() {
+    // Add quick action gestures
+    const quickActions = {
+      'three-finger-tap': () => this.showQuickMenu(),
+      'edge-swipe-right': () => this.openSidebar(),
+      'edge-swipe-left': () => this.closeSidebar()
+    };
 
-        // Implement gesture detection
-        this.detectMultiTouch();
-    }
+    // Implement gesture detection
+    this.detectMultiTouch();
+  }
 
-    detectMultiTouch() {
-        document.addEventListener('touchstart', (e) => {
-            if (e.touches.length === 3) {
-                // Three finger tap
-                setTimeout(() => {
-                    if (e.touches.length === 3) {
-                        this.showQuickMenu();
-                    }
-                }, 200);
-            }
-        });
-    }
+  detectMultiTouch() {
+    document.addEventListener('touchstart', (e) => {
+      if (e.touches.length === 3) {
+        // Three finger tap
+        setTimeout(() => {
+          if (e.touches.length === 3) {
+            this.showQuickMenu();
+          }
+        }, 200);
+      }
+    });
+  }
 
-    showQuickMenu() {
-        const quickMenu = document.createElement('div');
-        quickMenu.className = 'quick-menu';
-        quickMenu.innerHTML = `
+  showQuickMenu() {
+    const quickMenu = document.createElement('div');
+    quickMenu.className = 'quick-menu';
+    quickMenu.innerHTML = `
             <div class="quick-menu-content">
                 <h4>Quick Actions</h4>
                 <div class="quick-actions">
@@ -561,8 +561,8 @@ class EnhancedMobileExperience {
             </div>
         `;
 
-        const menuStyles = document.createElement('style');
-        menuStyles.textContent = `
+    const menuStyles = document.createElement('style');
+    menuStyles.textContent = `
             .quick-menu {
                 position: fixed;
                 top: 0;
@@ -618,89 +618,89 @@ class EnhancedMobileExperience {
                 margin-top: 15px;
             }
         `;
-        document.head.appendChild(menuStyles);
-        document.body.appendChild(quickMenu);
+    document.head.appendChild(menuStyles);
+    document.body.appendChild(quickMenu);
 
-        // Remove after 5 seconds
-        setTimeout(() => {
-            if (document.body.contains(quickMenu)) {
-                quickMenu.remove();
-            }
-        }, 5000);
-    }
+    // Remove after 5 seconds
+    setTimeout(() => {
+      if (document.body.contains(quickMenu)) {
+        quickMenu.remove();
+      }
+    }, 5000);
+  }
 
-    addMobileKeyboardShortcuts() {
-        // Volume buttons for navigation (if supported)
-        document.addEventListener('keydown', (e) => {
-            if (this.isMobile) {
-                switch(e.code) {
-                    case 'VolumeUp':
-                        e.preventDefault();
-                        this.navigateTimeline('next');
-                        break;
-                    case 'VolumeDown':
-                        e.preventDefault();
-                        this.navigateTimeline('prev');
-                        break;
-                }
-            }
-        });
-    }
-
-    // Helper methods
-    showSwipeIndicator(direction) {
-        const indicator = document.createElement('div');
-        indicator.className = `swipe-indicator ${direction} show`;
-        indicator.textContent = direction === 'left' ? '← Previous' : 'Next →';
-        document.body.appendChild(indicator);
-
-        setTimeout(() => indicator.remove(), 1000);
-    }
-
-    hideSwipeIndicators() {
-        document.querySelectorAll('.swipe-indicator').forEach(el => el.remove());
-    }
-
-    navigateTimeline(direction) {
-        const nextBtn = document.querySelector('button[onclick*="next"]');
-        const prevBtn = document.querySelector('button[onclick*="prev"]');
-        
-        if (direction === 'next' && nextBtn && !nextBtn.disabled) {
-            nextBtn.click();
-        } else if (direction === 'prev' && prevBtn && !prevBtn.disabled) {
-            prevBtn.click();
+  addMobileKeyboardShortcuts() {
+    // Volume buttons for navigation (if supported)
+    document.addEventListener('keydown', (e) => {
+      if (this.isMobile) {
+        switch (e.code) {
+        case 'VolumeUp':
+          e.preventDefault();
+          this.navigateTimeline('next');
+          break;
+        case 'VolumeDown':
+          e.preventDefault();
+          this.navigateTimeline('prev');
+          break;
         }
+      }
+    });
+  }
+
+  // Helper methods
+  showSwipeIndicator(direction) {
+    const indicator = document.createElement('div');
+    indicator.className = `swipe-indicator ${direction} show`;
+    indicator.textContent = direction === 'left' ? '← Previous' : 'Next →';
+    document.body.appendChild(indicator);
+
+    setTimeout(() => indicator.remove(), 1000);
+  }
+
+  hideSwipeIndicators() {
+    document.querySelectorAll('.swipe-indicator').forEach(el => el.remove());
+  }
+
+  navigateTimeline(direction) {
+    const nextBtn = document.querySelector('button[onclick*="next"]');
+    const prevBtn = document.querySelector('button[onclick*="prev"]');
+
+    if (direction === 'next' && nextBtn && !nextBtn.disabled) {
+      nextBtn.click();
+    } else if (direction === 'prev' && prevBtn && !prevBtn.disabled) {
+      prevBtn.click();
+    }
+  }
+
+  handleRefresh() {
+    // Refresh repository stats and activity
+    if (typeof fetchRepoStats === 'function') {
+      fetchRepoStats();
     }
 
-    handleRefresh() {
-        // Refresh repository stats and activity
-        if (typeof fetchRepoStats === 'function') {
-            fetchRepoStats();
-        }
-        
-        // Refresh GitHub activity
-        const activitySection = document.getElementById('github-activity');
-        if (activitySection && window.githubActivity) {
-            window.githubActivity.loadActivity();
-        }
-
-        this.showMobileToast('Refreshed successfully');
+    // Refresh GitHub activity
+    const activitySection = document.getElementById('github-activity');
+    if (activitySection && window.githubActivity) {
+      window.githubActivity.loadActivity();
     }
 
-    showFeatureDetails(featureElement) {
-        const title = featureElement.querySelector('.feature-title')?.textContent;
-        const description = featureElement.querySelector('.feature-desc')?.textContent;
-        
-        if (title && description) {
-            this.showMobileToast(`${title}: ${description}`, 3000);
-        }
-    }
+    this.showMobileToast('Refreshed successfully');
+  }
 
-    showMobileToast(message, duration = 2000) {
-        const toast = document.createElement('div');
-        toast.className = 'mobile-toast';
-        toast.textContent = message;
-        toast.style.cssText = `
+  showFeatureDetails(featureElement) {
+    const title = featureElement.querySelector('.feature-title')?.textContent;
+    const description = featureElement.querySelector('.feature-desc')?.textContent;
+
+    if (title && description) {
+      this.showMobileToast(`${title}: ${description}`, 3000);
+    }
+  }
+
+  showMobileToast(message, duration = 2000) {
+    const toast = document.createElement('div');
+    toast.className = 'mobile-toast';
+    toast.textContent = message;
+    toast.style.cssText = `
             position: fixed;
             top: 50%;
             left: 50%;
@@ -717,59 +717,59 @@ class EnhancedMobileExperience {
             text-align: center;
         `;
 
-        document.body.appendChild(toast);
-        setTimeout(() => toast.remove(), duration);
-    }
+    document.body.appendChild(toast);
+    setTimeout(() => toast.remove(), duration);
+  }
 
-    shareNative() {
-        if (navigator.share) {
-            navigator.share({
-                title: 'CocoPilot - Self-Updating Repository',
-                text: 'Check out this AI-powered repository that evolves daily through GitHub Copilot!',
-                url: window.location.href
-            }).then(() => {
-                this.showMobileToast('Shared successfully!');
-            }).catch(err => {
-                if (err.name !== 'AbortError') {
-                    console.log('Share failed:', err);
-                    this.fallbackShare();
-                }
-            });
-        } else {
-            this.fallbackShare();
+  shareNative() {
+    if (navigator.share) {
+      navigator.share({
+        title: 'CocoPilot - Self-Updating Repository',
+        text: 'Check out this AI-powered repository that evolves daily through GitHub Copilot!',
+        url: window.location.href
+      }).then(() => {
+        this.showMobileToast('Shared successfully!');
+      }).catch(err => {
+        if (err.name !== 'AbortError') {
+          console.log('Share failed:', err);
+          this.fallbackShare();
         }
+      });
+    } else {
+      this.fallbackShare();
     }
+  }
 
-    fallbackShare() {
-        // Fallback to copy URL
-        if (navigator.clipboard) {
-            navigator.clipboard.writeText(window.location.href).then(() => {
-                this.showMobileToast('URL copied to clipboard');
-            });
-        } else {
-            // Fallback for older browsers
-            const textArea = document.createElement('textarea');
-            textArea.value = window.location.href;
-            document.body.appendChild(textArea);
-            textArea.select();
-            document.execCommand('copy');
-            document.body.removeChild(textArea);
-            this.showMobileToast('URL copied to clipboard');
-        }
+  fallbackShare() {
+    // Fallback to copy URL
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(window.location.href).then(() => {
+        this.showMobileToast('URL copied to clipboard');
+      });
+    } else {
+      // Fallback for older browsers
+      const textArea = document.createElement('textarea');
+      textArea.value = window.location.href;
+      document.body.appendChild(textArea);
+      textArea.select();
+      document.execCommand('copy');
+      document.body.removeChild(textArea);
+      this.showMobileToast('URL copied to clipboard');
     }
+  }
 
-    optimizeViewport() {
-        // Ensure proper viewport configuration
-        let viewport = document.querySelector('meta[name="viewport"]');
-        if (viewport) {
-            viewport.content = 'width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes';
-        }
+  optimizeViewport() {
+    // Ensure proper viewport configuration
+    const viewport = document.querySelector('meta[name="viewport"]');
+    if (viewport) {
+      viewport.content = 'width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes';
     }
+  }
 
-    reduceAnimations() {
-        // Reduce animations for better performance on mobile
-        const reducedAnimationStyle = document.createElement('style');
-        reducedAnimationStyle.textContent = `
+  reduceAnimations() {
+    // Reduce animations for better performance on mobile
+    const reducedAnimationStyle = document.createElement('style');
+    reducedAnimationStyle.textContent = `
             @media (max-width: 768px) {
                 .floating-element {
                     animation: none !important;
@@ -785,46 +785,46 @@ class EnhancedMobileExperience {
                 }
             }
         `;
-        document.head.appendChild(reducedAnimationStyle);
+    document.head.appendChild(reducedAnimationStyle);
+  }
+
+  addMobileMeta() {
+    // Add mobile-specific meta tags
+    const metaTags = [
+      { name: 'mobile-web-app-capable', content: 'yes' },
+      { name: 'apple-mobile-web-app-capable', content: 'yes' },
+      { name: 'apple-mobile-web-app-status-bar-style', content: 'default' },
+      { name: 'format-detection', content: 'telephone=no' }
+    ];
+
+    metaTags.forEach(tag => {
+      if (!document.querySelector(`meta[name="${tag.name}"]`)) {
+        const meta = document.createElement('meta');
+        meta.name = tag.name;
+        meta.content = tag.content;
+        document.head.appendChild(meta);
+      }
+    });
+  }
+
+  handleOrientationChange() {
+    // Handle orientation changes
+    const isLandscape = window.orientation === 90 || window.orientation === -90;
+    document.body.classList.toggle('landscape', isLandscape);
+
+    // Adjust interface for landscape mode
+    if (isLandscape) {
+      this.optimizeForLandscape();
+    } else {
+      this.optimizeForPortrait();
     }
+  }
 
-    addMobileMeta() {
-        // Add mobile-specific meta tags
-        const metaTags = [
-            { name: 'mobile-web-app-capable', content: 'yes' },
-            { name: 'apple-mobile-web-app-capable', content: 'yes' },
-            { name: 'apple-mobile-web-app-status-bar-style', content: 'default' },
-            { name: 'format-detection', content: 'telephone=no' }
-        ];
-
-        metaTags.forEach(tag => {
-            if (!document.querySelector(`meta[name="${tag.name}"]`)) {
-                const meta = document.createElement('meta');
-                meta.name = tag.name;
-                meta.content = tag.content;
-                document.head.appendChild(meta);
-            }
-        });
-    }
-
-    handleOrientationChange() {
-        // Handle orientation changes
-        const isLandscape = window.orientation === 90 || window.orientation === -90;
-        document.body.classList.toggle('landscape', isLandscape);
-        
-        // Adjust interface for landscape mode
-        if (isLandscape) {
-            this.optimizeForLandscape();
-        } else {
-            this.optimizeForPortrait();
-        }
-    }
-
-    optimizeForLandscape() {
-        // Landscape-specific optimizations
-        const landscapeStyle = document.createElement('style');
-        landscapeStyle.id = 'landscape-styles';
-        landscapeStyle.textContent = `
+  optimizeForLandscape() {
+    // Landscape-specific optimizations
+    const landscapeStyle = document.createElement('style');
+    landscapeStyle.id = 'landscape-styles';
+    landscapeStyle.textContent = `
             .landscape .container {
                 max-width: 90%;
                 padding: 20px 30px;
@@ -845,38 +845,38 @@ class EnhancedMobileExperience {
                 flex-direction: column;
             }
         `;
-        document.head.appendChild(landscapeStyle);
-    }
+    document.head.appendChild(landscapeStyle);
+  }
 
-    optimizeForPortrait() {
-        // Remove landscape styles
-        const landscapeStyles = document.getElementById('landscape-styles');
-        if (landscapeStyles) {
-            landscapeStyles.remove();
-        }
+  optimizeForPortrait() {
+    // Remove landscape styles
+    const landscapeStyles = document.getElementById('landscape-styles');
+    if (landscapeStyles) {
+      landscapeStyles.remove();
     }
+  }
 
-    handleViewportChange() {
-        // Update mobile detection on viewport change
-        const wasMobile = this.isMobile;
-        this.isMobile = this.detectMobile();
-        
-        if (this.isMobile !== wasMobile) {
-            if (this.isMobile) {
-                this.enhanceMobileInterface();
-                this.addMobileFeatures();
-            }
-        }
+  handleViewportChange() {
+    // Update mobile detection on viewport change
+    const wasMobile = this.isMobile;
+    this.isMobile = this.detectMobile();
+
+    if (this.isMobile !== wasMobile) {
+      if (this.isMobile) {
+        this.enhanceMobileInterface();
+        this.addMobileFeatures();
+      }
     }
+  }
 }
 
 // Initialize mobile experience enhancer
 if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => {
-        window.enhancedMobileExperience = new EnhancedMobileExperience();
-    });
-} else {
+  document.addEventListener('DOMContentLoaded', () => {
     window.enhancedMobileExperience = new EnhancedMobileExperience();
+  });
+} else {
+  window.enhancedMobileExperience = new EnhancedMobileExperience();
 }
 
 // Add mobile-specific CSS animations

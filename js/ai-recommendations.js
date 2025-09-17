@@ -18,8 +18,10 @@ class AIRecommendationsEngine {
   }
 
   init() {
-    if (this.isInitialized) return;
-    
+    if (this.isInitialized) {
+      return;
+    }
+
     try {
       this.loadUserBehavior();
       this.trackUserBehavior();
@@ -45,7 +47,7 @@ class AIRecommendationsEngine {
         console.warn('Failed to load user behavior data:', error);
       }
     }
-    
+
     // Update visit count and last visit
     this.userBehavior.visitCount++;
     this.userBehavior.lastVisit = new Date().toISOString();
@@ -102,7 +104,7 @@ class AIRecommendationsEngine {
     });
 
     // Track time spent
-    let startTime = Date.now();
+    const startTime = Date.now();
     window.addEventListener('beforeunload', () => {
       this.userBehavior.timeSpent += Date.now() - startTime;
       this.saveUserBehavior();
@@ -209,7 +211,9 @@ class AIRecommendationsEngine {
   }
 
   createRecommendationsPanel() {
-    if (this.recommendations.length === 0) return;
+    if (this.recommendations.length === 0) {
+      return;
+    }
 
     const recommendationsHtml = `
       <div class="ai-recommendations" id="ai-recommendations">
@@ -241,7 +245,7 @@ class AIRecommendationsEngine {
     document.body.insertAdjacentHTML('beforeend', recommendationsHtml);
     this.addRecommendationsStyles();
     this.bindRecommendationEvents();
-    
+
     // Show after a delay to avoid overwhelming new users
     setTimeout(() => {
       this.showRecommendations();
@@ -580,44 +584,58 @@ class AIRecommendationsEngine {
 
   executeRecommendationAction(action) {
     switch (action) {
-      case 'onboarding':
-        // Trigger onboarding tour
-        const tourBtn = document.querySelector('[onclick="startOnboardingTour()"]');
-        if (tourBtn) tourBtn.click();
-        break;
-        
-      case 'analytics':
-        // Open analytics dashboard
-        const analyticsBtn = document.getElementById('toggle-dashboard');
-        if (analyticsBtn) analyticsBtn.click();
-        break;
-        
-      case 'code-diff':
-        // Open code diff viewer
-        const diffBtn = document.getElementById('toggle-diff');
-        if (diffBtn) diffBtn.click();
-        break;
-        
-      case 'theme':
-        // Toggle theme
-        if (typeof toggleTheme === 'function') {
-          toggleTheme();
-        }
-        break;
-        
-      case 'language':
-        // Open language selector
-        const langBtn = document.querySelector('.language-selector');
-        if (langBtn) langBtn.click();
-        break;
-        
-      case 'advanced':
-        // Open search
-        document.dispatchEvent(new KeyboardEvent('keydown', { 
-          key: 'k', 
-          ctrlKey: true 
-        }));
-        break;
+    case 'onboarding': {
+      // Trigger onboarding tour
+      const tourBtn = document.querySelector('[onclick="startOnboardingTour()"]');
+      if (tourBtn) {
+        tourBtn.click();
+      }
+      break;
+    }
+
+    case 'analytics': {
+      // Open analytics dashboard
+      const analyticsBtn = document.getElementById('toggle-dashboard');
+      if (analyticsBtn) {
+        analyticsBtn.click();
+      }
+      break;
+    }
+
+    case 'code-diff': {
+      // Open code diff viewer
+      const diffBtn = document.getElementById('toggle-diff');
+      if (diffBtn) {
+        diffBtn.click();
+      }
+      break;
+    }
+
+    case 'theme': {
+      // Toggle theme - check if function exists in global scope
+      const themeToggle = document.querySelector('.theme-toggle');
+      if (themeToggle) {
+        themeToggle.click();
+      }
+      break;
+    }
+
+    case 'language': {
+      // Open language selector
+      const langBtn = document.querySelector('.language-selector');
+      if (langBtn) {
+        langBtn.click();
+      }
+      break;
+    }
+
+    case 'advanced':
+      // Open search
+      document.dispatchEvent(new KeyboardEvent('keydown', {
+        key: 'k',
+        ctrlKey: true
+      }));
+      break;
     }
 
     // Track action execution
@@ -644,7 +662,7 @@ class AIRecommendationsEngine {
     `;
 
     document.body.appendChild(modal);
-    
+
     // Add modal styles and events
     this.addModalStyles();
     this.bindModalEvents(modal);

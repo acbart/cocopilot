@@ -11,7 +11,7 @@ class PerformanceOptimizer {
       codeOptimization: false,
       renderOptimization: false
     };
-    
+
     this.metrics = {
       bundleSize: 0,
       resourceCount: 0,
@@ -43,13 +43,13 @@ class PerformanceOptimizer {
   optimizeResourceLoading() {
     // Implement resource hints
     this.addResourceHints();
-    
+
     // Lazy load images
     this.implementLazyLoading();
-    
+
     // Optimize font loading
     this.optimizeFontLoading();
-    
+
     // Implement service worker optimizations
     this.enhanceServiceWorker();
 
@@ -71,7 +71,9 @@ class PerformanceOptimizer {
         const link = document.createElement('link');
         link.rel = hint.rel;
         link.href = hint.href;
-        if (hint.crossorigin) link.crossOrigin = 'anonymous';
+        if (hint.crossorigin) {
+          link.crossOrigin = 'anonymous';
+        }
         document.head.appendChild(link);
       }
     });
@@ -108,8 +110,8 @@ class PerformanceOptimizer {
         mutations.forEach(mutation => {
           mutation.addedNodes.forEach(node => {
             if (node.nodeType === 1) {
-              const images = node.querySelectorAll ? 
-                node.querySelectorAll('img[data-src]') : 
+              const images = node.querySelectorAll ?
+                node.querySelectorAll('img[data-src]') :
                 [];
               images.forEach(img => imageObserver.observe(img));
             }
@@ -180,10 +182,10 @@ class PerformanceOptimizer {
   implementIntelligentPrefetching() {
     // Prefetch likely navigation targets
     this.prefetchLikelyPages();
-    
+
     // Prefetch API endpoints
     this.prefetchAPIEndpoints();
-    
+
     // Implement hover-based prefetching
     this.implementHoverPrefetching();
   }
@@ -234,7 +236,7 @@ class PerformanceOptimizer {
    */
   implementHoverPrefetching() {
     let prefetchTimeout;
-    
+
     document.addEventListener('mouseover', (event) => {
       const link = event.target.closest('a[href]');
       if (link && link.hostname === window.location.hostname) {
@@ -262,10 +264,10 @@ class PerformanceOptimizer {
   optimizeRendering() {
     // Use CSS containment for better performance
     this.applyCSSContainment();
-    
+
     // Optimize animations
     this.optimizeAnimations();
-    
+
     // Implement virtual scrolling for large lists
     this.implementVirtualScrolling();
 
@@ -343,12 +345,12 @@ class PerformanceOptimizer {
   optimizeVisibleItems(container) {
     const items = container.querySelectorAll('.commit-item');
     const containerRect = container.getBoundingClientRect();
-    
+
     items.forEach(item => {
       const itemRect = item.getBoundingClientRect();
-      const isVisible = itemRect.bottom > containerRect.top && 
+      const isVisible = itemRect.bottom > containerRect.top &&
                        itemRect.top < containerRect.bottom;
-      
+
       if (isVisible) {
         item.style.willChange = 'transform';
       } else {
@@ -490,7 +492,7 @@ class PerformanceOptimizer {
         color: #ffd700;
       }
     `;
-    
+
     document.head.appendChild(style);
   }
 
@@ -542,7 +544,7 @@ class PerformanceOptimizer {
   gatherPerformanceMetrics() {
     const navigation = performance.getEntriesByType('navigation')[0];
     const paint = performance.getEntriesByType('paint');
-    
+
     return {
       pageLoadTime: navigation ? navigation.loadEventEnd - navigation.loadEventStart : 0,
       domContentLoaded: navigation ? navigation.domContentLoadedEventEnd - navigation.domContentLoadedEventStart : 0,
@@ -710,7 +712,7 @@ class PerformanceOptimizer {
         }
       }
     `;
-    
+
     document.head.appendChild(style);
   }
 
@@ -725,7 +727,7 @@ class PerformanceOptimizer {
    * Check if running in development
    */
   isDevelopment() {
-    return window.location.hostname === 'localhost' || 
+    return window.location.hostname === 'localhost' ||
            window.location.hostname === '127.0.0.1';
   }
 
@@ -752,12 +754,12 @@ class PerformanceOptimizer {
 
     const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
-    
+
     const link = document.createElement('a');
     link.href = url;
     link.download = `cocopilot-performance-${Date.now()}.json`;
     link.click();
-    
+
     URL.revokeObjectURL(url);
   }
 }

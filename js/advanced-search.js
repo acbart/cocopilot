@@ -4,47 +4,47 @@
  */
 
 class AdvancedSearch {
-    constructor() {
-        this.searchData = {
-            features: [
-                { title: 'Auto-Updates', description: 'Daily AI-driven improvements', category: 'automation' },
-                { title: 'GitHub Actions', description: 'Automated workflow management', category: 'automation' },
-                { title: 'Focused Goals', description: 'Incremental, thoughtful changes', category: 'strategy' },
-                { title: 'PWA Support', description: 'Progressive Web App capabilities', category: 'technology' },
-                { title: 'Dark Theme', description: 'Toggle between light and dark themes', category: 'ui' },
-                { title: 'Internationalization', description: 'Multi-language support', category: 'accessibility' },
-                { title: 'Performance Monitoring', description: 'Real-time performance metrics', category: 'analytics' },
-                { title: 'RSS Feed', description: 'Subscribe to repository updates', category: 'integration' }
-            ],
-            documentation: [
-                { title: 'Getting Started', url: '#', description: 'Quick start guide for CocoPilot' },
-                { title: 'Development Guide', url: 'https://github.com/acbart/cocopilot/blob/main/docs/DEVELOPMENT.md', description: 'Complete development setup' },
-                { title: 'API Documentation', url: '#', description: 'Comprehensive API reference' },
-                { title: 'Changelog', url: 'https://github.com/acbart/cocopilot/blob/main/CHANGELOG.md', description: 'Version history and changes' }
-            ],
-            shortcuts: [
-                { key: 'T', action: 'Toggle Theme', description: 'Switch between light and dark modes' },
-                { key: 'R', action: 'RSS Feed', description: 'Access RSS feed options' },
-                { key: 'G', action: 'GitHub', description: 'Go to GitHub repository' },
-                { key: 'I', action: 'Issues', description: 'View repository issues' },
-                { key: '?', action: 'Help', description: 'Show keyboard shortcuts' }
-            ]
-        };
-        
-        this.searchHistory = this.loadSearchHistory();
-        this.init();
-    }
+  constructor() {
+    this.searchData = {
+      features: [
+        { title: 'Auto-Updates', description: 'Daily AI-driven improvements', category: 'automation' },
+        { title: 'GitHub Actions', description: 'Automated workflow management', category: 'automation' },
+        { title: 'Focused Goals', description: 'Incremental, thoughtful changes', category: 'strategy' },
+        { title: 'PWA Support', description: 'Progressive Web App capabilities', category: 'technology' },
+        { title: 'Dark Theme', description: 'Toggle between light and dark themes', category: 'ui' },
+        { title: 'Internationalization', description: 'Multi-language support', category: 'accessibility' },
+        { title: 'Performance Monitoring', description: 'Real-time performance metrics', category: 'analytics' },
+        { title: 'RSS Feed', description: 'Subscribe to repository updates', category: 'integration' }
+      ],
+      documentation: [
+        { title: 'Getting Started', url: '#', description: 'Quick start guide for CocoPilot' },
+        { title: 'Development Guide', url: 'https://github.com/acbart/cocopilot/blob/main/docs/DEVELOPMENT.md', description: 'Complete development setup' },
+        { title: 'API Documentation', url: '#', description: 'Comprehensive API reference' },
+        { title: 'Changelog', url: 'https://github.com/acbart/cocopilot/blob/main/CHANGELOG.md', description: 'Version history and changes' }
+      ],
+      shortcuts: [
+        { key: 'T', action: 'Toggle Theme', description: 'Switch between light and dark modes' },
+        { key: 'R', action: 'RSS Feed', description: 'Access RSS feed options' },
+        { key: 'G', action: 'GitHub', description: 'Go to GitHub repository' },
+        { key: 'I', action: 'Issues', description: 'View repository issues' },
+        { key: '?', action: 'Help', description: 'Show keyboard shortcuts' }
+      ]
+    };
 
-    init() {
-        this.createSearchInterface();
-        this.bindEvents();
-    }
+    this.searchHistory = this.loadSearchHistory();
+    this.init();
+  }
 
-    createSearchInterface() {
-        // Create search container
-        const searchContainer = document.createElement('div');
-        searchContainer.className = 'advanced-search-container';
-        searchContainer.innerHTML = `
+  init() {
+    this.createSearchInterface();
+    this.bindEvents();
+  }
+
+  createSearchInterface() {
+    // Create search container
+    const searchContainer = document.createElement('div');
+    searchContainer.className = 'advanced-search-container';
+    searchContainer.innerHTML = `
             <div class="search-header">
                 <button type="button" class="search-toggle" aria-label="Open search" data-i18n-aria="search.open">
                     🔍
@@ -84,15 +84,15 @@ class AdvancedSearch {
             </div>
         `;
 
-        // Add to container
-        document.querySelector('.container').appendChild(searchContainer);
-        this.addSearchStyles();
-        this.updateRecentSearches();
-    }
+    // Add to container
+    document.querySelector('.container').appendChild(searchContainer);
+    this.addSearchStyles();
+    this.updateRecentSearches();
+  }
 
-    addSearchStyles() {
-        const style = document.createElement('style');
-        style.textContent = `
+  addSearchStyles() {
+    const style = document.createElement('style');
+    style.textContent = `
             .advanced-search-container {
                 position: relative;
             }
@@ -384,161 +384,165 @@ class AdvancedSearch {
                 }
             }
         `;
-        document.head.appendChild(style);
+    document.head.appendChild(style);
+  }
+
+  bindEvents() {
+    const searchToggle = document.querySelector('.search-toggle');
+    const searchModal = document.getElementById('searchModal');
+    const searchClose = document.querySelector('.search-close');
+    const searchInput = document.querySelector('.search-input');
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    const searchTags = document.querySelectorAll('.search-tag');
+
+    // Open search modal
+    searchToggle.addEventListener('click', () => this.openSearch());
+
+    // Close search modal
+    searchClose.addEventListener('click', () => this.closeSearch());
+
+    // Close on backdrop click
+    searchModal.addEventListener('click', (e) => {
+      if (e.target === searchModal) {
+        this.closeSearch();
+      }
+    });
+
+    // Search input
+    searchInput.addEventListener('input', (e) => this.handleSearch(e.target.value));
+    searchInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        this.closeSearch();
+      }
+    });
+
+    // Filter buttons
+    filterBtns.forEach(btn => {
+      btn.addEventListener('click', () => this.handleFilter(btn.dataset.filter));
+    });
+
+    // Popular search tags
+    searchTags.forEach(tag => {
+      tag.addEventListener('click', () => {
+        searchInput.value = tag.dataset.search;
+        this.handleSearch(tag.dataset.search);
+      });
+    });
+
+    // Keyboard shortcut
+    document.addEventListener('keydown', (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+        e.preventDefault();
+        this.openSearch();
+      }
+    });
+  }
+
+  openSearch() {
+    const modal = document.getElementById('searchModal');
+    const input = document.querySelector('.search-input');
+
+    modal.style.display = 'flex';
+    setTimeout(() => input.focus(), 100);
+
+    // Prevent body scroll
+    document.body.style.overflow = 'hidden';
+  }
+
+  closeSearch() {
+    const modal = document.getElementById('searchModal');
+    modal.style.display = 'none';
+
+    // Restore body scroll
+    document.body.style.overflow = '';
+  }
+
+  handleFilter(filter) {
+    // Update active filter
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.filter === filter);
+    });
+
+    // Perform search with current input and new filter
+    const searchValue = document.querySelector('.search-input').value;
+    this.performSearch(searchValue, filter);
+  }
+
+  handleSearch(query) {
+    const activeFilter = document.querySelector('.filter-btn.active').dataset.filter;
+
+    if (query.trim()) {
+      this.addToSearchHistory(query);
+      this.performSearch(query, activeFilter);
+    } else {
+      this.showSuggestions();
     }
+  }
 
-    bindEvents() {
-        const searchToggle = document.querySelector('.search-toggle');
-        const searchModal = document.getElementById('searchModal');
-        const searchClose = document.querySelector('.search-close');
-        const searchInput = document.querySelector('.search-input');
-        const filterBtns = document.querySelectorAll('.filter-btn');
-        const searchTags = document.querySelectorAll('.search-tag');
+  performSearch(query, filter = 'all') {
+    const results = this.searchContent(query, filter);
+    this.displayResults(results, query);
+  }
 
-        // Open search modal
-        searchToggle.addEventListener('click', () => this.openSearch());
+  searchContent(query, filter) {
+    const searchTerm = query.toLowerCase();
+    const results = [];
 
-        // Close search modal
-        searchClose.addEventListener('click', () => this.closeSearch());
-        
-        // Close on backdrop click
-        searchModal.addEventListener('click', (e) => {
-            if (e.target === searchModal) this.closeSearch();
-        });
-
-        // Search input
-        searchInput.addEventListener('input', (e) => this.handleSearch(e.target.value));
-        searchInput.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') this.closeSearch();
-        });
-
-        // Filter buttons
-        filterBtns.forEach(btn => {
-            btn.addEventListener('click', () => this.handleFilter(btn.dataset.filter));
-        });
-
-        // Popular search tags
-        searchTags.forEach(tag => {
-            tag.addEventListener('click', () => {
-                searchInput.value = tag.dataset.search;
-                this.handleSearch(tag.dataset.search);
-            });
-        });
-
-        // Keyboard shortcut
-        document.addEventListener('keydown', (e) => {
-            if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
-                e.preventDefault();
-                this.openSearch();
-            }
-        });
-    }
-
-    openSearch() {
-        const modal = document.getElementById('searchModal');
-        const input = document.querySelector('.search-input');
-        
-        modal.style.display = 'flex';
-        setTimeout(() => input.focus(), 100);
-        
-        // Prevent body scroll
-        document.body.style.overflow = 'hidden';
-    }
-
-    closeSearch() {
-        const modal = document.getElementById('searchModal');
-        modal.style.display = 'none';
-        
-        // Restore body scroll
-        document.body.style.overflow = '';
-    }
-
-    handleFilter(filter) {
-        // Update active filter
-        document.querySelectorAll('.filter-btn').forEach(btn => {
-            btn.classList.toggle('active', btn.dataset.filter === filter);
-        });
-
-        // Perform search with current input and new filter
-        const searchValue = document.querySelector('.search-input').value;
-        this.performSearch(searchValue, filter);
-    }
-
-    handleSearch(query) {
-        const activeFilter = document.querySelector('.filter-btn.active').dataset.filter;
-        
-        if (query.trim()) {
-            this.addToSearchHistory(query);
-            this.performSearch(query, activeFilter);
-        } else {
-            this.showSuggestions();
-        }
-    }
-
-    performSearch(query, filter = 'all') {
-        const results = this.searchContent(query, filter);
-        this.displayResults(results, query);
-    }
-
-    searchContent(query, filter) {
-        const searchTerm = query.toLowerCase();
-        let results = [];
-
-        // Search features
-        if (filter === 'all' || filter === 'features') {
-            const featureResults = this.searchData.features
-                .filter(item => 
-                    item.title.toLowerCase().includes(searchTerm) ||
+    // Search features
+    if (filter === 'all' || filter === 'features') {
+      const featureResults = this.searchData.features
+        .filter(item =>
+          item.title.toLowerCase().includes(searchTerm) ||
                     item.description.toLowerCase().includes(searchTerm) ||
                     item.category.toLowerCase().includes(searchTerm)
-                )
-                .map(item => ({ ...item, type: 'feature' }));
-            results.push(...featureResults);
-        }
-
-        // Search documentation
-        if (filter === 'all' || filter === 'docs') {
-            const docResults = this.searchData.documentation
-                .filter(item =>
-                    item.title.toLowerCase().includes(searchTerm) ||
-                    item.description.toLowerCase().includes(searchTerm)
-                )
-                .map(item => ({ ...item, type: 'documentation' }));
-            results.push(...docResults);
-        }
-
-        // Search shortcuts
-        if (filter === 'all' || filter === 'shortcuts') {
-            const shortcutResults = this.searchData.shortcuts
-                .filter(item =>
-                    item.key.toLowerCase().includes(searchTerm) ||
-                    item.action.toLowerCase().includes(searchTerm) ||
-                    item.description.toLowerCase().includes(searchTerm)
-                )
-                .map(item => ({ ...item, type: 'shortcut' }));
-            results.push(...shortcutResults);
-        }
-
-        return results;
+        )
+        .map(item => ({ ...item, type: 'feature' }));
+      results.push(...featureResults);
     }
 
-    displayResults(results, query) {
-        const resultsContainer = document.getElementById('searchResults');
-        
-        if (results.length === 0) {
-            resultsContainer.innerHTML = `
+    // Search documentation
+    if (filter === 'all' || filter === 'docs') {
+      const docResults = this.searchData.documentation
+        .filter(item =>
+          item.title.toLowerCase().includes(searchTerm) ||
+                    item.description.toLowerCase().includes(searchTerm)
+        )
+        .map(item => ({ ...item, type: 'documentation' }));
+      results.push(...docResults);
+    }
+
+    // Search shortcuts
+    if (filter === 'all' || filter === 'shortcuts') {
+      const shortcutResults = this.searchData.shortcuts
+        .filter(item =>
+          item.key.toLowerCase().includes(searchTerm) ||
+                    item.action.toLowerCase().includes(searchTerm) ||
+                    item.description.toLowerCase().includes(searchTerm)
+        )
+        .map(item => ({ ...item, type: 'shortcut' }));
+      results.push(...shortcutResults);
+    }
+
+    return results;
+  }
+
+  displayResults(results, query) {
+    const resultsContainer = document.getElementById('searchResults');
+
+    if (results.length === 0) {
+      resultsContainer.innerHTML = `
                 <div class="no-results">
                     <div class="no-results-icon">🔍</div>
                     <h4>No results found</h4>
                     <p>Try adjusting your search terms or browse popular searches below.</p>
                 </div>
             `;
-            return;
-        }
+      return;
+    }
 
-        const resultsHTML = results.map(result => {
-            const icon = this.getResultIcon(result.type);
-            return `
+    const resultsHTML = results.map(result => {
+      const icon = this.getResultIcon(result.type);
+      return `
                 <div class="search-result-item" data-type="${result.type}" onclick="advancedSearch.handleResultClick('${result.type}', ${JSON.stringify(result).replace(/"/g, '&quot;')})">
                     <div class="search-result-title">
                         ${icon} ${result.title || result.action}
@@ -547,62 +551,62 @@ class AdvancedSearch {
                     <div class="search-result-description">${result.description}</div>
                 </div>
             `;
-        }).join('');
+    }).join('');
 
-        resultsContainer.innerHTML = `
+    resultsContainer.innerHTML = `
             <div class="search-results-header">
                 <h4>Search Results (${results.length})</h4>
             </div>
             ${resultsHTML}
         `;
-    }
+  }
 
-    getResultIcon(type) {
-        const icons = {
-            feature: '⚡',
-            documentation: '📚',
-            shortcut: '⌨️'
-        };
-        return icons[type] || '🔍';
-    }
+  getResultIcon(type) {
+    const icons = {
+      feature: '⚡',
+      documentation: '📚',
+      shortcut: '⌨️'
+    };
+    return icons[type] || '🔍';
+  }
 
-    handleResultClick(type, result) {
-        switch (type) {
-            case 'feature':
-                this.highlightFeature(result.title);
-                break;
-            case 'documentation':
-                if (result.url && result.url !== '#') {
-                    window.open(result.url, '_blank');
-                }
-                break;
-            case 'shortcut':
-                this.executeShortcut(result.key);
-                break;
-        }
-        this.closeSearch();
+  handleResultClick(type, result) {
+    switch (type) {
+    case 'feature':
+      this.highlightFeature(result.title);
+      break;
+    case 'documentation':
+      if (result.url && result.url !== '#') {
+        window.open(result.url, '_blank');
+      }
+      break;
+    case 'shortcut':
+      this.executeShortcut(result.key);
+      break;
     }
+    this.closeSearch();
+  }
 
-    highlightFeature(featureTitle) {
-        // Find and highlight the feature on the page
-        const features = document.querySelectorAll('.feature-title');
-        features.forEach(feature => {
-            if (feature.textContent.includes(featureTitle)) {
-                feature.closest('.feature').scrollIntoView({ behavior: 'smooth', block: 'center' });
-                feature.closest('.feature').style.animation = 'highlight 2s ease-out';
-            }
-        });
-    }
+  highlightFeature(featureTitle) {
+    // Find and highlight the feature on the page
+    const features = document.querySelectorAll('.feature-title');
+    features.forEach(feature => {
+      if (feature.textContent.includes(featureTitle)) {
+        feature.closest('.feature').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        feature.closest('.feature').style.animation = 'highlight 2s ease-out';
+      }
+    });
+  }
 
-    executeShortcut(key) {
-        // Simulate keyboard shortcut
-        const event = new KeyboardEvent('keydown', { key: key.toLowerCase() });
-        document.dispatchEvent(event);
-    }
+  executeShortcut(key) {
+    // Simulate keyboard shortcut
+    const event = new KeyboardEvent('keydown', { key: key.toLowerCase() });
+    document.dispatchEvent(event);
+  }
 
-    showSuggestions() {
-        const resultsContainer = document.getElementById('searchResults');
-        resultsContainer.innerHTML = `
+  showSuggestions() {
+    const resultsContainer = document.getElementById('searchResults');
+    resultsContainer.innerHTML = `
             <div class="search-suggestions">
                 <div class="suggestion-section">
                     <h4 data-i18n="search.recent">Recent Searches</h4>
@@ -619,58 +623,60 @@ class AdvancedSearch {
                 </div>
             </div>
         `;
-        this.updateRecentSearches();
+    this.updateRecentSearches();
+  }
+
+  addToSearchHistory(query) {
+    if (!this.searchHistory.includes(query)) {
+      this.searchHistory.unshift(query);
+      this.searchHistory = this.searchHistory.slice(0, 5); // Keep only 5 recent searches
+      this.saveSearchHistory();
+    }
+  }
+
+  updateRecentSearches() {
+    const container = document.getElementById('recentSearches');
+    if (!container) {
+      return;
     }
 
-    addToSearchHistory(query) {
-        if (!this.searchHistory.includes(query)) {
-            this.searchHistory.unshift(query);
-            this.searchHistory = this.searchHistory.slice(0, 5); // Keep only 5 recent searches
-            this.saveSearchHistory();
-        }
+    if (this.searchHistory.length === 0) {
+      container.innerHTML = '<p style="color: var(--text-tertiary); font-style: italic;">No recent searches</p>';
+      return;
     }
 
-    updateRecentSearches() {
-        const container = document.getElementById('recentSearches');
-        if (!container) return;
-
-        if (this.searchHistory.length === 0) {
-            container.innerHTML = '<p style="color: var(--text-tertiary); font-style: italic;">No recent searches</p>';
-            return;
-        }
-
-        container.innerHTML = this.searchHistory.map(search => `
+    container.innerHTML = this.searchHistory.map(search => `
             <div class="recent-search-item" onclick="document.querySelector('.search-input').value='${search}'; advancedSearch.handleSearch('${search}')">
                 <span>🕒</span>
                 <span>${search}</span>
             </div>
         `).join('');
-    }
+  }
 
-    loadSearchHistory() {
-        try {
-            return JSON.parse(localStorage.getItem('cocopilot-search-history') || '[]');
-        } catch {
-            return [];
-        }
+  loadSearchHistory() {
+    try {
+      return JSON.parse(localStorage.getItem('cocopilot-search-history') || '[]');
+    } catch {
+      return [];
     }
+  }
 
-    saveSearchHistory() {
-        try {
-            localStorage.setItem('cocopilot-search-history', JSON.stringify(this.searchHistory));
-        } catch {
-            // Ignore storage errors
-        }
+  saveSearchHistory() {
+    try {
+      localStorage.setItem('cocopilot-search-history', JSON.stringify(this.searchHistory));
+    } catch {
+      // Ignore storage errors
     }
+  }
 }
 
 // Initialize advanced search when DOM is ready
 if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => {
-        window.advancedSearch = new AdvancedSearch();
-    });
-} else {
+  document.addEventListener('DOMContentLoaded', () => {
     window.advancedSearch = new AdvancedSearch();
+  });
+} else {
+  window.advancedSearch = new AdvancedSearch();
 }
 
 // Add highlight animation CSS
