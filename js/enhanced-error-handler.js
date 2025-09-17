@@ -141,13 +141,14 @@ class EnhancedErrorHandler {
 
     // Attempt retry with exponential backoff
     this.scheduleRetry(() => {
-      if (typeof fetchRepoStats === 'function') {
-        fetchRepoStats();
+      // Check if global fetchRepoStats function exists and call it
+      if (typeof window.fetchRepoStats === 'function') {
+        window.fetchRepoStats();
       }
-    }, errorInfo);
+    });
   }
 
-  handleAnalyticsError(errorInfo) {
+  handleAnalyticsError(_errorInfo) {
     // Analytics failures shouldn't impact user experience
     console.info('Analytics unavailable - continuing without tracking');
 

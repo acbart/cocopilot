@@ -584,44 +584,50 @@ class AIRecommendationsEngine {
 
   executeRecommendationAction(action) {
     switch (action) {
-    case 'onboarding':
+    case 'onboarding': {
       // Trigger onboarding tour
       const tourBtn = document.querySelector('[onclick="startOnboardingTour()"]');
       if (tourBtn) {
         tourBtn.click();
       }
       break;
+    }
 
-    case 'analytics':
+    case 'analytics': {
       // Open analytics dashboard
       const analyticsBtn = document.getElementById('toggle-dashboard');
       if (analyticsBtn) {
         analyticsBtn.click();
       }
       break;
+    }
 
-    case 'code-diff':
+    case 'code-diff': {
       // Open code diff viewer
       const diffBtn = document.getElementById('toggle-diff');
       if (diffBtn) {
         diffBtn.click();
       }
       break;
+    }
 
-    case 'theme':
-      // Toggle theme
-      if (typeof toggleTheme === 'function') {
-        toggleTheme();
+    case 'theme': {
+      // Toggle theme - check if function exists in global scope
+      const themeToggle = document.querySelector('.theme-toggle');
+      if (themeToggle) {
+        themeToggle.click();
       }
       break;
+    }
 
-    case 'language':
+    case 'language': {
       // Open language selector
       const langBtn = document.querySelector('.language-selector');
       if (langBtn) {
         langBtn.click();
       }
       break;
+    }
 
     case 'advanced':
       // Open search
