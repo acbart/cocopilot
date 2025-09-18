@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-10BCNBPTHG"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-10BCNBPTHG');
+    </script>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CocoPilot Documentation - Complete Guide</title>
+    <meta name="description" content="Comprehensive documentation for CocoPilot, the self-updating AI-driven repository">
+    <meta name="keywords" content="CocoPilot, documentation, AI, GitHub, automation, guide">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#667eea">
+
+    <style>
+        :root {
+            --bg-gradient-start: #667eea;
+            --bg-gradient-end: #764ba2;
+            --container-bg: rgba(255, 255, 255, 0.95);
+            --text-primary: #333;
+            --text-secondary: #666;
+            --text-tertiary: #888;
+            --border-color: rgba(102, 126, 234, 0.2);
+            --feature-bg: rgba(102, 126, 234, 0.1);
+            --button-gradient-start: #667eea;
+            --button-gradient-end: #764ba2;
+            --code-bg: #f8f9fa;
+            --code-border: #e9ecef;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: var(--text-primary);
+            background: linear-gradient(135deg, var(--bg-gradient-start), var(--bg-gradient-end));
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            padding: 40px 0;
+            background: var(--container-bg);
+            margin-bottom: 30px;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border-color);
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            background: linear-gradient(135deg, var(--button-gradient-start), var(--button-gradient-end));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+        }
+
+        .navigation {
+            background: var(--container-bg);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 30px;
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border-color);
+            position: sticky;
+            top: 20px;
+            z-index: 100;
+        }
+
+        .nav-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .nav-item {
+            display: block;
+            padding: 12px 16px;
+            background: var(--feature-bg);
+            border-radius: 12px;
+            text-decoration: none;
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+            border: 1px solid var(--border-color);
+        }
+
+        .nav-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+            background: linear-gradient(135deg, var(--button-gradient-start), var(--button-gradient-end));
+            color: white;
+        }
+
+        .content-section {
+            background: var(--container-bg);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border-color);
+        }
+
+        .section-title {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: var(--text-primary);
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 10px;
+        }
+
+        .section-title::before {
+            content: attr(data-icon);
+            margin-right: 10px;
+            font-size: 1.5rem;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 25px 0;
+        }
+
+        .feature-card {
+            background: var(--feature-bg);
+            padding: 20px;
+            border-radius: 16px;
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.15);
+        }
+
+        .feature-icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .feature-title {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+            color: var(--text-primary);
+        }
+
+        .feature-description {
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        .code-block {
+            background: var(--code-bg);
+            border: 1px solid var(--code-border);
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+        }
+
+        .code-block code {
+            color: #d73a49;
+        }
+
+        .step-list {
+            list-style: none;
+            counter-reset: step-counter;
+        }
+
+        .step-list li {
+            counter-increment: step-counter;
+            margin-bottom: 20px;
+            padding-left: 60px;
+            position: relative;
+        }
+
+        .step-list li::before {
+            content: counter(step-counter);
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--button-gradient-start), var(--button-gradient-end));
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .step-title {
+            font-weight: bold;
+            color: var(--text-primary);
+            margin-bottom: 5px;
+        }
+
+        .back-to-home {
+            display: inline-block;
+            padding: 12px 24px;
+            background: linear-gradient(135deg, var(--button-gradient-start), var(--button-gradient-end));
+            color: white;
+            text-decoration: none;
+            border-radius: 12px;
+            margin: 20px 0;
+            transition: all 0.3s ease;
+        }
+
+        .back-to-home:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .highlight-box h3 {
+            color: var(--text-primary);
+            margin-bottom: 10px;
+        }
+
+        .faq-item {
+            margin-bottom: 20px;
+            background: var(--feature-bg);
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+        }
+
+        .faq-question {
+            background: var(--feature-bg);
+            padding: 15px 20px;
+            cursor: pointer;
+            font-weight: bold;
+            color: var(--text-primary);
+            transition: background 0.3s ease;
+        }
+
+        .faq-question:hover {
+            background: rgba(102, 126, 234, 0.15);
+        }
+
+        .faq-answer {
+            padding: 0 20px 20px 20px;
+            color: var(--text-secondary);
+            display: none;
+        }
+
+        .faq-answer.show {
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .content-section {
+                padding: 20px;
+            }
+
+            .navigation {
+                position: relative;
+                top: auto;
+            }
+
+            .nav-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .feature-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🤖 CocoPilot Documentation</h1>
+            <p>Your complete guide to the self-updating AI-driven repository</p>
+        </div>
+
+        <nav class="navigation">
+            <div class="nav-grid">
+                <a href="#getting-started" class="nav-item">🚀 Getting Started</a>
+                <a href="#features" class="nav-item">✨ Features</a>
+                <a href="#architecture" class="nav-item">🏗️ Architecture</a>
+                <a href="#api" class="nav-item">🔌 API Reference</a>
+                <a href="#development" class="nav-item">👨‍💻 Development</a>
+                <a href="#faq" class="nav-item">❓ FAQ</a>
+            </div>
+        </nav>
+
+        <section id="getting-started" class="content-section">
+            <h2 class="section-title" data-icon="🚀">Getting Started</h2>
+            
+            <div class="highlight-box">
+                <h3>🎯 What is CocoPilot?</h3>
+                <p>CocoPilot is an innovative experimental repository that demonstrates autonomous software evolution through GitHub Copilot and GitHub Actions. It continuously improves itself through AI-driven daily enhancements.</p>
+            </div>
+
+            <h3>Quick Start Guide</h3>
+            <ol class="step-list">
+                <li>
+                    <div class="step-title">Visit the Repository</div>
+                    <p>Navigate to <a href="https://acbart.github.io/cocopilot/" target="_blank">https://acbart.github.io/cocopilot/</a> to see the live application.</p>
+                </li>
+                <li>
+                    <div class="step-title">Explore Features</div>
+                    <p>Try the interactive dashboard, toggle themes, and explore the analytics visualizations.</p>
+                </li>
+                <li>
+                    <div class="step-title">Watch Evolution</div>
+                    <p>Check back daily to see how the AI has improved the repository with new features and enhancements.</p>
+                </li>
+                <li>
+                    <div class="step-title">Contribute</div>
+                    <p>Submit issues, provide feedback, or contribute improvements through GitHub.</p>
+                </li>
+            </ol>
+        </section>
+
+        <section id="features" class="content-section">
+            <h2 class="section-title" data-icon="✨">Features</h2>
+            
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <span class="feature-icon">🤖</span>
+                    <h3 class="feature-title">AI-Driven Evolution</h3>
+                    <p class="feature-description">Automated daily improvements powered by GitHub Copilot, creating a self-evolving codebase.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <span class="feature-icon">📊</span>
+                    <h3 class="feature-title">Interactive Analytics</h3>
+                    <p class="feature-description">Real-time repository insights with beautiful charts and visualizations showing evolution progress.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <span class="feature-icon">📱</span>
+                    <h3 class="feature-title">Progressive Web App</h3>
+                    <p class="feature-description">Full PWA support with offline functionality, push notifications, and app installation.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <span class="feature-icon">🌙</span>
+                    <h3 class="feature-title">Dark/Light Theme</h3>
+                    <p class="feature-description">Seamless theme switching with system preference detection and smooth transitions.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <span class="feature-icon">♿</span>
+                    <h3 class="feature-title">Accessibility First</h3>
+                    <p class="feature-description">WCAG 2.1 AA compliance with screen reader support, keyboard navigation, and high contrast mode.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <span class="feature-icon">🔍</span>
+                    <h3 class="feature-title">Smart Search</h3>
+                    <p class="feature-description">Intelligent search system with auto-suggestions and contextual help.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <span class="feature-icon">🌐</span>
+                    <h3 class="feature-title">Internationalization</h3>
+                    <p class="feature-description">Multi-language support with dynamic content translation and RTL layout support.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <span class="feature-icon">⚡</span>
+                    <h3 class="feature-title">Performance Optimized</h3>
+                    <p class="feature-description">Lighthouse-optimized performance with lazy loading, caching, and resource optimization.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="architecture" class="content-section">
+            <h2 class="section-title" data-icon="🏗️">Architecture</h2>
+            
+            <h3>System Overview</h3>
+            <p>CocoPilot follows a modern, modular architecture designed for scalability and maintainability:</p>
+            
+            <div class="code-block">
+                <code>
+cocopilot/
+├── index.html              # Main application entry point
+├── js/                     # Modular JavaScript components
+│   ├── analytics-dashboard-enhanced.js
+│   ├── interactive-data-viz.js
+│   ├── help-system.js
+│   ├── smart-search.js
+│   └── ...
+├── tests/                  # Comprehensive test suites
+│   ├── unit/
+│   ├── integration/
+│   └── e2e/
+├── .github/workflows/      # CI/CD automation
+└── docs/                   # Documentation
+                </code>
+            </div>
+
+            <h3>Key Components</h3>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <span class="feature-icon">🔄</span>
+                    <h3 class="feature-title">Service Worker</h3>
+                    <p class="feature-description">Advanced caching strategies and offline functionality for seamless user experience.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <span class="feature-icon">📈</span>
+                    <h3 class="feature-title">Analytics Engine</h3>
+                    <p class="feature-description">Real-time data processing and visualization with GitHub API integration.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <span class="feature-icon">🎨</span>
+                    <h3 class="feature-title">UI Framework</h3>
+                    <p class="feature-description">Custom CSS framework with CSS Grid, Flexbox, and modern styling techniques.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="api" class="content-section">
+            <h2 class="section-title" data-icon="🔌">API Reference</h2>
+            
+            <h3>GitHub API Integration</h3>
+            <p>CocoPilot integrates with the GitHub API to fetch real-time repository data:</p>
+            
+            <div class="code-block">
+                <code>
+// Fetch repository statistics
+const apiBase = 'https://api.github.com/repos/acbart/cocopilot';
+const response = await fetch(`${apiBase}/commits?per_page=100`);
+const commits = await response.json();
+                </code>
+            </div>
+
+            <h3>Available Endpoints</h3>
+            <ul>
+                <li><strong>/commits</strong> - Repository commit history</li>
+                <li><strong>/pulls</strong> - Pull request data</li>
+                <li><strong>/issues</strong> - Issue tracking information</li>
+                <li><strong>/stats/contributors</strong> - Contributor statistics</li>
+                <li><strong>/stats/commit_activity</strong> - Commit activity patterns</li>
+            </ul>
+
+            <div class="highlight-box">
+                <h3>⚠️ Rate Limiting</h3>
+                <p>The GitHub API has rate limits. CocoPilot implements intelligent caching to minimize API calls and provide offline functionality.</p>
+            </div>
+        </section>
+
+        <section id="development" class="content-section">
+            <h2 class="section-title" data-icon="👨‍💻">Development Guide</h2>
+            
+            <h3>Local Development Setup</h3>
+            <ol class="step-list">
+                <li>
+                    <div class="step-title">Clone Repository</div>
+                    <div class="code-block">
+                        <code>git clone https://github.com/acbart/cocopilot.git</code>
+                    </div>
+                </li>
+                <li>
+                    <div class="step-title">Install Dependencies</div>
+                    <div class="code-block">
+                        <code>npm install</code>
+                    </div>
+                </li>
+                <li>
+                    <div class="step-title">Start Development Server</div>
+                    <div class="code-block">
+                        <code>npm run dev</code>
+                    </div>
+                </li>
+                <li>
+                    <div class="step-title">Run Tests</div>
+                    <div class="code-block">
+                        <code>npm test</code>
+                    </div>
+                </li>
+            </ol>
+
+            <h3>Contributing Guidelines</h3>
+            <div class="highlight-box">
+                <h3>🤝 How to Contribute</h3>
+                <ul>
+                    <li>Fork the repository and create a feature branch</li>
+                    <li>Make your changes following the coding standards</li>
+                    <li>Add tests for new functionality</li>
+                    <li>Ensure all tests pass and code is linted</li>
+                    <li>Submit a pull request with a clear description</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="faq" class="content-section">
+            <h2 class="section-title" data-icon="❓">Frequently Asked Questions</h2>
+            
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    How does the AI-driven improvement process work?
+                </div>
+                <div class="faq-answer">
+                    <p>CocoPilot uses GitHub Actions to create daily improvement tasks that are automatically assigned to GitHub Copilot. The AI analyzes the current codebase and proposes meaningful enhancements, which are then reviewed and integrated.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    Is the repository safe to use as a reference?
+                </div>
+                <div class="faq-answer">
+                    <p>Yes! All AI-generated changes go through automated testing and quality checks. The repository maintains high code quality standards with comprehensive test coverage and continuous integration.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    Can I contribute to the project manually?
+                </div>
+                <div class="faq-answer">
+                    <p>Absolutely! While the repository evolves autonomously, human contributions are welcome. You can submit issues, feature requests, or pull requests following the standard GitHub workflow.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    What technologies does CocoPilot use?
+                </div>
+                <div class="faq-answer">
+                    <p>CocoPilot is built with modern web technologies: vanilla JavaScript, CSS Grid/Flexbox, GitHub API, Service Workers, and comprehensive testing with Jest and Playwright.</p>
+                </div>
+            </div>
+        </section>
+
+        <div style="text-align: center; margin: 40px 0;">
+            <a href="../index.html" class="back-to-home">🏠 Back to CocoPilot</a>
+        </div>
+    </div>
+
+    <script>
+        function toggleFaq(element) {
+            const answer = element.nextElementSibling;
+            const isVisible = answer.classList.contains('show');
+            
+            // Close all other FAQs
+            document.querySelectorAll('.faq-answer').forEach(el => {
+                el.classList.remove('show');
+            });
+            
+            // Toggle current FAQ
+            if (!isVisible) {
+                answer.classList.add('show');
+            }
+        }
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('.nav-item').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = link.getAttribute('href').substring(1);
+                const targetElement = document.getElementById(targetId);
+                if (targetElement) {
+                    targetElement.scrollIntoView({ 
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Add scroll-based animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observe all content sections
+        document.querySelectorAll('.content-section').forEach(section => {
+            section.style.opacity = '0';
+            section.style.transform = 'translateY(20px)';
+            section.style.transition = 'all 0.6s ease';
+            observer.observe(section);
+        });
+    </script>
+</body>
+</html>
