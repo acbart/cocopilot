@@ -1917,6 +1917,9 @@
         }
 
         // Fetch GitHub repository statistics with improved error handling
+        let fetchStatsRetryCount = 0;
+        const MAX_FETCH_RETRIES = 3;
+        
         async function fetchRepoStats() {
             const statsElement = document.getElementById('repoStats');
             const statsButtons = ['stars', 'forks', 'issues'];
@@ -1934,7 +1937,9 @@
                 const response = await fetch('https://api.github.com/repos/acbart/cocopilot', {
                     headers: {
                         'Accept': 'application/vnd.github.v3+json'
-                    }
+                    },
+                    // Add timeout to prevent hanging
+                    signal: AbortSignal.timeout(10000)
                 });
 
                 if (!response.ok) {
@@ -1955,6 +1960,9 @@
 
                 // Add success indicator
                 statsElement.setAttribute('aria-label', 'Repository statistics loaded successfully');
+                
+                // Reset retry count on success
+                fetchStatsRetryCount = 0;
 
             } catch (error) {
                 // Enhanced error handling
@@ -1970,6 +1978,9 @@
                 } else if (error.message.includes('403')) {
                     fallbackValues = { stars: '🚫', forks: '🚫', issues: '🚫' };
                     ariaMessage = 'Repository statistics unavailable (rate limited)';
+                } else if (error.name === 'TimeoutError' || error.name === 'AbortError') {
+                    fallbackValues = { stars: '⏱️', forks: '⏱️', issues: '⏱️' };
+                    ariaMessage = 'Repository statistics unavailable (timeout)';
                 }
 
                 // Update UI with fallback values
@@ -1980,14 +1991,18 @@
                 // Update accessibility
                 statsElement.setAttribute('aria-label', ariaMessage);
 
-                // Add retry mechanism for transient failures only
-                if (!error.message.includes('ERR_BLOCKED_BY_CLIENT') && 
+                // Add retry mechanism for transient failures only - with retry limit
+                if (fetchStatsRetryCount < MAX_FETCH_RETRIES && 
+                    !error.message.includes('ERR_BLOCKED_BY_CLIENT') && 
                     !error.message.includes('Failed to fetch') &&
                     !error.message.includes('403')) {
-                    console.log('Scheduling retry for repository stats...');
+                    fetchStatsRetryCount++;
+                    console.log(`Scheduling retry for repository stats (attempt ${fetchStatsRetryCount}/${MAX_FETCH_RETRIES})...`);
                     setTimeout(() => {
                         fetchRepoStats();
-                    }, 15000); // Retry after 15 seconds
+                    }, 15000 * fetchStatsRetryCount); // Exponential backoff
+                } else {
+                    console.log('Max retries reached or permanent error, stopping fetch attempts');
                 }
             }
         }
@@ -2137,13 +2152,52 @@
 
         // Add some interactive animations
         document.addEventListener('DOMContentLoaded', function() {
+            // Prioritize critical initialization for mobile devices
+            const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
+                            window.innerWidth <= 768;
+            
+            // Always initialize theme first
             initTheme();
-            fetchRepoStats();
-            updateOnlineStatus();
-            createFloatingElements();
-
-            // Initialize performance monitoring
-            initPerformanceMonitoring();
+            
+            // For mobile devices, delay heavy operations to prevent hanging
+            if (isMobile) {
+                console.log('Mobile device detected, optimizing load sequence');
+                
+                // Critical mobile functions first
+                updateOnlineStatus();
+                
+                // Delay heavy operations with staggered loading
+                setTimeout(() => {
+                    try {
+                        fetchRepoStats();
+                    } catch (e) {
+                        console.warn('Failed to load repo stats:', e);
+                    }
+                }, 100);
+                
+                setTimeout(() => {
+                    try {
+                        createFloatingElements();
+                    } catch (e) {
+                        console.warn('Failed to create floating elements:', e);
+                    }
+                }, 500);
+                
+                setTimeout(() => {
+                    try {
+                        initPerformanceMonitoring();
+                    } catch (e) {
+                        console.warn('Failed to initialize performance monitoring:', e);
+                    }
+                }, 1000);
+                
+            } else {
+                // Desktop - normal loading sequence
+                fetchRepoStats();
+                updateOnlineStatus();
+                createFloatingElements();
+                initPerformanceMonitoring();
+            }
 
             const features = document.querySelectorAll('.feature');
 
@@ -2160,64 +2214,105 @@
                 }, index * 200);
             });
 
-            // Add subtle floating animation to emoji
+            // Add subtle floating animation to emoji - with mobile optimization
             const emoji = document.querySelector('.emoji');
-            let direction = 1;
-            setInterval(() => {
-                direction *= -1;
-                emoji.style.transform = `translateY(${direction * 2}px)`;
-            }, 2000);
+            if (emoji) {
+                let direction = 1;
+                let animationInterval;
+                
+                // Reduce animation frequency on mobile devices to improve performance
+                const animationDelay = isMobile ? 4000 : 2000;
+                
+                animationInterval = setInterval(() => {
+                    // Check if element still exists
+                    if (!document.body.contains(emoji)) {
+                        clearInterval(animationInterval);
+                        return;
+                    }
+                    
+                    direction *= -1;
+                    emoji.style.transform = `translateY(${direction * 2}px)`;
+                }, animationDelay);
+                
+                // Clear animation if page becomes hidden to save resources
+                document.addEventListener('visibilitychange', () => {
+                    if (document.hidden) {
+                        clearInterval(animationInterval);
+                    } else {
+                        // Restart animation when page becomes visible again
+                        animationInterval = setInterval(() => {
+                            if (!document.body.contains(emoji)) {
+                                clearInterval(animationInterval);
+                                return;
+                            }
+                            direction *= -1;
+                            emoji.style.transform = `translateY(${direction * 2}px)`;
+                        }, animationDelay);
+                    }
+                });
+            }
         });
 
         /**
-         * Initialize basic performance monitoring
+         * Initialize basic performance monitoring with error boundaries
          */
         function initPerformanceMonitoring() {
-            // Monitor Core Web Vitals if supported
-            if ('PerformanceObserver' in window) {
-                try {
-                    // Largest Contentful Paint (LCP)
-                    new PerformanceObserver((entryList) => {
-                        const entries = entryList.getEntries();
-                        const lastEntry = entries[entries.length - 1];
-                        console.log('LCP:', lastEntry.startTime);
-                    }).observe({ entryTypes: ['largest-contentful-paint'] });
+            try {
+                // Monitor Core Web Vitals if supported
+                if ('PerformanceObserver' in window) {
+                    try {
+                        // Largest Contentful Paint (LCP)
+                        new PerformanceObserver((entryList) => {
+                            const entries = entryList.getEntries();
+                            const lastEntry = entries[entries.length - 1];
+                            console.log('LCP:', lastEntry.startTime);
+                        }).observe({ entryTypes: ['largest-contentful-paint'] });
 
-                    // First Input Delay (FID)
-                    new PerformanceObserver((entryList) => {
-                        const entries = entryList.getEntries();
-                        entries.forEach((entry) => {
-                            console.log('FID:', entry.processingStart - entry.startTime);
-                        });
-                    }).observe({ entryTypes: ['first-input'] });
+                        // First Input Delay (FID)
+                        new PerformanceObserver((entryList) => {
+                            const entries = entryList.getEntries();
+                            entries.forEach((entry) => {
+                                console.log('FID:', entry.processingStart - entry.startTime);
+                            });
+                        }).observe({ entryTypes: ['first-input'] });
 
-                    // Cumulative Layout Shift (CLS)
-                    new PerformanceObserver((entryList) => {
-                        let clsValue = 0;
-                        const entries = entryList.getEntries();
-                        entries.forEach((entry) => {
-                            if (!entry.hadRecentInput) {
-                                clsValue += entry.value;
-                            }
-                        });
-                        console.log('CLS:', clsValue);
-                    }).observe({ entryTypes: ['layout-shift'] });
+                        // Cumulative Layout Shift (CLS)
+                        new PerformanceObserver((entryList) => {
+                            let clsValue = 0;
+                            const entries = entryList.getEntries();
+                            entries.forEach((entry) => {
+                                if (!entry.hadRecentInput) {
+                                    clsValue += entry.value;
+                                }
+                            });
+                            console.log('CLS:', clsValue);
+                        }).observe({ entryTypes: ['layout-shift'] });
 
-                } catch (error) {
-                    console.log('Performance monitoring not fully supported:', error);
-                }
-            }
-
-            // Basic page load timing
-            window.addEventListener('load', () => {
-                setTimeout(() => {
-                    const navigation = performance.getEntriesByType('navigation')[0];
-                    if (navigation) {
-                        console.log('Page Load Time:', navigation.loadEventEnd - navigation.fetchStart);
-                        console.log('DOM Content Loaded:', navigation.domContentLoadedEventEnd - navigation.fetchStart);
+                    } catch (observerError) {
+                        console.log('Some performance observers not supported:', observerError);
                     }
-                }, 100);
-            });
+                } else {
+                    console.log('PerformanceObserver not supported');
+                }
+
+                // Basic page load timing
+                window.addEventListener('load', () => {
+                    setTimeout(() => {
+                        try {
+                            const navigation = performance.getEntriesByType('navigation')[0];
+                            if (navigation) {
+                                console.log('Page Load Time:', navigation.loadEventEnd - navigation.fetchStart);
+                                console.log('DOM Content Loaded:', navigation.domContentLoadedEventEnd - navigation.fetchStart);
+                            }
+                        } catch (timingError) {
+                            console.log('Performance timing not available:', timingError);
+                        }
+                    }, 100);
+                });
+            } catch (error) {
+                console.log('Performance monitoring initialization failed:', error);
+                // Don't let performance monitoring failures break the page
+            }
         }
 
         /**
@@ -2238,14 +2333,16 @@
         });
     </script>
 
-    <!-- Core JavaScript Modules (Critical) -->
+    <!-- Core JavaScript Modules (Critical - Load First) -->
     <script src="js/i18n.js"></script>
     <script src="js/enhanced-error-handler.js"></script>
-    <script src="js/performance-monitor.js"></script>
-    <script src="js/help-system.js"></script>
-    <script src="js/accessibility-enhancer.js"></script>
-    <script src="js/smart-search.js"></script>
-    <script src="js/user-feedback.js"></script>
+    
+    <!-- Performance and UX Modules (Deferred for faster initial load) -->
+    <script src="js/performance-monitor.js" defer></script>
+    <script src="js/help-system.js" defer></script>
+    <script src="js/accessibility-enhancer.js" defer></script>
+    <script src="js/smart-search.js" defer></script>
+    <script src="js/user-feedback.js" defer></script>
 
     <!-- UI and Interaction Modules (Deferred) -->
     <script src="js/advanced-search.js" defer></script>
