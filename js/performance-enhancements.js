@@ -8,6 +8,7 @@ class PerformanceEnhancer {
   constructor() {
     this.isInitialized = false;
     this.loadedModules = new Set();
+    this.reportingInterval = null;
     this.performanceMetrics = {
       loadTime: 0,
       renderTime: 0,
@@ -232,9 +233,13 @@ class PerformanceEnhancer {
     // Monitor Core Web Vitals
     this.measureCoreWebVitals();
 
-    // Set up periodic performance reporting
-    setInterval(() => {
-      this.reportPerformanceMetrics();
+    // Set up periodic performance reporting with cleanup
+    this.reportingInterval = setInterval(() => {
+      try {
+        this.reportPerformanceMetrics();
+      } catch (error) {
+        console.warn('Performance reporting failed:', error);
+      }
     }, 30000); // Report every 30 seconds
   }
 
@@ -352,8 +357,14 @@ class PerformanceEnhancer {
     }
   }
 
-  // Method to clean up unused resources
+  // Method to clean up unused resources and intervals
   cleanupUnusedResources() {
+    // Clear the reporting interval
+    if (this.reportingInterval) {
+      clearInterval(this.reportingInterval);
+      this.reportingInterval = null;
+    }
+    
     // Remove event listeners for elements no longer visible
     const invisibleElements = document.querySelectorAll('[style*="display: none"]');
     invisibleElements.forEach(element => {
@@ -367,6 +378,12 @@ class PerformanceEnhancer {
     if (performance.clearMeasures) {
       performance.clearMeasures();
     }
+  }
+  
+  // Add proper destroy method
+  destroy() {
+    this.cleanupUnusedResources();
+    this.isInitialized = false;
   }
 }
 

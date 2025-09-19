@@ -503,13 +503,21 @@ class PerformanceOptimizer {
     // Run audit after page load
     window.addEventListener('load', () => {
       setTimeout(() => {
-        this.runPerformanceAudit();
+        try {
+          this.runPerformanceAudit();
+        } catch (error) {
+          console.warn('Performance audit failed:', error);
+        }
       }, 2000);
     });
 
-    // Run periodic audits
-    setInterval(() => {
-      this.runPerformanceAudit();
+    // Run periodic audits with cleanup tracking
+    this.auditInterval = setInterval(() => {
+      try {
+        this.runPerformanceAudit();
+      } catch (error) {
+        console.warn('Periodic performance audit failed:', error);
+      }
     }, 30000); // Every 30 seconds
   }
 
