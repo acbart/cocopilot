@@ -10,6 +10,11 @@ class UserFeedbackSystem {
     this.defaultDuration = 5000;
     this.container = null;
     
+    // API operation tracking to prevent spam
+    this.activeAPIOperations = new Set();
+    this.lastAPINotification = 0;
+    this.apiNotificationDelay = 2000; // Minimum delay between API notifications
+    
     this.init();
   }
 
@@ -285,9 +290,24 @@ class UserFeedbackSystem {
       const url = args[0];
       let loadingId = null;
       
-      // Show loading for GitHub API calls
+      // Show loading for GitHub API calls with deduplication
       if (typeof url === 'string' && url.includes('api.github.com')) {
-        loadingId = this.loading('Fetching latest data...');
+        const now = Date.now();
+        const operationType = 'github-api';
+        
+        // Only show notification if we don't have an active one and enough time has passed
+        if (!this.activeAPIOperations.has(operationType) && 
+            (now - this.lastAPINotification) > this.apiNotificationDelay) {
+          
+          loadingId = this.loading('Fetching latest data...');
+          this.activeAPIOperations.add(operationType);
+          this.lastAPINotification = now;
+          
+          // Remove from active operations after a timeout even if request doesn't complete
+          setTimeout(() => {
+            this.activeAPIOperations.delete(operationType);
+          }, 5000);
+        }
       }
       
       try {
@@ -295,22 +315,37 @@ class UserFeedbackSystem {
         
         if (loadingId) {
           this.removeNotification(loadingId);
+          this.activeAPIOperations.delete('github-api');
         }
         
         if (!response.ok && url.includes('api.github.com')) {
-          this.warning('Unable to fetch latest data. Showing cached information.');
+          // Only show warning if we don't have too many recent notifications
+          const now = Date.now();
+          if ((now - this.lastAPINotification) > this.apiNotificationDelay) {
+            this.warning('Unable to fetch latest data. Showing cached information.');
+            this.lastAPINotification = now;
+          }
         } else if (response.ok && url.includes('api.github.com')) {
-          this.success('Data updated successfully!', { duration: 2000 });
+          // Only show success if we actually showed a loading notification
+          if (loadingId) {
+            this.success('Data updated successfully!', { duration: 2000 });
+          }
         }
         
         return response;
       } catch (error) {
         if (loadingId) {
           this.removeNotification(loadingId);
+          this.activeAPIOperations.delete('github-api');
         }
         
         if (!error.message.includes('ERR_BLOCKED_BY_CLIENT')) {
-          this.warning('Network request failed. Some data may be outdated.');
+          // Only show error if we don't have too many recent notifications
+          const now = Date.now();
+          if ((now - this.lastAPINotification) > this.apiNotificationDelay) {
+            this.warning('Network request failed. Some data may be outdated.');
+            this.lastAPINotification = now;
+          }
         }
         
         throw error;
