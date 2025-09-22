@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-10BCNBPTHG"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-10BCNBPTHG');
+    </script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CocoPilot Documentation - Complete Guide</title>
+    <meta name="description" content="Comprehensive documentation for CocoPilot - the self-updating AI-driven repository">
+    <meta name="keywords" content="AI, automation, GitHub, documentation, self-updating, repository, guide">
+
+    <!-- Security Headers -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.google-analytics.com https://ssl.google-analytics.com https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://www.google-analytics.com https:; connect-src 'self' https://api.github.com https://www.google-analytics.com;; font-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self';">
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="X-Frame-Options" content="DENY">
+    <meta http-equiv="X-XSS-Protection" content="1; mode=block">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
+
+    <!-- Open Graph / Social Media -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="CocoPilot Documentation - Complete Guide">
+    <meta property="og:description" content="Comprehensive documentation for CocoPilot - the self-updating AI-driven repository">
+    <meta property="og:url" content="https://acbart.github.io/cocopilot/documentation.html">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#667eea">
+
+    <style>
+        :root {
+            --bg-gradient-start: #667eea;
+            --bg-gradient-end: #764ba2;
+            --container-bg: rgba(255, 255, 255, 0.95);
+            --text-primary: #333;
+            --text-secondary: #666;
+            --text-tertiary: #888;
+            --text-description: #555;
+            --border-color: rgba(102, 126, 234, 0.2);
+            --feature-bg: rgba(102, 126, 234, 0.1);
+            --button-gradient-start: #667eea;
+            --button-gradient-end: #764ba2;
+            --sidebar-bg: rgba(255, 255, 255, 0.98);
+            --code-bg: #f8f9fa;
+            --code-border: #e9ecef;
+        }
+
+        [data-theme="dark"] {
+            --bg-gradient-start: #2d1b69;
+            --bg-gradient-end: #11998e;
+            --container-bg: rgba(26, 32, 44, 0.95);
+            --text-primary: #e2e8f0;
+            --text-secondary: #a0aec0;
+            --text-tertiary: #718096;
+            --text-description: #cbd5e0;
+            --border-color: rgba(102, 126, 234, 0.3);
+            --feature-bg: rgba(102, 126, 234, 0.2);
+            --sidebar-bg: rgba(26, 32, 44, 0.98);
+            --code-bg: #2d3748;
+            --code-border: #4a5568;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
+            min-height: 100vh;
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+        }
+
+        .docs-container {
+            display: flex;
+            min-height: 100vh;
+            max-width: 1400px;
+            margin: 0 auto;
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .sidebar {
+            width: 280px;
+            background: var(--sidebar-bg);
+            border-radius: 15px;
+            padding: 30px 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border-color);
+            position: sticky;
+            top: 20px;
+            height: fit-content;
+            max-height: calc(100vh - 40px);
+            overflow-y: auto;
+        }
+
+        .main-content {
+            flex: 1;
+            background: var(--container-bg);
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border-color);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            background: linear-gradient(135deg, var(--button-gradient-start), var(--button-gradient-end));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        .nav-section {
+            margin-bottom: 30px;
+        }
+
+        .nav-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 10px;
+            padding-bottom: 5px;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .nav-list {
+            list-style: none;
+        }
+
+        .nav-item {
+            margin-bottom: 8px;
+        }
+
+        .nav-link {
+            color: var(--text-secondary);
+            text-decoration: none;
+            padding: 8px 12px;
+            border-radius: 8px;
+            display: block;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            background: var(--feature-bg);
+            color: var(--text-primary);
+            transform: translateX(5px);
+        }
+
+        .section {
+            margin-bottom: 50px;
+            scroll-margin-top: 20px;
+        }
+
+        .section h2 {
+            font-size: 2rem;
+            color: var(--text-primary);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid var(--button-gradient-start);
+        }
+
+        .section h3 {
+            font-size: 1.5rem;
+            color: var(--text-primary);
+            margin: 30px 0 15px 0;
+        }
+
+        .section h4 {
+            font-size: 1.2rem;
+            color: var(--text-primary);
+            margin: 20px 0 10px 0;
+        }
+
+        .section p {
+            color: var(--text-description);
+            margin-bottom: 15px;
+            line-height: 1.7;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .feature-card {
+            background: var(--feature-bg);
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.15);
+        }
+
+        .feature-icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .feature-card h4 {
+            margin: 0 0 10px 0;
+            color: var(--text-primary);
+        }
+
+        .feature-card p {
+            margin: 0;
+            font-size: 0.95rem;
+        }
+
+        .code-block {
+            background: var(--code-bg);
+            border: 1px solid var(--code-border);
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .highlight {
+            background: linear-gradient(135deg, var(--button-gradient-start), var(--button-gradient-end));
+            color: white;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: 500;
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--container-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.1);
+            background: var(--feature-bg);
+        }
+
+        .back-to-home {
+            position: fixed;
+            top: 80px;
+            right: 20px;
+            background: linear-gradient(135deg, var(--button-gradient-start), var(--button-gradient-end));
+            color: white;
+            text-decoration: none;
+            padding: 10px 15px;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .back-to-home:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .quick-start {
+            background: var(--feature-bg);
+            border-radius: 12px;
+            padding: 25px;
+            margin: 30px 0;
+            border-left: 4px solid var(--button-gradient-start);
+        }
+
+        .step-list {
+            list-style: none;
+            counter-reset: step-counter;
+        }
+
+        .step-list li {
+            counter-increment: step-counter;
+            margin-bottom: 15px;
+            padding-left: 40px;
+            position: relative;
+        }
+
+        .step-list li::before {
+            content: counter(step-counter);
+            position: absolute;
+            left: 0;
+            top: 0;
+            background: var(--button-gradient-start);
+            color: white;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .api-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: var(--container-bg);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .api-table th, .api-table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .api-table th {
+            background: var(--feature-bg);
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .api-table tr:hover {
+            background: var(--feature-bg);
+        }
+
+        @media (max-width: 768px) {
+            .docs-container {
+                flex-direction: column;
+                padding: 10px;
+            }
+
+            .sidebar {
+                width: 100%;
+                position: static;
+                max-height: none;
+                margin-bottom: 20px;
+            }
+
+            .main-content {
+                padding: 20px;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .theme-toggle, .back-to-home {
+                position: relative;
+                top: auto;
+                right: auto;
+                margin: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">🌙</button>
+    <a href="index.html" class="back-to-home">← Back to Home</a>
+
+    <div class="docs-container">
+        <nav class="sidebar">
+            <div class="nav-section">
+                <div class="nav-title">📖 Documentation</div>
+                <ul class="nav-list">
+                    <li class="nav-item"><a href="#overview" class="nav-link">Overview</a></li>
+                    <li class="nav-item"><a href="#getting-started" class="nav-link">Getting Started</a></li>
+                    <li class="nav-item"><a href="#features" class="nav-link">Features</a></li>
+                    <li class="nav-item"><a href="#architecture" class="nav-link">Architecture</a></li>
+                </ul>
+            </div>
+
+            <div class="nav-section">
+                <div class="nav-title">🔧 Technical</div>
+                <ul class="nav-list">
+                    <li class="nav-item"><a href="#api-reference" class="nav-link">API Reference</a></li>
+                    <li class="nav-item"><a href="#development" class="nav-link">Development</a></li>
+                    <li class="nav-item"><a href="#testing" class="nav-link">Testing</a></li>
+                    <li class="nav-item"><a href="#deployment" class="nav-link">Deployment</a></li>
+                </ul>
+            </div>
+
+            <div class="nav-section">
+                <div class="nav-title">🤝 Community</div>
+                <ul class="nav-list">
+                    <li class="nav-item"><a href="#contributing" class="nav-link">Contributing</a></li>
+                    <li class="nav-item"><a href="#support" class="nav-link">Support</a></li>
+                    <li class="nav-item"><a href="#roadmap" class="nav-link">Roadmap</a></li>
+                </ul>
+            </div>
+        </nav>
+
+        <main class="main-content">
+            <div class="header">
+                <h1>📚 CocoPilot Documentation</h1>
+                <p>Complete guide to the self-updating AI-driven repository</p>
+            </div>
+
+            <section id="overview" class="section">
+                <h2>🔍 Overview</h2>
+                <p>CocoPilot is a revolutionary experiment in autonomous software evolution. This repository demonstrates how AI can continuously improve and enhance itself through GitHub Copilot integration and automated workflows.</p>
+                
+                <div class="quick-start">
+                    <h3>🚀 Quick Start</h3>
+                    <ol class="step-list">
+                        <li>Visit the <a href="index.html">main CocoPilot page</a></li>
+                        <li>Explore the interactive features and tutorials</li>
+                        <li>Check out the <a href="timeline.html">project timeline</a></li>
+                        <li>Join our community and contribute improvements</li>
+                    </ol>
+                </div>
+            </section>
+
+            <section id="getting-started" class="section">
+                <h2>🎯 Getting Started</h2>
+                <p>CocoPilot is designed to be accessible to everyone, from developers to curious users interested in AI-driven development.</p>
+
+                <h3>For Users</h3>
+                <p>Simply visit <span class="highlight">https://acbart.github.io/cocopilot/</span> to experience CocoPilot. The interface is intuitive and includes guided tutorials for all features.</p>
+
+                <h3>For Developers</h3>
+                <div class="code-block">
+# Clone the repository
+git clone https://github.com/acbart/cocopilot.git
+cd cocopilot
+
+# Install dependencies
+npm install
+
+# Start development server
+npm run dev
+
+# Run tests
+npm test
+                </div>
+            </section>
+
+            <section id="features" class="section">
+                <h2>✨ Features</h2>
+                <p>CocoPilot includes a comprehensive suite of features designed to showcase AI-driven development capabilities.</p>
+
+                <div class="feature-grid">
+                    <div class="feature-card">
+                        <span class="feature-icon">🔄</span>
+                        <h4>Daily Self-Updates</h4>
+                        <p>Automated daily analysis and improvement cycles powered by GitHub Actions and AI.</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <span class="feature-icon">🤖</span>
+                        <h4>AI-Driven Evolution</h4>
+                        <p>GitHub Copilot makes intelligent code and design decisions for continuous improvement.</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <span class="feature-icon">📱</span>
+                        <h4>Progressive Web App</h4>
+                        <p>Full PWA capabilities with offline support, responsive design, and app-like experience.</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <span class="feature-icon">🌍</span>
+                        <h4>Internationalization</h4>
+                        <p>Support for 11 languages with cultural adaptations and RTL language support.</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <span class="feature-icon">♿</span>
+                        <h4>Accessibility First</h4>
+                        <p>WCAG 2.1 AA compliance with comprehensive screen reader support and keyboard navigation.</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <span class="feature-icon">⚡</span>
+                        <h4>Performance Optimized</h4>
+                        <p>Advanced lazy loading, Core Web Vitals monitoring, and performance analytics.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="architecture" class="section">
+                <h2>🏗️ Architecture</h2>
+                <p>CocoPilot follows a modular, progressive enhancement architecture that ensures performance and maintainability.</p>
+
+                <h3>Core Components</h3>
+                <ul>
+                    <li><strong>Static Frontend:</strong> HTML5, CSS3, and vanilla JavaScript</li>
+                    <li><strong>AI Integration:</strong> GitHub Copilot API and automated workflows</li>
+                    <li><strong>Performance Layer:</strong> Service workers, caching, and optimization</li>
+                    <li><strong>Accessibility Layer:</strong> ARIA, semantic HTML, and keyboard navigation</li>
+                </ul>
+
+                <h3>Module System</h3>
+                <p>The codebase is organized into focused modules for maintainability:</p>
+                <div class="code-block">
+js/
+├── ai-education.js           # Interactive AI learning system
+├── i18n.js                  # Internationalization support
+├── performance-monitor.js    # Performance tracking
+├── accessibility-enhancer.js # Accessibility improvements
+└── ... (30+ additional modules)
+                </div>
+            </section>
+
+            <section id="api-reference" class="section">
+                <h2>📋 API Reference</h2>
+                <p>CocoPilot exposes several APIs for interacting with its features programmatically.</p>
+
+                <h3>Internationalization API</h3>
+                <table class="api-table">
+                    <thead>
+                        <tr>
+                            <th>Method</th>
+                            <th>Parameters</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>i18n.t(key)</code></td>
+                            <td>key: string</td>
+                            <td>Translate a key to the current language</td>
+                        </tr>
+                        <tr>
+                            <td><code>i18n.changeLanguage(lang)</code></td>
+                            <td>lang: string</td>
+                            <td>Change the active language</td>
+                        </tr>
+                        <tr>
+                            <td><code>i18n.getCurrentLanguage()</code></td>
+                            <td>-</td>
+                            <td>Get the current language code</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>Performance API</h3>
+                <table class="api-table">
+                    <thead>
+                        <tr>
+                            <th>Method</th>
+                            <th>Parameters</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>performance.measurePageLoad()</code></td>
+                            <td>-</td>
+                            <td>Measure current page load performance</td>
+                        </tr>
+                        <tr>
+                            <td><code>performance.getCoreWebVitals()</code></td>
+                            <td>-</td>
+                            <td>Get Core Web Vitals metrics</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <section id="development" class="section">
+                <h2>💻 Development</h2>
+                <p>Developing with CocoPilot is designed to be straightforward with modern tooling and clear guidelines.</p>
+
+                <h3>Development Setup</h3>
+                <div class="code-block">
+# Install dependencies
+npm install
+
+# Start development server
+npm run dev
+
+# Run linting
+npm run lint
+
+# Run tests with coverage
+npm run test:coverage
+                </div>
+
+                <h3>Code Style</h3>
+                <p>The project follows strict code quality standards:</p>
+                <ul>
+                    <li>ESLint for JavaScript linting</li>
+                    <li>Prettier for code formatting</li>
+                    <li>HTML validation with html-validate</li>
+                    <li>Automated accessibility testing</li>
+                </ul>
+            </section>
+
+            <section id="testing" class="section">
+                <h2>🧪 Testing</h2>
+                <p>CocoPilot includes comprehensive testing across multiple layers to ensure quality and reliability.</p>
+
+                <h3>Test Suites</h3>
+                <div class="feature-grid">
+                    <div class="feature-card">
+                        <span class="feature-icon">🔬</span>
+                        <h4>Unit Tests</h4>
+                        <p>Jest-based unit tests for individual modules and functions.</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <span class="feature-icon">🎭</span>
+                        <h4>E2E Tests</h4>
+                        <p>Playwright end-to-end tests for user interaction flows.</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <span class="feature-icon">♿</span>
+                        <h4>Accessibility Tests</h4>
+                        <p>Automated accessibility testing with axe-core.</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <span class="feature-icon">⚡</span>
+                        <h4>Performance Tests</h4>
+                        <p>Lighthouse CI for performance and best practice validation.</p>
+                    </div>
+                </div>
+
+                <h3>Running Tests</h3>
+                <div class="code-block">
+# Run all tests
+npm test
+
+# Run specific test suites
+npm run test:unit
+npm run test:e2e
+
+# Run with coverage
+npm run test:coverage
+
+# Run in watch mode
+npm run test:watch
+                </div>
+            </section>
+
+            <section id="deployment" class="section">
+                <h2>🚀 Deployment</h2>
+                <p>CocoPilot is automatically deployed using GitHub Pages with continuous integration.</p>
+
+                <h3>Automated Deployment</h3>
+                <p>Every merge to the main branch triggers:</p>
+                <ul>
+                    <li>Automated testing and validation</li>
+                    <li>Performance benchmarking</li>
+                    <li>Accessibility auditing</li>
+                    <li>Deployment to GitHub Pages</li>
+                </ul>
+
+                <h3>Manual Deployment</h3>
+                <div class="code-block">
+# Build (static site - no build needed)
+npm run build
+
+# Validate before deployment
+npm run validate
+npm run lint
+npm run test
+
+# Deploy (via GitHub Pages)
+git push origin main
+                </div>
+            </section>
+
+            <section id="contributing" class="section">
+                <h2>🤝 Contributing</h2>
+                <p>CocoPilot welcomes contributions from the community. Whether you're fixing bugs, adding features, or improving documentation, your help is appreciated.</p>
+
+                <h3>Contribution Process</h3>
+                <ol class="step-list">
+                    <li>Fork the repository</li>
+                    <li>Create a feature branch</li>
+                    <li>Make your changes</li>
+                    <li>Add tests for new functionality</li>
+                    <li>Run the test suite</li>
+                    <li>Submit a pull request</li>
+                </ol>
+
+                <p>For detailed guidelines, see our <a href="CONTRIBUTING.md">Contributing Guide</a>.</p>
+            </section>
+
+            <section id="support" class="section">
+                <h2>💬 Support</h2>
+                <p>Need help with CocoPilot? We're here to assist you.</p>
+
+                <div class="feature-grid">
+                    <div class="feature-card">
+                        <span class="feature-icon">📖</span>
+                        <h4>Documentation</h4>
+                        <p>Check this documentation and our README for comprehensive guides.</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <span class="feature-icon">🐛</span>
+                        <h4>Issues</h4>
+                        <p>Report bugs or request features on our GitHub Issues page.</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <span class="feature-icon">💬</span>
+                        <h4>Discussions</h4>
+                        <p>Join community discussions for help and sharing ideas.</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <span class="feature-icon">🚀</span>
+                        <h4>AI-Driven</h4>
+                        <p>The repository continuously improves itself to address common issues.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="roadmap" class="section">
+                <h2>🗺️ Roadmap</h2>
+                <p>CocoPilot continues to evolve with AI-driven improvements. Check our <a href="tomorrow.md">Tomorrow's Vision</a> document for upcoming features and improvements.</p>
+
+                <h3>Current Focus Areas</h3>
+                <ul>
+                    <li>Enhanced AI-driven code suggestions</li>
+                    <li>Improved internationalization coverage</li>
+                    <li>Advanced performance optimizations</li>
+                    <li>Community collaboration features</li>
+                    <li>Extended accessibility support</li>
+                </ul>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        // Theme toggle functionality
+        function toggleTheme() {
+            const body = document.body;
+            const currentTheme = body.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            
+            body.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            
+            // Update toggle icon
+            const toggle = document.querySelector('.theme-toggle');
+            toggle.textContent = newTheme === 'dark' ? '☀️' : '🌙';
+        }
+
+        // Load saved theme
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        document.body.setAttribute('data-theme', savedTheme);
+        document.querySelector('.theme-toggle').textContent = savedTheme === 'dark' ? '☀️' : '🌙';
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = link.getAttribute('href').substring(1);
+                const targetElement = document.getElementById(targetId);
+                
+                if (targetElement) {
+                    targetElement.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                    
+                    // Update active link
+                    document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+                    link.classList.add('active');
+                }
+            });
+        });
+
+        // Update active link on scroll
+        window.addEventListener('scroll', () => {
+            const sections = document.querySelectorAll('.section');
+            const navLinks = document.querySelectorAll('.nav-link');
+            
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (pageYOffset >= (sectionTop - 200)) {
+                    current = section.getAttribute('id');
+                }
+            });
+            
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${current}`) {
+                    link.classList.add('active');
+                }
+            });
+        });
+
+        // Performance monitoring
+        window.addEventListener('load', () => {
+            // Track page load performance
+            if ('performance' in window) {
+                const navigation = performance.getEntriesByType('navigation')[0];
+                const loadTime = navigation.loadEventEnd - navigation.loadEventStart;
+                
+                if (loadTime > 0) {
+                    console.log(`Documentation page loaded in ${loadTime}ms`);
+                }
+            }
+        });
+    </script>
+</body>
+</html>

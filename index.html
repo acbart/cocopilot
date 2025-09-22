@@ -52,6 +52,9 @@
     <!-- RSS Feed Discovery -->
     <link rel="alternate" type="application/rss+xml" title="CocoPilot Updates" href="feed.xml">
     <link rel="alternate" type="application/atom+xml" title="CocoPilot Releases" href="https://github.com/acbart/cocopilot/releases.atom">
+    
+    <!-- Sitemap -->
+    <link rel="sitemap" type="application/xml" title="Sitemap" href="sitemap.xml">
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
@@ -468,6 +471,54 @@
 
         .btn-timeline:focus {
             outline: 2px solid #ff6b35;
+            outline-offset: 2px;
+        }
+
+        .btn-features {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            transition: all 0.3s ease;
+        }
+
+        .btn-features:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(16, 185, 129, 0.3);
+        }
+
+        .btn-features:focus {
+            outline: 2px solid #10b981;
+            outline-offset: 2px;
+        }
+
+        .btn-docs {
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            color: white;
+            transition: all 0.3s ease;
+        }
+
+        .btn-docs:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(59, 130, 246, 0.3);
+        }
+
+        .btn-docs:focus {
+            outline: 2px solid #3b82f6;
+            outline-offset: 2px;
+        }
+
+        .btn-analytics {
+            background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+            color: white;
+            transition: all 0.3s ease;
+        }
+
+        .btn-analytics:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(139, 92, 246, 0.3);
+        }
+
+        .btn-analytics:focus {
+            outline: 2px solid #8b5cf6;
             outline-offset: 2px;
         }
 
@@ -1601,12 +1652,18 @@
 
         <nav class="cta" aria-label="Main actions">
             <a href="https://github.com/acbart/cocopilot" class="btn" aria-describedby="github-desc" data-i18n="nav.github">View on GitHub</a>
+            <a href="features.html" class="btn btn-features" aria-describedby="features-desc" data-i18n="nav.features">🚀 Explore Features</a>
+            <a href="documentation.html" class="btn btn-docs" aria-describedby="docs-desc" data-i18n="nav.documentation">📚 Documentation</a>
+            <a href="analytics.html" class="btn btn-analytics" aria-describedby="analytics-desc" data-i18n="nav.analytics">📊 Analytics</a>
             <a href="timeline.html" class="btn btn-timeline" aria-describedby="timeline-desc" data-i18n="nav.timeline">📅 Project Timeline</a>
             <a href="https://github.com/acbart/cocopilot/issues" class="btn btn-secondary" aria-describedby="issues-desc" data-i18n="nav.issues">See Daily Issues</a>
             <button type="button" class="btn btn-rss" onclick="handleRSSFeed()" aria-describedby="rss-desc" data-i18n="nav.rss">
                 <span aria-hidden="true">📡</span> RSS Feed
             </button>
             <div id="github-desc" class="sr-only" data-i18n="nav.github.desc">View the complete source code and development history</div>
+            <div id="features-desc" class="sr-only" data-i18n="nav.features.desc">Explore all CocoPilot features with interactive demos and detailed explanations</div>
+            <div id="docs-desc" class="sr-only" data-i18n="nav.documentation.desc">Access comprehensive documentation, API reference, and development guides</div>
+            <div id="analytics-desc" class="sr-only" data-i18n="nav.analytics.desc">View real-time repository analytics, performance metrics, and activity dashboard</div>
             <div id="timeline-desc" class="sr-only" data-i18n="nav.timeline.desc">Explore the interactive timeline of CocoPilot's evolution and roadmap</div>
             <div id="issues-desc" class="sr-only" data-i18n="nav.issues.desc">Browse daily improvement issues and discussions</div>
             <div id="rss-desc" class="sr-only" data-i18n="nav.rss.desc">Subscribe to RSS feed for repository updates</div>
