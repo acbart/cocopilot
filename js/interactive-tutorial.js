@@ -238,7 +238,9 @@ class InteractiveTutorial {
   }
 
   addStyles() {
-    if (document.getElementById('tutorial-styles')) return;
+    if (document.getElementById('tutorial-styles')) {
+      return;
+    }
 
     const styles = document.createElement('style');
     styles.id = 'tutorial-styles';
@@ -594,21 +596,23 @@ class InteractiveTutorial {
 
     // Keyboard navigation
     document.addEventListener('keydown', (e) => {
-      if (!this.isActive) return;
+      if (!this.isActive) {
+        return;
+      }
 
       switch (e.key) {
-        case 'Escape':
-          this.endTutorial();
-          break;
-        case 'ArrowRight':
-        case 'Enter':
-          if (e.target.classList.contains('tutorial-next') || !e.target.closest('.tutorial-tooltip')) {
-            this.nextStep();
-          }
-          break;
-        case 'ArrowLeft':
-          this.previousStep();
-          break;
+      case 'Escape':
+        this.endTutorial();
+        break;
+      case 'ArrowRight':
+      case 'Enter':
+        if (e.target.classList.contains('tutorial-next') || !e.target.closest('.tutorial-tooltip')) {
+          this.nextStep();
+        }
+        break;
+      case 'ArrowLeft':
+        this.previousStep();
+        break;
       }
     });
 
@@ -647,7 +651,9 @@ class InteractiveTutorial {
 
   startTutorial(tutorialId) {
     const tutorial = this.tutorials.get(tutorialId);
-    if (!tutorial) return;
+    if (!tutorial) {
+      return;
+    }
 
     this.currentTutorial = tutorial;
     this.currentStep = 0;
@@ -667,7 +673,9 @@ class InteractiveTutorial {
   }
 
   showStep() {
-    if (!this.currentTutorial || !this.isActive) return;
+    if (!this.currentTutorial || !this.isActive) {
+      return;
+    }
 
     const step = this.currentTutorial.steps[this.currentStep];
     if (!step) {
@@ -705,8 +713,12 @@ class InteractiveTutorial {
     const backBtn = document.querySelector('.tutorial-back');
     const skipBtn = document.querySelector('.tutorial-skip');
 
-    if (title) title.textContent = step.title;
-    if (content) content.textContent = step.content;
+    if (title) {
+      title.textContent = step.title;
+    }
+    if (content) {
+      content.textContent = step.content;
+    }
 
     // Show/hide buttons based on step configuration
     if (nextBtn) {
@@ -730,8 +742,10 @@ class InteractiveTutorial {
   positionTooltip(step) {
     const tooltip = document.querySelector('.tutorial-tooltip');
     const spotlight = document.querySelector('.tutorial-spotlight');
-    
-    if (!tooltip || !spotlight) return;
+
+    if (!tooltip || !spotlight) {
+      return;
+    }
 
     // Find target element
     let targetElement = null;
@@ -741,7 +755,7 @@ class InteractiveTutorial {
 
     if (targetElement) {
       const rect = targetElement.getBoundingClientRect();
-      
+
       // Position spotlight
       spotlight.style.left = `${rect.left - 8}px`;
       spotlight.style.top = `${rect.top - 8}px`;
@@ -772,34 +786,34 @@ class InteractiveTutorial {
 
   positionTooltipRelativeToTarget(tooltip, targetRect, position) {
     const margin = 20;
-    
+
     switch (position) {
-      case 'top':
-        tooltip.style.left = `${targetRect.left + targetRect.width / 2}px`;
-        tooltip.style.top = `${targetRect.top - margin}px`;
-        tooltip.style.transform = 'translate(-50%, -100%)';
-        break;
-      case 'bottom':
-        tooltip.style.left = `${targetRect.left + targetRect.width / 2}px`;
-        tooltip.style.top = `${targetRect.bottom + margin}px`;
-        tooltip.style.transform = 'translate(-50%, 0)';
-        break;
-      case 'left':
-        tooltip.style.left = `${targetRect.left - margin}px`;
-        tooltip.style.top = `${targetRect.top + targetRect.height / 2}px`;
-        tooltip.style.transform = 'translate(-100%, -50%)';
-        break;
-      case 'right':
-        tooltip.style.left = `${targetRect.right + margin}px`;
-        tooltip.style.top = `${targetRect.top + targetRect.height / 2}px`;
-        tooltip.style.transform = 'translate(0, -50%)';
-        break;
-      case 'center':
-      default:
-        tooltip.style.left = '50%';
-        tooltip.style.top = '50%';
-        tooltip.style.transform = 'translate(-50%, -50%)';
-        break;
+    case 'top':
+      tooltip.style.left = `${targetRect.left + targetRect.width / 2}px`;
+      tooltip.style.top = `${targetRect.top - margin}px`;
+      tooltip.style.transform = 'translate(-50%, -100%)';
+      break;
+    case 'bottom':
+      tooltip.style.left = `${targetRect.left + targetRect.width / 2}px`;
+      tooltip.style.top = `${targetRect.bottom + margin}px`;
+      tooltip.style.transform = 'translate(-50%, 0)';
+      break;
+    case 'left':
+      tooltip.style.left = `${targetRect.left - margin}px`;
+      tooltip.style.top = `${targetRect.top + targetRect.height / 2}px`;
+      tooltip.style.transform = 'translate(-100%, -50%)';
+      break;
+    case 'right':
+      tooltip.style.left = `${targetRect.right + margin}px`;
+      tooltip.style.top = `${targetRect.top + targetRect.height / 2}px`;
+      tooltip.style.transform = 'translate(0, -50%)';
+      break;
+    case 'center':
+    default:
+      tooltip.style.left = '50%';
+      tooltip.style.top = '50%';
+      tooltip.style.transform = 'translate(-50%, -50%)';
+      break;
     }
 
     // Ensure tooltip stays within viewport
@@ -844,7 +858,9 @@ class InteractiveTutorial {
   }
 
   nextStep() {
-    if (!this.currentTutorial || !this.isActive) return;
+    if (!this.currentTutorial || !this.isActive) {
+      return;
+    }
 
     if (this.currentStep < this.currentTutorial.steps.length - 1) {
       this.currentStep++;
@@ -855,7 +871,9 @@ class InteractiveTutorial {
   }
 
   previousStep() {
-    if (!this.currentTutorial || !this.isActive || this.currentStep === 0) return;
+    if (!this.currentTutorial || !this.isActive || this.currentStep === 0) {
+      return;
+    }
 
     this.currentStep--;
     this.showStep();
@@ -881,7 +899,7 @@ class InteractiveTutorial {
   showCompletionMessage() {
     const content = document.getElementById('tutorial-content');
     const title = document.getElementById('tutorial-title');
-    
+
     if (title && content) {
       title.textContent = '🎉 Tutorial Complete!';
       content.textContent = 'Great job! You\'ve completed the tutorial. Feel free to explore more features or take another tour.';

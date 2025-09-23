@@ -9,7 +9,7 @@ class AICodePlayground {
     this.currentExample = 0;
     this.editor = null;
     this.output = null;
-    
+
     this.examples = [
       {
         id: 'hello-world',
@@ -156,13 +156,15 @@ console.log(assistant.generateResponse('How can I make this faster?'));`,
         ]
       }
     ];
-    
+
     this.init();
   }
 
   init() {
-    if (this.isInitialized) return;
-    
+    if (this.isInitialized) {
+      return;
+    }
+
     this.createPlaygroundSection();
     this.addPlaygroundStyles();
     this.setupEventListeners();
@@ -171,13 +173,15 @@ console.log(assistant.generateResponse('How can I make this faster?'));`,
 
   createPlaygroundSection() {
     const mainContainer = document.querySelector('.container');
-    if (!mainContainer) return;
+    if (!mainContainer) {
+      return;
+    }
 
     // Find insertion point after AI education section
-    const educationSection = document.querySelector('.ai-education-section') || 
+    const educationSection = document.querySelector('.ai-education-section') ||
                             document.querySelector('.analytics-dashboard') ||
                             document.querySelector('.about-section');
-    
+
     const playgroundSection = document.createElement('section');
     playgroundSection.className = 'ai-playground-section';
     playgroundSection.innerHTML = `
@@ -207,9 +211,9 @@ console.log(assistant.generateResponse('How can I make this faster?'));`,
           <div class="ai-suggestions">
             <h4>🤖 AI Suggestions:</h4>
             <ul id="aiSuggestionsList">
-              ${this.examples[0].aiSuggestions.map(suggestion => 
-                `<li class="suggestion-item">${suggestion}</li>`
-              ).join('')}
+              ${this.examples[0].aiSuggestions.map(suggestion =>
+    `<li class="suggestion-item">${suggestion}</li>`
+  ).join('')}
             </ul>
           </div>
           
@@ -280,7 +284,9 @@ console.log(assistant.generateResponse('How can I make this faster?'));`,
   }
 
   addPlaygroundStyles() {
-    if (document.getElementById('ai-playground-styles')) return;
+    if (document.getElementById('ai-playground-styles')) {
+      return;
+    }
 
     const style = document.createElement('style');
     style.id = 'ai-playground-styles';
@@ -647,7 +653,7 @@ console.log(assistant.generateResponse('How can I make this faster?'));`,
         }
       }
     `;
-    
+
     document.head.appendChild(style);
   }
 
@@ -684,34 +690,44 @@ console.log(assistant.generateResponse('How can I make this faster?'));`,
   }
 
   loadExample(index) {
-    if (index < 0 || index >= this.examples.length) return;
-    
+    if (index < 0 || index >= this.examples.length) {
+      return;
+    }
+
     this.currentExample = index;
     const example = this.examples[index];
-    
+
     // Update navigation
     document.querySelectorAll('.example-btn').forEach((btn, i) => {
       btn.classList.toggle('active', i === index);
     });
-    
+
     // Update example info
     const titleEl = document.getElementById('currentExampleTitle');
     const descEl = document.getElementById('currentExampleDesc');
     const suggestionsEl = document.getElementById('aiSuggestionsList');
     const codeTextarea = document.getElementById('codeTextarea');
     const languageIndicator = document.getElementById('languageIndicator');
-    
-    if (titleEl) titleEl.textContent = example.title;
-    if (descEl) descEl.textContent = example.description;
-    if (codeTextarea) codeTextarea.value = example.code;
-    if (languageIndicator) languageIndicator.textContent = example.language.charAt(0).toUpperCase() + example.language.slice(1);
-    
+
+    if (titleEl) {
+      titleEl.textContent = example.title;
+    }
+    if (descEl) {
+      descEl.textContent = example.description;
+    }
+    if (codeTextarea) {
+      codeTextarea.value = example.code;
+    }
+    if (languageIndicator) {
+      languageIndicator.textContent = example.language.charAt(0).toUpperCase() + example.language.slice(1);
+    }
+
     if (suggestionsEl) {
-      suggestionsEl.innerHTML = example.aiSuggestions.map(suggestion => 
+      suggestionsEl.innerHTML = example.aiSuggestions.map(suggestion =>
         `<li class="suggestion-item">${suggestion}</li>`
       ).join('');
     }
-    
+
     // Clear output
     this.clearOutput();
   }
@@ -719,39 +735,41 @@ console.log(assistant.generateResponse('How can I make this faster?'));`,
   runCode() {
     const codeTextarea = document.getElementById('codeTextarea');
     const outputContent = document.getElementById('outputContent');
-    
-    if (!codeTextarea || !outputContent) return;
-    
+
+    if (!codeTextarea || !outputContent) {
+      return;
+    }
+
     const code = codeTextarea.value;
     outputContent.innerHTML = '';
-    
+
     // Capture console output
     const originalConsole = {
       log: console.log,
       error: console.error,
       warn: console.warn
     };
-    
+
     const outputs = [];
-    
+
     // Override console methods
     console.log = (...args) => {
-      outputs.push({ type: 'log', content: args.map(arg => 
+      outputs.push({ type: 'log', content: args.map(arg =>
         typeof arg === 'object' ? JSON.stringify(arg, null, 2) : String(arg)
       ).join(' ') });
       originalConsole.log(...args);
     };
-    
+
     console.error = (...args) => {
       outputs.push({ type: 'error', content: args.join(' ') });
       originalConsole.error(...args);
     };
-    
+
     console.warn = (...args) => {
       outputs.push({ type: 'warn', content: args.join(' ') });
       originalConsole.warn(...args);
     };
-    
+
     try {
       // Execute the code
       const wrappedCode = `
@@ -760,7 +778,7 @@ console.log(assistant.generateResponse('How can I make this faster?'));`,
         })();
       `;
       eval(wrappedCode);
-      
+
       if (outputs.length === 0) {
         outputs.push({ type: 'log', content: '✅ Code executed successfully (no output)' });
       }
@@ -772,12 +790,12 @@ console.log(assistant.generateResponse('How can I make this faster?'));`,
       console.error = originalConsole.error;
       console.warn = originalConsole.warn;
     }
-    
+
     // Display outputs
-    outputContent.innerHTML = outputs.map(output => 
+    outputContent.innerHTML = outputs.map(output =>
       `<div class="output-line ${output.type}">${this.escapeHtml(output.content)}</div>`
     ).join('');
-    
+
     // Auto-scroll to bottom
     outputContent.scrollTop = outputContent.scrollHeight;
   }
@@ -791,11 +809,13 @@ console.log(assistant.generateResponse('How can I make this faster?'));`,
 
   copyCode() {
     const codeTextarea = document.getElementById('codeTextarea');
-    if (!codeTextarea) return;
-    
+    if (!codeTextarea) {
+      return;
+    }
+
     codeTextarea.select();
     document.execCommand('copy');
-    
+
     // Show feedback
     const copyBtn = document.querySelector('.control-btn.copy');
     if (copyBtn) {
@@ -810,7 +830,7 @@ console.log(assistant.generateResponse('How can I make this faster?'));`,
   toggleOutput() {
     const outputContent = document.getElementById('outputContent');
     const toggleIcon = document.getElementById('outputToggleIcon');
-    
+
     if (outputContent && toggleIcon) {
       outputContent.classList.toggle('collapsed');
       toggleIcon.textContent = outputContent.classList.contains('collapsed') ? '🔼' : '🔽';

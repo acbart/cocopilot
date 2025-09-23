@@ -20,7 +20,7 @@ class SmartNotificationSystem {
       this.setupEventListeners();
       this.startIntelligentMonitoring();
       this.isInitialized = true;
-      
+
       // Welcome notification for new users
       setTimeout(() => {
         this.showWelcomeNotification();
@@ -104,7 +104,9 @@ class SmartNotificationSystem {
   }
 
   addStyles() {
-    if (document.getElementById('smart-notifications-styles')) return;
+    if (document.getElementById('smart-notifications-styles')) {
+      return;
+    }
 
     const styles = document.createElement('style');
     styles.id = 'smart-notifications-styles';
@@ -463,7 +465,7 @@ class SmartNotificationSystem {
     this.monitorUserBehavior();
     this.monitorPerformance();
     this.monitorFeatureDiscovery();
-    
+
     // Schedule periodic smart suggestions
     setInterval(() => {
       this.generateSmartSuggestions();
@@ -502,7 +504,9 @@ class SmartNotificationSystem {
   }
 
   monitorPerformance() {
-    if (!this.settings.performanceAlerts) return;
+    if (!this.settings.performanceAlerts) {
+      return;
+    }
 
     // Monitor page load performance
     window.addEventListener('load', () => {
@@ -552,7 +556,7 @@ class SmartNotificationSystem {
       const element = document.querySelector(selector);
       if (element) {
         let hasInteracted = false;
-        
+
         element.addEventListener('click', () => {
           hasInteracted = true;
         });
@@ -576,7 +580,9 @@ class SmartNotificationSystem {
   }
 
   generateSmartSuggestions() {
-    if (!this.settings.smartSuggestions || !this.isPageVisible()) return;
+    if (!this.settings.smartSuggestions || !this.isPageVisible()) {
+      return;
+    }
 
     const suggestions = [
       {
@@ -624,7 +630,9 @@ class SmartNotificationSystem {
   }
 
   notify(options) {
-    if (!this.settings.enabled) return;
+    if (!this.settings.enabled) {
+      return;
+    }
 
     const notification = this.createNotification(options);
     this.showNotification(notification);
@@ -632,7 +640,7 @@ class SmartNotificationSystem {
 
   createNotification(options) {
     const notificationId = `notification-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
-    
+
     const notification = document.createElement('div');
     notification.className = `smart-notification ${options.type || 'info'}`;
     notification.id = notificationId;
@@ -669,7 +677,9 @@ class SmartNotificationSystem {
 
   showNotification(notification) {
     const container = document.getElementById('smart-notifications-container');
-    if (!container) return;
+    if (!container) {
+      return;
+    }
 
     // Remove old notifications if we have too many
     const existingNotifications = container.querySelectorAll('.smart-notification');
@@ -703,7 +713,9 @@ class SmartNotificationSystem {
   }
 
   hideNotification(notification) {
-    if (!notification) return;
+    if (!notification) {
+      return;
+    }
 
     notification.classList.add('hide');
     setTimeout(() => {
@@ -715,11 +727,11 @@ class SmartNotificationSystem {
 
   startAutoHideTimer(notification) {
     const progressBar = notification.querySelector('.notification-progress');
-    
+
     if (progressBar) {
       progressBar.style.width = '100%';
       progressBar.style.transitionDuration = `${this.settings.autoHideDelay}ms`;
-      
+
       requestAnimationFrame(() => {
         progressBar.style.width = '0%';
       });
@@ -743,51 +755,51 @@ class SmartNotificationSystem {
 
   handleNotificationAction(action, buttonElement) {
     switch (action) {
-      case 'dismiss':
-        const notification = buttonElement.closest('.smart-notification');
-        this.hideNotification(notification);
-        break;
-      
-      case 'show-shortcuts':
-        // Trigger help system
-        if (window.helpSystem) {
-          window.helpSystem.showShortcuts();
-        }
-        break;
-      
-      case 'start-tutorial':
-        // Trigger tutorial system
-        if (window.interactiveTutorial) {
-          window.interactiveTutorial.showLauncher();
-        }
-        break;
-      
-      case 'toggle-dark-mode':
-        // Toggle theme
-        const themeToggle = document.querySelector('.theme-toggle');
-        if (themeToggle) {
-          themeToggle.click();
-        }
-        break;
-      
-      case 'refresh-page':
-        window.location.reload();
-        break;
-      
-      case 'performance-tips':
-        this.showPerformanceTips();
-        break;
-      
-      case 'mobile-tips':
-        this.showMobileTips();
-        break;
-      
-      case 'dismiss-mobile-tips':
-        localStorage.setItem('mobile-tips-shown', 'true');
-        break;
-      
-      default:
-        console.log('Notification action:', action);
+    case 'dismiss':
+      const notification = buttonElement.closest('.smart-notification');
+      this.hideNotification(notification);
+      break;
+
+    case 'show-shortcuts':
+      // Trigger help system
+      if (window.helpSystem) {
+        window.helpSystem.showShortcuts();
+      }
+      break;
+
+    case 'start-tutorial':
+      // Trigger tutorial system
+      if (window.interactiveTutorial) {
+        window.interactiveTutorial.showLauncher();
+      }
+      break;
+
+    case 'toggle-dark-mode':
+      // Toggle theme
+      const themeToggle = document.querySelector('.theme-toggle');
+      if (themeToggle) {
+        themeToggle.click();
+      }
+      break;
+
+    case 'refresh-page':
+      window.location.reload();
+      break;
+
+    case 'performance-tips':
+      this.showPerformanceTips();
+      break;
+
+    case 'mobile-tips':
+      this.showMobileTips();
+      break;
+
+    case 'dismiss-mobile-tips':
+      localStorage.setItem('mobile-tips-shown', 'true');
+      break;
+
+    default:
+      console.log('Notification action:', action);
     }
   }
 
@@ -814,7 +826,9 @@ class SmartNotificationSystem {
   }
 
   showWelcomeNotification() {
-    if (!this.isFirstTimeUser()) return;
+    if (!this.isFirstTimeUser()) {
+      return;
+    }
 
     this.notify({
       type: 'ai-suggestion',
@@ -922,10 +936,18 @@ class SmartNotificationSystem {
 
   getTimeOfDay() {
     const hour = new Date().getHours();
-    if (hour < 6) return 'night';
-    if (hour < 12) return 'morning';
-    if (hour < 17) return 'afternoon';
-    if (hour < 21) return 'evening';
+    if (hour < 6) {
+      return 'night';
+    }
+    if (hour < 12) {
+      return 'morning';
+    }
+    if (hour < 17) {
+      return 'afternoon';
+    }
+    if (hour < 21) {
+      return 'evening';
+    }
     return 'night';
   }
 

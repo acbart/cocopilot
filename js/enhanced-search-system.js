@@ -13,7 +13,7 @@ class EnhancedSearchSystem {
       type: 'all',
       recency: 'all'
     };
-    
+
     this.init();
   }
 
@@ -24,7 +24,7 @@ class EnhancedSearchSystem {
       await this.buildSearchIndex();
       this.setupEventHandlers();
       this.loadSearchHistory();
-      
+
       this.isInitialized = true;
       console.log('🔍 Enhanced Search System initialized');
     } catch (error) {
@@ -518,17 +518,17 @@ class EnhancedSearchSystem {
       { id: 'community', title: 'Community & Contributors', description: 'Explore contributor highlights and community engagement', category: 'community', type: 'information', icon: '🤝', action: () => this.scrollToElement('#communitySection') },
       { id: 'themes', title: 'Dark/Light Theme Toggle', description: 'Switch between dark and light themes with smooth transitions', category: 'features', type: 'interactive', icon: '🌙', action: () => this.toggleTheme() },
       { id: 'help', title: 'Help System', description: 'Get contextual help and keyboard shortcuts', category: 'features', type: 'interactive', icon: '❓', action: () => this.openHelp() },
-      
+
       // Documentation
       { id: 'docs', title: 'Complete Documentation', description: 'Comprehensive guide to CocoPilot features and usage', category: 'documentation', type: 'information', icon: '📖', action: () => window.open('docs.html', '_blank') },
       { id: 'readme', title: 'README', description: 'Project overview and getting started guide', category: 'documentation', type: 'information', icon: '📚', action: () => window.open('https://github.com/acbart/cocopilot/blob/main/README.md', '_blank') },
       { id: 'changelog', title: 'Changelog', description: 'Detailed history of changes and improvements', category: 'documentation', type: 'information', icon: '📜', action: () => window.open('https://github.com/acbart/cocopilot/blob/main/CHANGELOG.md', '_blank') },
       { id: 'future-plans', title: 'Future Plans', description: 'Roadmap and upcoming features', category: 'documentation', type: 'information', icon: '🔮', action: () => window.open('https://github.com/acbart/cocopilot/blob/main/tomorrow.md', '_blank') },
-      
+
       // Navigation
       { id: 'github', title: 'GitHub Repository', description: 'View source code and contribute to the project', category: 'navigation', type: 'navigation', icon: '💻', action: () => window.open('https://github.com/acbart/cocopilot', '_blank') },
       { id: 'issues', title: 'Daily Issues', description: 'Browse AI-generated improvement issues', category: 'navigation', type: 'navigation', icon: '📋', action: () => window.open('https://github.com/acbart/cocopilot/issues', '_blank') },
-      
+
       // Features
       { id: 'accessibility', title: 'Accessibility Features', description: 'WCAG compliant with screen reader support and keyboard navigation', category: 'features', type: 'information', icon: '♿', action: () => this.showAccessibilityInfo() },
       { id: 'pwa', title: 'Progressive Web App', description: 'Install as an app with offline functionality', category: 'features', type: 'interactive', icon: '📱', action: () => this.showPWAInfo() },
@@ -553,14 +553,14 @@ class EnhancedSearchSystem {
 
     // Open search modal
     searchTrigger?.addEventListener('click', () => this.openSearch());
-    
+
     // Keyboard shortcut
     document.addEventListener('keydown', (e) => {
       if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
         e.preventDefault();
         this.openSearch();
       }
-      
+
       if (e.key === 'Escape' && searchContainer?.classList.contains('active')) {
         this.closeSearch();
       }
@@ -616,15 +616,15 @@ class EnhancedSearchSystem {
   openSearch() {
     const searchContainer = document.getElementById('enhancedSearchContainer');
     const searchInput = document.getElementById('searchInput');
-    
+
     if (searchContainer) {
       searchContainer.classList.add('active');
       document.body.style.overflow = 'hidden';
-      
+
       setTimeout(() => {
         searchInput?.focus();
       }, 100);
-      
+
       this.showDefaultResults();
       this.updateSearchHistory();
     }
@@ -632,7 +632,7 @@ class EnhancedSearchSystem {
 
   closeSearch() {
     const searchContainer = document.getElementById('enhancedSearchContainer');
-    
+
     if (searchContainer) {
       searchContainer.classList.remove('active');
       document.body.style.overflow = '';
@@ -642,8 +642,10 @@ class EnhancedSearchSystem {
   performSearch(query) {
     const searchResults = document.getElementById('searchResults');
     const searchSuggestions = document.getElementById('searchSuggestions');
-    
-    if (!searchResults) return;
+
+    if (!searchResults) {
+      return;
+    }
 
     if (!query.trim()) {
       this.showDefaultResults();
@@ -655,7 +657,7 @@ class EnhancedSearchSystem {
 
     const results = this.searchContent(query);
     this.renderSearchResults(results);
-    
+
     // Add to search history
     if (query.length > 2) {
       this.addToSearchHistory(query);
@@ -668,19 +670,19 @@ class EnhancedSearchSystem {
 
     for (const [id, item] of this.searchIndex) {
       let score = 0;
-      
+
       // Title match (highest priority)
       if (item.title.toLowerCase().includes(queryLower)) {
         score += 10;
       }
-      
+
       // Description match
       if (item.description.toLowerCase().includes(queryLower)) {
         score += 5;
       }
-      
+
       // Category/type match
-      if (item.category.toLowerCase().includes(queryLower) || 
+      if (item.category.toLowerCase().includes(queryLower) ||
           item.type.toLowerCase().includes(queryLower)) {
         score += 3;
       }
@@ -689,7 +691,7 @@ class EnhancedSearchSystem {
       if (this.filters.category !== 'all' && item.category !== this.filters.category) {
         score = 0;
       }
-      
+
       if (this.filters.type !== 'all' && item.type !== this.filters.type) {
         score = 0;
       }
@@ -704,8 +706,10 @@ class EnhancedSearchSystem {
 
   renderSearchResults(results) {
     const searchResults = document.getElementById('searchResults');
-    
-    if (!searchResults) return;
+
+    if (!searchResults) {
+      return;
+    }
 
     if (results.length === 0) {
       searchResults.innerHTML = `
@@ -720,7 +724,7 @@ class EnhancedSearchSystem {
 
     // Group results by category
     const groupedResults = this.groupResultsByCategory(results);
-    
+
     let html = '';
     for (const [category, items] of Object.entries(groupedResults)) {
       html += `
@@ -757,7 +761,7 @@ class EnhancedSearchSystem {
 
   groupResultsByCategory(results) {
     const grouped = {};
-    
+
     results.forEach(result => {
       if (!grouped[result.category]) {
         grouped[result.category] = [];
@@ -792,7 +796,7 @@ class EnhancedSearchSystem {
     const featured = [
       'analytics', 'visualizations', 'community', 'docs', 'themes', 'help'
     ];
-    
+
     const results = featured.map(id => this.searchIndex.get(id)).filter(Boolean);
     this.renderSearchResults(results);
   }
@@ -800,14 +804,14 @@ class EnhancedSearchSystem {
   addToSearchHistory(query) {
     const maxHistory = 5;
     const index = this.searchHistory.indexOf(query);
-    
+
     if (index > -1) {
       this.searchHistory.splice(index, 1);
     }
-    
+
     this.searchHistory.unshift(query);
     this.searchHistory = this.searchHistory.slice(0, maxHistory);
-    
+
     this.saveSearchHistory();
   }
 
@@ -833,9 +837,9 @@ class EnhancedSearchSystem {
   updateSearchHistory() {
     const searchHistory = document.getElementById('searchHistory');
     const historyItems = document.getElementById('historyItems');
-    
+
     if (this.searchHistory.length > 0 && historyItems) {
-      historyItems.innerHTML = this.searchHistory.map(term => 
+      historyItems.innerHTML = this.searchHistory.map(term =>
         `<span class="history-item">${term}</span>`
       ).join('');
       searchHistory.style.display = 'block';

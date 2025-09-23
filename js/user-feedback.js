@@ -9,12 +9,12 @@ class UserFeedbackSystem {
     this.maxNotifications = 5;
     this.defaultDuration = 5000;
     this.container = null;
-    
+
     // API operation tracking to prevent spam
     this.activeAPIOperations = new Set();
     this.lastAPINotification = 0;
     this.apiNotificationDelay = 2000; // Minimum delay between API notifications
-    
+
     this.init();
   }
 
@@ -47,7 +47,7 @@ class UserFeedbackSystem {
 
     this.notifications.push(notification);
     this.renderNotification(notification);
-    
+
     // Auto-remove non-persistent notifications
     if (!notification.persistent) {
       setTimeout(() => {
@@ -80,7 +80,7 @@ class UserFeedbackSystem {
     element.className = `notification notification-${notification.type}`;
     element.setAttribute('role', 'alert');
     element.setAttribute('data-notification-id', notification.id);
-    
+
     element.innerHTML = `
       <div class="notification-content">
         <div class="notification-icon">${notification.icon}</div>
@@ -124,7 +124,7 @@ class UserFeedbackSystem {
 
     // Add to container with animation
     this.container.appendChild(element);
-    
+
     // Trigger entrance animation
     requestAnimationFrame(() => {
       element.classList.add('notification-show');
@@ -163,10 +163,10 @@ class UserFeedbackSystem {
   }
 
   loading(message, options = {}) {
-    return this.showNotification(message, { 
-      ...options, 
-      type: 'loading', 
-      persistent: true 
+    return this.showNotification(message, {
+      ...options,
+      type: 'loading',
+      persistent: true
     });
   }
 
@@ -176,7 +176,7 @@ class UserFeedbackSystem {
       type: 'loading',
       persistent: true
     });
-    
+
     return {
       update: (percent, newMessage) => {
         const element = this.container.querySelector(`[data-notification-id="${progressId}"]`);
@@ -208,12 +208,12 @@ class UserFeedbackSystem {
     // Enhanced error handling with user feedback
     window.addEventListener('error', (event) => {
       console.error('Global error:', event.error);
-      
+
       // Don't show notifications for network errors or blocked resources
-      if (event.error && 
+      if (event.error &&
           !event.error.message.includes('ERR_BLOCKED_BY_CLIENT') &&
           !event.error.message.includes('Failed to fetch')) {
-        
+
         this.error('Something went wrong. The team has been notified.', {
           actions: [{
             id: 'reload',
@@ -227,11 +227,11 @@ class UserFeedbackSystem {
     // Handle unhandled promise rejections
     window.addEventListener('unhandledrejection', (event) => {
       console.error('Unhandled promise rejection:', event.reason);
-      
-      if (event.reason && 
+
+      if (event.reason &&
           !event.reason.toString().includes('ERR_BLOCKED_BY_CLIENT') &&
           !event.reason.toString().includes('Failed to fetch')) {
-        
+
         this.warning('A background operation failed. Some features may not work as expected.');
       }
     });
@@ -260,10 +260,12 @@ class UserFeedbackSystem {
     // Add feedback to button clicks that might take time
     document.addEventListener('click', (e) => {
       const button = e.target.closest('button, [role="button"]');
-      if (!button) return;
+      if (!button) {
+        return;
+      }
 
       const buttonText = button.textContent?.trim().toLowerCase();
-      
+
       // Provide feedback for specific actions
       if (buttonText.includes('copy')) {
         navigator.clipboard?.writeText(window.location.href).then(() => {
@@ -272,11 +274,11 @@ class UserFeedbackSystem {
           this.warning('Unable to copy URL. Please copy manually.');
         });
       }
-      
+
       if (buttonText.includes('share')) {
         this.info('Opening share dialog...');
       }
-      
+
       if (buttonText.includes('download') || buttonText.includes('export')) {
         this.loading('Preparing download...', { duration: 3000 });
       }
@@ -286,38 +288,38 @@ class UserFeedbackSystem {
   enhanceAPIOperations() {
     // Monitor and provide feedback for API operations
     const originalFetch = window.fetch;
-    window.fetch = async (...args) => {
+    window.fetch = async(...args) => {
       const url = args[0];
       let loadingId = null;
-      
+
       // Show loading for GitHub API calls with deduplication
       if (typeof url === 'string' && url.includes('api.github.com')) {
         const now = Date.now();
         const operationType = 'github-api';
-        
+
         // Only show notification if we don't have an active one and enough time has passed
-        if (!this.activeAPIOperations.has(operationType) && 
+        if (!this.activeAPIOperations.has(operationType) &&
             (now - this.lastAPINotification) > this.apiNotificationDelay) {
-          
+
           loadingId = this.loading('Fetching latest data...');
           this.activeAPIOperations.add(operationType);
           this.lastAPINotification = now;
-          
+
           // Remove from active operations after a timeout even if request doesn't complete
           setTimeout(() => {
             this.activeAPIOperations.delete(operationType);
           }, 5000);
         }
       }
-      
+
       try {
         const response = await originalFetch(...args);
-        
+
         if (loadingId) {
           this.removeNotification(loadingId);
           this.activeAPIOperations.delete('github-api');
         }
-        
+
         if (!response.ok && url.includes('api.github.com')) {
           // Only show warning if we don't have too many recent notifications
           const now = Date.now();
@@ -331,14 +333,14 @@ class UserFeedbackSystem {
             this.success('Data updated successfully!', { duration: 2000 });
           }
         }
-        
+
         return response;
       } catch (error) {
         if (loadingId) {
           this.removeNotification(loadingId);
           this.activeAPIOperations.delete('github-api');
         }
-        
+
         if (!error.message.includes('ERR_BLOCKED_BY_CLIENT')) {
           // Only show error if we don't have too many recent notifications
           const now = Date.now();
@@ -347,7 +349,7 @@ class UserFeedbackSystem {
             this.lastAPINotification = now;
           }
         }
-        
+
         throw error;
       }
     };
@@ -357,9 +359,9 @@ class UserFeedbackSystem {
     // Provide feedback for theme changes
     const observer = new MutationObserver((mutations) => {
       mutations.forEach((mutation) => {
-        if (mutation.type === 'attributes' && 
+        if (mutation.type === 'attributes' &&
             mutation.attributeName === 'data-theme') {
-          
+
           const theme = document.body.getAttribute('data-theme');
           const themeName = theme === 'dark' ? 'Dark' : 'Light';
           this.success(`Switched to ${themeName} theme`, { duration: 2000 });
@@ -649,7 +651,7 @@ class UserFeedbackSystem {
         }
       }
     `;
-    
+
     document.head.appendChild(styles);
   }
 

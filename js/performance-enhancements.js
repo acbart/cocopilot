@@ -15,13 +15,15 @@ class PerformanceEnhancer {
       interactionTime: 0,
       memoryUsage: 0
     };
-    
+
     this.init();
   }
 
   init() {
-    if (this.isInitialized) return;
-    
+    if (this.isInitialized) {
+      return;
+    }
+
     this.measurePerformance();
     this.implementLazyLoading();
     this.optimizeImages();
@@ -29,7 +31,7 @@ class PerformanceEnhancer {
     this.addIntersectionObservers();
     this.implementModuleLazyLoading();
     this.monitorPerformance();
-    
+
     this.isInitialized = true;
   }
 
@@ -61,7 +63,7 @@ class PerformanceEnhancer {
   implementLazyLoading() {
     // Enhanced lazy loading for images
     const images = document.querySelectorAll('img[data-src]');
-    
+
     if ('IntersectionObserver' in window) {
       const imageObserver = new IntersectionObserver((entries, observer) => {
         entries.forEach(entry => {
@@ -91,7 +93,7 @@ class PerformanceEnhancer {
   optimizeImages() {
     // Add WebP support detection and fallback
     const supportsWebP = this.checkWebPSupport();
-    
+
     if (supportsWebP) {
       document.documentElement.classList.add('webp-supported');
     }
@@ -149,13 +151,13 @@ class PerformanceEnhancer {
   addIntersectionObservers() {
     // Add observers for sections to trigger animations and loading
     const sections = document.querySelectorAll('section, .data-viz-container, .analytics-dashboard');
-    
+
     if ('IntersectionObserver' in window) {
       const sectionObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
           if (entry.isIntersecting) {
             entry.target.classList.add('in-viewport');
-            
+
             // Trigger any section-specific loading
             this.loadSectionResources(entry.target);
           }
@@ -187,7 +189,7 @@ class PerformanceEnhancer {
   implementModuleLazyLoading() {
     // Implement intelligent module loading based on user interaction
     const interactiveElements = document.querySelectorAll('[onclick], button, .clickable');
-    
+
     interactiveElements.forEach(element => {
       element.addEventListener('mouseenter', () => {
         this.preloadInteractionResources(element);
@@ -198,11 +200,11 @@ class PerformanceEnhancer {
   preloadInteractionResources(element) {
     // Preload resources for interactive elements
     const elementClasses = Array.from(element.classList);
-    
+
     if (elementClasses.some(cls => cls.includes('theme'))) {
       this.preloadThemeResources();
     }
-    
+
     if (elementClasses.some(cls => cls.includes('help') || cls.includes('tour'))) {
       this.preloadHelpResources();
     }
@@ -289,7 +291,7 @@ class PerformanceEnhancer {
 
     // In a real application, this would send data to analytics
     console.log('Performance Report:', metrics);
-    
+
     // Store metrics for the performance dashboard
     if (typeof window !== 'undefined') {
       window.performanceMetrics = metrics;
@@ -308,17 +310,17 @@ class PerformanceEnhancer {
   // Method to optimize specific components
   optimizeComponent(componentName) {
     switch (componentName) {
-      case 'analytics':
-        this.optimizeAnalytics();
-        break;
-      case 'education':
-        this.optimizeEducation();
-        break;
-      case 'playground':
-        this.optimizePlayground();
-        break;
-      default:
-        console.log(`No specific optimization for ${componentName}`);
+    case 'analytics':
+      this.optimizeAnalytics();
+      break;
+    case 'education':
+      this.optimizeEducation();
+      break;
+    case 'playground':
+      this.optimizePlayground();
+      break;
+    default:
+      console.log(`No specific optimization for ${componentName}`);
     }
   }
 
@@ -364,7 +366,7 @@ class PerformanceEnhancer {
       clearInterval(this.reportingInterval);
       this.reportingInterval = null;
     }
-    
+
     // Remove event listeners for elements no longer visible
     const invisibleElements = document.querySelectorAll('[style*="display: none"]');
     invisibleElements.forEach(element => {
@@ -379,7 +381,7 @@ class PerformanceEnhancer {
       performance.clearMeasures();
     }
   }
-  
+
   // Add proper destroy method
   destroy() {
     this.cleanupUnusedResources();
@@ -389,7 +391,9 @@ class PerformanceEnhancer {
 
 // Enhanced CSS for performance optimizations
 function addPerformanceStyles() {
-  if (document.getElementById('performance-enhancement-styles')) return;
+  if (document.getElementById('performance-enhancement-styles')) {
+    return;
+  }
 
   const style = document.createElement('style');
   style.id = 'performance-enhancement-styles';
@@ -470,7 +474,7 @@ function addPerformanceStyles() {
       }
     }
   `;
-  
+
   document.head.appendChild(style);
 }
 
