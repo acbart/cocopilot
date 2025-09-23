@@ -10,7 +10,7 @@ class CommunityEngagement {
     this.cacheExpiry = 10 * 60 * 1000; // 10 minutes
     this.contributors = [];
     this.milestones = [];
-    
+
     this.init();
   }
 
@@ -414,10 +414,10 @@ class CommunityEngagement {
     `;
 
     // Find the best insertion point
-    const targetElement = document.querySelector('#dataVisualization') || 
-                         document.querySelector('.about-section') || 
+    const targetElement = document.querySelector('#dataVisualization') ||
+                         document.querySelector('.about-section') ||
                          document.querySelector('main');
-    
+
     if (targetElement) {
       targetElement.insertAdjacentHTML('afterend', sectionHTML);
     }
@@ -453,7 +453,7 @@ class CommunityEngagement {
   async fetchGitHubData(endpoint) {
     const cacheKey = `community_${endpoint}`;
     const cached = this.getCachedData(cacheKey);
-    
+
     if (cached) {
       return cached;
     }
@@ -463,7 +463,7 @@ class CommunityEngagement {
       if (!response.ok) {
         throw new Error(`HTTP ${response.status}`);
       }
-      
+
       const data = await response.json();
       this.setCachedData(cacheKey, data);
       return data;
@@ -521,8 +521,10 @@ class CommunityEngagement {
   async renderCommunityHighlights() {
     const communityContent = document.getElementById('communityContent');
     const communityLoading = document.getElementById('communityLoading');
-    
-    if (!communityContent) return;
+
+    if (!communityContent) {
+      return;
+    }
 
     try {
       communityContent.innerHTML = `
@@ -538,7 +540,7 @@ class CommunityEngagement {
       setTimeout(() => {
         communityLoading.style.display = 'none';
         communityContent.style.display = 'block';
-        
+
         // Animate cards
         const cards = communityContent.querySelectorAll('.community-card');
         cards.forEach((card, index) => {
@@ -546,7 +548,7 @@ class CommunityEngagement {
             card.style.opacity = '0';
             card.style.transform = 'translateY(20px)';
             card.style.transition = 'all 0.5s ease';
-            
+
             requestAnimationFrame(() => {
               card.style.opacity = '1';
               card.style.transform = 'translateY(0)';
@@ -563,7 +565,7 @@ class CommunityEngagement {
 
   renderTopContributors() {
     const topContributors = this.contributors.slice(0, 5);
-    
+
     return `
       <div class="community-card">
         <div class="card-header">
@@ -691,7 +693,7 @@ class CommunityEngagement {
       if (e.target.closest('.contributor-item')) {
         const contributorItem = e.target.closest('.contributor-item');
         const contributorName = contributorItem.querySelector('.contributor-name')?.textContent;
-        
+
         if (contributorName && contributorName !== 'github-actions[bot]') {
           // Open GitHub profile in new tab
           window.open(`https://github.com/${contributorName}`, '_blank');
@@ -711,8 +713,10 @@ class CommunityEngagement {
   renderCommunityError() {
     const communityContent = document.getElementById('communityContent');
     const communityLoading = document.getElementById('communityLoading');
-    
-    if (communityLoading) communityLoading.style.display = 'none';
+
+    if (communityLoading) {
+      communityLoading.style.display = 'none';
+    }
     if (communityContent) {
       communityContent.innerHTML = `
         <div class="community-card">

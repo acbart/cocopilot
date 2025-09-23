@@ -123,7 +123,7 @@ class AdvancedCollaborationFeatures {
 
     // Add CSS styles
     this.addStyles();
-    
+
     // Insert hub into the page
     const targetContainer = document.querySelector('.container') || document.body;
     targetContainer.appendChild(collaborationHub);
@@ -133,7 +133,9 @@ class AdvancedCollaborationFeatures {
   }
 
   addStyles() {
-    if (document.getElementById('collaboration-styles')) return;
+    if (document.getElementById('collaboration-styles')) {
+      return;
+    }
 
     const styles = document.createElement('style');
     styles.id = 'collaboration-styles';
@@ -628,7 +630,9 @@ class AdvancedCollaborationFeatures {
 
   sendCommunityMessage() {
     const messageInput = document.getElementById('community-message');
-    if (!messageInput || !messageInput.value.trim()) return;
+    if (!messageInput || !messageInput.value.trim()) {
+      return;
+    }
 
     const message = messageInput.value.trim();
     messageInput.value = '';
@@ -654,7 +658,9 @@ class AdvancedCollaborationFeatures {
 
   addCommunityMessage(data) {
     const feed = document.querySelector('.community-feed');
-    if (!feed) return;
+    if (!feed) {
+      return;
+    }
 
     const feedItem = document.createElement('div');
     feedItem.className = 'feed-item';
@@ -684,13 +690,13 @@ class AdvancedCollaborationFeatures {
 
   generateAIResponse(message) {
     const responses = [
-      "That's a great point! AI-driven development really opens up new possibilities.",
-      "Interesting perspective! Have you tried exploring the AI code suggestions feature?",
-      "I agree! Collaboration is key to advancing AI-assisted development.",
-      "Thanks for sharing! The community benefits from diverse viewpoints like yours.",
-      "Excellent observation! This aligns with the goals of autonomous software evolution.",
-      "You raise an important question. The future of development is indeed collaborative.",
-      "That's exactly the kind of innovation we need in AI-driven projects!"
+      'That\'s a great point! AI-driven development really opens up new possibilities.',
+      'Interesting perspective! Have you tried exploring the AI code suggestions feature?',
+      'I agree! Collaboration is key to advancing AI-assisted development.',
+      'Thanks for sharing! The community benefits from diverse viewpoints like yours.',
+      'Excellent observation! This aligns with the goals of autonomous software evolution.',
+      'You raise an important question. The future of development is indeed collaborative.',
+      'That\'s exactly the kind of innovation we need in AI-driven projects!'
     ];
 
     return responses[Math.floor(Math.random() * responses.length)];
@@ -699,7 +705,7 @@ class AdvancedCollaborationFeatures {
   joinSession(sessionId) {
     // Simulate joining a session
     this.collaborationSession = sessionId;
-    
+
     // Show notification
     if (window.smartNotificationSystem) {
       window.smartNotificationSystem.createCustomNotification(
@@ -717,7 +723,7 @@ class AdvancedCollaborationFeatures {
   createNewSession() {
     // Generate session ID
     const sessionId = `session-${Date.now()}`;
-    
+
     // Create session creation modal
     const modal = document.createElement('div');
     modal.className = 'session-creation-modal';
@@ -865,21 +871,21 @@ class AdvancedCollaborationFeatures {
 
   handleSharing(shareType) {
     switch (shareType) {
-      case 'page':
-        this.sharePageLink();
-        break;
-      case 'screenshot':
-        this.shareScreenshot();
-        break;
-      case 'idea':
-        this.shareIdea();
-        break;
+    case 'page':
+      this.sharePageLink();
+      break;
+    case 'screenshot':
+      this.shareScreenshot();
+      break;
+    case 'idea':
+      this.shareIdea();
+      break;
     }
   }
 
   sharePageLink() {
     const url = window.location.href;
-    
+
     if (navigator.share) {
       navigator.share({
         title: 'CocoPilot - AI-Driven Development',

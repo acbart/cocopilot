@@ -10,7 +10,7 @@ class InteractiveDataVisualization {
     this.cacheExpiry = 5 * 60 * 1000; // 5 minutes
     this.animationDuration = 800;
     this.isVisible = false;
-    
+
     this.init();
   }
 
@@ -441,10 +441,10 @@ class InteractiveDataVisualization {
     `;
 
     // Find the best place to insert the visualization
-    const targetElement = document.querySelector('.features') || 
-                         document.querySelector('.about-section') || 
+    const targetElement = document.querySelector('.features') ||
+                         document.querySelector('.about-section') ||
                          document.querySelector('main');
-    
+
     if (targetElement) {
       targetElement.insertAdjacentHTML('afterend', container);
     }
@@ -475,7 +475,7 @@ class InteractiveDataVisualization {
   async fetchGitHubData(endpoint) {
     const cacheKey = endpoint;
     const cached = this.getCachedData(cacheKey);
-    
+
     if (cached) {
       return cached;
     }
@@ -485,7 +485,7 @@ class InteractiveDataVisualization {
       if (!response.ok) {
         throw new Error(`HTTP ${response.status}`);
       }
-      
+
       const data = await response.json();
       this.setCachedData(cacheKey, data);
       return data;
@@ -513,8 +513,10 @@ class InteractiveDataVisualization {
   async renderVisualizations() {
     const vizGrid = document.getElementById('vizGrid');
     const vizLoading = document.getElementById('vizLoading');
-    
-    if (!vizGrid || !this.data) return;
+
+    if (!vizGrid || !this.data) {
+      return;
+    }
 
     try {
       vizGrid.innerHTML = `
@@ -528,7 +530,7 @@ class InteractiveDataVisualization {
       setTimeout(() => {
         vizLoading.style.display = 'none';
         vizGrid.style.display = 'grid';
-        
+
         // Animate cards
         const cards = vizGrid.querySelectorAll('.viz-card');
         cards.forEach((card, index) => {
@@ -536,7 +538,7 @@ class InteractiveDataVisualization {
             card.style.opacity = '0';
             card.style.transform = 'translateY(20px)';
             card.style.transition = 'all 0.5s ease';
-            
+
             requestAnimationFrame(() => {
               card.style.opacity = '1';
               card.style.transform = 'translateY(0)';
@@ -585,7 +587,7 @@ class InteractiveDataVisualization {
       const date = new Date(today);
       date.setDate(date.getDate() - i);
       const dateStr = date.toDateString();
-      
+
       const dayCommits = commits.filter(commit => {
         const commitDate = new Date(commit.commit.author.date);
         return commitDate.toDateString() === dateStr;
@@ -611,7 +613,7 @@ class InteractiveDataVisualization {
     const pulls = this.data.pulls || [];
     const issues = this.data.issues || [];
 
-    const aiCommits = commits.filter(commit => 
+    const aiCommits = commits.filter(commit =>
       commit.commit.message.toLowerCase().includes('copilot') ||
       commit.commit.message.toLowerCase().includes('ai') ||
       commit.author?.login === 'github-actions[bot]'
@@ -651,7 +653,7 @@ class InteractiveDataVisualization {
 
   renderImprovementTimeline() {
     const commits = this.data.commits || [];
-    const aiCommits = commits.filter(commit => 
+    const aiCommits = commits.filter(commit =>
       commit.commit.message.toLowerCase().includes('copilot') ||
       commit.commit.message.toLowerCase().includes('ai') ||
       commit.author?.login === 'github-actions[bot]'
@@ -702,8 +704,10 @@ class InteractiveDataVisualization {
   renderError() {
     const vizGrid = document.getElementById('vizGrid');
     const vizLoading = document.getElementById('vizLoading');
-    
-    if (vizLoading) vizLoading.style.display = 'none';
+
+    if (vizLoading) {
+      vizLoading.style.display = 'none';
+    }
     if (vizGrid) {
       vizGrid.innerHTML = `
         <div class="error-state">
@@ -724,12 +728,12 @@ class InteractiveDataVisualization {
     if (toggleBtn && vizContent) {
       toggleBtn.addEventListener('click', () => {
         this.isVisible = !this.isVisible;
-        
+
         if (this.isVisible) {
           vizContent.style.display = 'block';
           toggleBtn.textContent = '📊 Hide Charts';
           container.classList.add('visible');
-          
+
           // Load data if not already loaded
           if (!this.data || !this.data.commits) {
             this.loadData().then(() => {
@@ -766,10 +770,10 @@ class InteractiveDataVisualization {
       </div>
     `;
 
-    const targetElement = document.querySelector('.features') || 
-                         document.querySelector('.about-section') || 
+    const targetElement = document.querySelector('.features') ||
+                         document.querySelector('.about-section') ||
                          document.querySelector('main');
-    
+
     if (targetElement) {
       targetElement.insertAdjacentHTML('afterend', fallbackHTML);
     }

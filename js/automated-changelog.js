@@ -9,7 +9,7 @@ class AutomatedChangelogGenerator {
     this.cache = new Map();
     this.cacheExpiry = 15 * 60 * 1000; // 15 minutes
     this.changelogData = [];
-    
+
     this.init();
   }
 
@@ -411,11 +411,11 @@ class AutomatedChangelogGenerator {
     `;
 
     // Find the best insertion point
-    const targetElement = document.querySelector('#communitySection') || 
-                         document.querySelector('#dataVisualization') || 
-                         document.querySelector('.about-section') || 
+    const targetElement = document.querySelector('#communitySection') ||
+                         document.querySelector('#dataVisualization') ||
+                         document.querySelector('.about-section') ||
                          document.querySelector('main');
-    
+
     if (targetElement) {
       targetElement.insertAdjacentHTML('afterend', changelogHTML);
     }
@@ -440,7 +440,7 @@ class AutomatedChangelogGenerator {
   async fetchGitHubData(endpoint) {
     const cacheKey = `changelog_${endpoint}`;
     const cached = this.getCachedData(cacheKey);
-    
+
     if (cached) {
       return cached;
     }
@@ -450,7 +450,7 @@ class AutomatedChangelogGenerator {
       if (!response.ok) {
         throw new Error(`HTTP ${response.status}`);
       }
-      
+
       const data = await response.json();
       this.setCachedData(cacheKey, data);
       return data;
@@ -478,16 +478,16 @@ class AutomatedChangelogGenerator {
   processChangelogData(commits, releases, tags) {
     // Create versions from recent significant commits
     const versions = [];
-    let currentVersion = 1;
-    
+    const currentVersion = 1;
+
     // Process commits into logical versions
-    const significantCommits = commits.filter(commit => 
+    const significantCommits = commits.filter(commit =>
       this.isSignificantCommit(commit.commit.message)
     );
 
     // Group commits by date ranges for version creation
     const commitGroups = this.groupCommitsBySignificance(significantCommits);
-    
+
     commitGroups.forEach((group, index) => {
       const versionNumber = `2.${currentVersion + index}.0`;
       const version = {
@@ -509,7 +509,7 @@ class AutomatedChangelogGenerator {
       'major', 'analytics', 'dashboard', 'community', 'search', 'documentation',
       'accessibility', 'performance', 'optimization', 'ui', 'ux'
     ];
-    
+
     const messageLower = message.toLowerCase();
     return significantKeywords.some(keyword => messageLower.includes(keyword));
   }
@@ -529,7 +529,7 @@ class AutomatedChangelogGenerator {
       currentGroup.commits.push(commit);
 
       // Create a new group for major features or every 5-10 commits
-      if (this.isMajorCommit(commit.commit.message) || 
+      if (this.isMajorCommit(commit.commit.message) ||
           currentGroup.commits.length >= 8) {
         groups.push({ ...currentGroup });
         currentGroup = { commits: [], date: null };
@@ -548,45 +548,47 @@ class AutomatedChangelogGenerator {
       'major feature', 'analytics dashboard', 'community engagement',
       'search system', 'documentation portal', 'visualization engine'
     ];
-    
+
     const messageLower = message.toLowerCase();
     return majorKeywords.some(keyword => messageLower.includes(keyword));
   }
 
   determineVersionType(commits) {
-    const hasMajorFeature = commits.some(commit => 
+    const hasMajorFeature = commits.some(commit =>
       this.isMajorCommit(commit.commit.message)
     );
-    
-    if (hasMajorFeature) return 'major';
-    
-    const hasFeature = commits.some(commit => 
+
+    if (hasMajorFeature) {
+      return 'major';
+    }
+
+    const hasFeature = commits.some(commit =>
       commit.commit.message.toLowerCase().includes('feature') ||
       commit.commit.message.toLowerCase().includes('add')
     );
-    
+
     return hasFeature ? 'minor' : 'patch';
   }
 
   generateVersionSummary(commits) {
     const messages = commits.map(c => c.commit.message);
-    
+
     if (messages.some(m => m.toLowerCase().includes('analytics'))) {
       return 'Enhanced analytics dashboard with interactive visualizations and real-time insights';
     }
-    
+
     if (messages.some(m => m.toLowerCase().includes('community'))) {
       return 'Community engagement features with contributor highlights and metrics';
     }
-    
+
     if (messages.some(m => m.toLowerCase().includes('search'))) {
       return 'Advanced search and discovery system with intelligent filtering';
     }
-    
+
     if (messages.some(m => m.toLowerCase().includes('documentation'))) {
       return 'Comprehensive documentation portal with interactive guides';
     }
-    
+
     return 'Various improvements and enhancements to user experience';
   }
 
@@ -622,21 +624,21 @@ class AutomatedChangelogGenerator {
 
   isFeatureCommit(message) {
     const featureKeywords = ['add', 'create', 'implement', 'new feature'];
-    return featureKeywords.some(keyword => 
+    return featureKeywords.some(keyword =>
       message.toLowerCase().includes(keyword)
     );
   }
 
   isDocumentationCommit(message) {
     const docKeywords = ['docs', 'documentation', 'readme', 'guide'];
-    return docKeywords.some(keyword => 
+    return docKeywords.some(keyword =>
       message.toLowerCase().includes(keyword)
     );
   }
 
   isFixCommit(message) {
     const fixKeywords = ['fix', 'bug', 'error', 'issue'];
-    return fixKeywords.some(keyword => 
+    return fixKeywords.some(keyword =>
       message.toLowerCase().includes(keyword)
     );
   }
@@ -652,7 +654,7 @@ class AutomatedChangelogGenerator {
   async generateChangelog() {
     const changelogTimeline = document.getElementById('changelogTimeline');
     const changelogLoading = document.getElementById('changelogLoading');
-    
+
     if (!changelogTimeline || !this.changelogData.length) {
       this.renderChangelogError();
       return;
@@ -661,9 +663,9 @@ class AutomatedChangelogGenerator {
     try {
       // Generate stats
       const stats = this.generateChangelogStats();
-      
+
       // Generate versions
-      const versionsHTML = this.changelogData.map(version => 
+      const versionsHTML = this.changelogData.map(version =>
         this.renderVersion(version)
       ).join('');
 
@@ -678,7 +680,7 @@ class AutomatedChangelogGenerator {
       setTimeout(() => {
         changelogLoading.style.display = 'none';
         changelogTimeline.style.display = 'block';
-        
+
         // Animate versions
         const versions = changelogTimeline.querySelectorAll('.changelog-version');
         versions.forEach((version, index) => {
@@ -686,7 +688,7 @@ class AutomatedChangelogGenerator {
             version.style.opacity = '0';
             version.style.transform = 'translateX(-20px)';
             version.style.transition = 'all 0.5s ease';
-            
+
             requestAnimationFrame(() => {
               version.style.opacity = '1';
               version.style.transform = 'translateX(0)';
@@ -704,11 +706,11 @@ class AutomatedChangelogGenerator {
   generateChangelogStats() {
     const totalVersions = this.changelogData.length;
     const totalChanges = this.changelogData.reduce((sum, version) => {
-      return sum + Object.values(version.changes).reduce((catSum, changes) => 
+      return sum + Object.values(version.changes).reduce((catSum, changes) =>
         catSum + changes.length, 0
       );
     }, 0);
-    
+
     const majorVersions = this.changelogData.filter(v => v.type === 'major').length;
     const recentDays = Math.ceil((Date.now() - new Date(this.changelogData[0]?.date || Date.now())) / (1000 * 60 * 60 * 24));
 
@@ -795,7 +797,7 @@ class AutomatedChangelogGenerator {
     if (changelogToggle && changelogContent) {
       changelogToggle.addEventListener('click', () => {
         const isExpanded = changelogContent.classList.contains('expanded');
-        
+
         if (isExpanded) {
           changelogContent.classList.remove('expanded');
           changelogToggle.textContent = '📋 Show Changelog';
@@ -823,10 +825,10 @@ class AutomatedChangelogGenerator {
 
   filterChangelog(filterType) {
     const versions = document.querySelectorAll('.changelog-version');
-    
+
     versions.forEach(version => {
       const versionType = version.getAttribute('data-type');
-      
+
       if (filterType === 'all' || versionType === filterType) {
         version.style.display = 'block';
       } else {
@@ -838,8 +840,10 @@ class AutomatedChangelogGenerator {
   renderChangelogError() {
     const changelogTimeline = document.getElementById('changelogTimeline');
     const changelogLoading = document.getElementById('changelogLoading');
-    
-    if (changelogLoading) changelogLoading.style.display = 'none';
+
+    if (changelogLoading) {
+      changelogLoading.style.display = 'none';
+    }
     if (changelogTimeline) {
       changelogTimeline.innerHTML = `
         <div style="text-align: center; padding: 40px; color: var(--text-secondary);">
@@ -865,11 +869,11 @@ class AutomatedChangelogGenerator {
       </section>
     `;
 
-    const targetElement = document.querySelector('#communitySection') || 
-                         document.querySelector('#dataVisualization') || 
-                         document.querySelector('.about-section') || 
+    const targetElement = document.querySelector('#communitySection') ||
+                         document.querySelector('#dataVisualization') ||
+                         document.querySelector('.about-section') ||
                          document.querySelector('main');
-    
+
     if (targetElement) {
       targetElement.insertAdjacentHTML('afterend', fallbackHTML);
     }

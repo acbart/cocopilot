@@ -251,7 +251,9 @@ class ComprehensiveHelpSystem {
   }
 
   addStyles() {
-    if (document.getElementById('comprehensive-help-styles')) return;
+    if (document.getElementById('comprehensive-help-styles')) {
+      return;
+    }
 
     const styles = document.createElement('style');
     styles.id = 'comprehensive-help-styles';
@@ -679,7 +681,7 @@ class ComprehensiveHelpSystem {
     // Close help modal
     const closeBtn = document.querySelector('.help-modal-close');
     const overlay = document.querySelector('.help-modal-overlay');
-    
+
     if (closeBtn) {
       closeBtn.addEventListener('click', () => {
         this.hideHelp();
@@ -716,7 +718,7 @@ class ComprehensiveHelpSystem {
     document.addEventListener('click', (e) => {
       if (e.target.classList.contains('help-category-btn')) {
         this.filterByCategory(e.target.dataset.category);
-        
+
         // Update active category
         document.querySelectorAll('.help-category-btn').forEach(btn => {
           btn.classList.toggle('active', btn === e.target);
@@ -764,7 +766,7 @@ class ComprehensiveHelpSystem {
 
   buildSearchIndex() {
     this.searchIndex = [];
-    
+
     this.helpData.forEach((section, key) => {
       // Add section to index
       this.searchIndex.push({
@@ -795,12 +797,16 @@ class ComprehensiveHelpSystem {
 
   populateHelpContent(category = 'all') {
     const contentArea = document.getElementById('help-content-area');
-    if (!contentArea) return;
+    if (!contentArea) {
+      return;
+    }
 
     contentArea.innerHTML = '';
 
     this.helpData.forEach((section, key) => {
-      if (category !== 'all' && section.category !== category) return;
+      if (category !== 'all' && section.category !== category) {
+        return;
+      }
 
       const sectionElement = document.createElement('div');
       sectionElement.className = 'help-section';
@@ -848,7 +854,7 @@ class ComprehensiveHelpSystem {
   handleSearch(query) {
     const searchResults = document.getElementById('help-search-results');
     const searchClear = document.getElementById('help-search-clear');
-    
+
     if (!query.trim()) {
       searchResults.classList.remove('visible');
       searchClear.classList.remove('visible');
@@ -886,9 +892,15 @@ class ComprehensiveHelpSystem {
     const searchResults = document.getElementById('help-search-results');
     const searchClear = document.getElementById('help-search-clear');
 
-    if (searchInput) searchInput.value = '';
-    if (searchResults) searchResults.classList.remove('visible');
-    if (searchClear) searchClear.classList.remove('visible');
+    if (searchInput) {
+      searchInput.value = '';
+    }
+    if (searchResults) {
+      searchResults.classList.remove('visible');
+    }
+    if (searchClear) {
+      searchClear.classList.remove('visible');
+    }
   }
 
   filterByCategory(category) {
@@ -898,12 +910,12 @@ class ComprehensiveHelpSystem {
   showTopic(topicId) {
     const [sectionKey, itemIndex] = topicId.split('-');
     const section = document.querySelector(`[data-section="${sectionKey}"]`);
-    
+
     if (section) {
       section.scrollIntoView({ behavior: 'smooth', block: 'start' });
       section.style.background = 'var(--button-gradient-start, #667eea)';
       section.style.color = 'white';
-      
+
       setTimeout(() => {
         section.style.background = '';
         section.style.color = '';
@@ -916,11 +928,13 @@ class ComprehensiveHelpSystem {
     if (modal) {
       modal.style.display = 'flex';
       document.body.style.overflow = 'hidden';
-      
+
       // Focus the search input
       setTimeout(() => {
         const searchInput = document.getElementById('help-search-input');
-        if (searchInput) searchInput.focus();
+        if (searchInput) {
+          searchInput.focus();
+        }
       }, 100);
     }
   }
@@ -966,7 +980,7 @@ class ComprehensiveHelpSystem {
         </button>
       </div>
     `;
-    
+
     const contentArea = document.getElementById('help-content-area');
     if (contentArea) {
       contentArea.innerHTML = feedbackForm;
@@ -976,48 +990,48 @@ class ComprehensiveHelpSystem {
   handleSearchKeyboard(e) {
     const results = document.querySelectorAll('.help-search-result');
     const highlighted = document.querySelector('.help-search-result.highlighted');
-    
+
     switch (e.key) {
-      case 'ArrowDown':
-        e.preventDefault();
-        if (highlighted) {
-          const next = highlighted.nextElementSibling;
-          highlighted.classList.remove('highlighted');
-          if (next) {
-            next.classList.add('highlighted');
-          } else {
-            results[0]?.classList.add('highlighted');
-          }
+    case 'ArrowDown':
+      e.preventDefault();
+      if (highlighted) {
+        const next = highlighted.nextElementSibling;
+        highlighted.classList.remove('highlighted');
+        if (next) {
+          next.classList.add('highlighted');
         } else {
           results[0]?.classList.add('highlighted');
         }
-        break;
-      
-      case 'ArrowUp':
-        e.preventDefault();
-        if (highlighted) {
-          const prev = highlighted.previousElementSibling;
-          highlighted.classList.remove('highlighted');
-          if (prev) {
-            prev.classList.add('highlighted');
-          } else {
-            results[results.length - 1]?.classList.add('highlighted');
-          }
+      } else {
+        results[0]?.classList.add('highlighted');
+      }
+      break;
+
+    case 'ArrowUp':
+      e.preventDefault();
+      if (highlighted) {
+        const prev = highlighted.previousElementSibling;
+        highlighted.classList.remove('highlighted');
+        if (prev) {
+          prev.classList.add('highlighted');
         } else {
           results[results.length - 1]?.classList.add('highlighted');
         }
-        break;
-      
-      case 'Enter':
-        e.preventDefault();
-        if (highlighted) {
-          highlighted.click();
-        }
-        break;
-      
-      case 'Escape':
-        this.clearSearch();
-        break;
+      } else {
+        results[results.length - 1]?.classList.add('highlighted');
+      }
+      break;
+
+    case 'Enter':
+      e.preventDefault();
+      if (highlighted) {
+        highlighted.click();
+      }
+      break;
+
+    case 'Escape':
+      this.clearSearch();
+      break;
     }
   }
 

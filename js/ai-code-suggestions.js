@@ -71,7 +71,7 @@ class AICodeSuggestions {
 
     // Add CSS styles
     this.addStyles();
-    
+
     // Insert panel into the page
     const targetContainer = document.querySelector('.container') || document.body;
     targetContainer.appendChild(suggestionsPanel);
@@ -83,7 +83,9 @@ class AICodeSuggestions {
   }
 
   addStyles() {
-    if (document.getElementById('ai-suggestions-styles')) return;
+    if (document.getElementById('ai-suggestions-styles')) {
+      return;
+    }
 
     const styles = document.createElement('style');
     styles.id = 'ai-suggestions-styles';
@@ -396,10 +398,14 @@ class AICodeSuggestions {
   }
 
   async handleAIQuery(query) {
-    if (!query.trim()) return;
+    if (!query.trim()) {
+      return;
+    }
 
     const input = document.getElementById('ai-query-input');
-    if (input) input.value = '';
+    if (input) {
+      input.value = '';
+    }
 
     // Add user query to suggestions list
     this.addSuggestion({
@@ -420,10 +426,10 @@ class AICodeSuggestions {
     try {
       // Simulate AI response (in a real implementation, this would call an AI API)
       await new Promise(resolve => setTimeout(resolve, 1500));
-      
+
       const aiResponse = await this.generateAIResponse(query);
       this.removeSuggestionsByType('loading');
-      
+
       this.addSuggestion({
         icon: '🤖',
         title: 'AI Suggestion',
@@ -445,7 +451,7 @@ class AICodeSuggestions {
   async generateAIResponse(query) {
     // Simulate intelligent AI responses based on query content
     const queryLower = query.toLowerCase();
-    
+
     if (queryLower.includes('performance') || queryLower.includes('speed') || queryLower.includes('optimize')) {
       return 'Consider implementing lazy loading for images, minifying CSS/JS files, using a CDN, and optimizing your service worker caching strategy.';
     } else if (queryLower.includes('accessibility') || queryLower.includes('a11y')) {
@@ -463,7 +469,9 @@ class AICodeSuggestions {
 
   addSuggestion(suggestion) {
     const suggestionsList = document.getElementById('suggestions-list');
-    if (!suggestionsList) return;
+    if (!suggestionsList) {
+      return;
+    }
 
     const suggestionElement = document.createElement('div');
     suggestionElement.className = 'suggestion-item';
@@ -501,7 +509,9 @@ class AICodeSuggestions {
 
   removeSuggestionsByType(type) {
     const suggestionsList = document.getElementById('suggestions-list');
-    if (!suggestionsList) return;
+    if (!suggestionsList) {
+      return;
+    }
 
     const suggestions = suggestionsList.querySelectorAll(`[data-type="${type}"]`);
     suggestions.forEach(suggestion => suggestion.remove());
@@ -510,7 +520,7 @@ class AICodeSuggestions {
   startContextAnalysis() {
     // Analyze current page context and provide relevant suggestions
     this.analyzePageContext();
-    
+
     // Update context every 30 seconds
     setInterval(() => {
       this.analyzePageContext();
@@ -519,7 +529,7 @@ class AICodeSuggestions {
 
   analyzePageContext() {
     let newContext = 'website';
-    
+
     // Analyze current page elements and content
     if (document.querySelector('.code-playground') || document.querySelector('code')) {
       newContext = 'development';
@@ -545,10 +555,10 @@ class AICodeSuggestions {
 
   loadContextualSuggestions() {
     const templates = this.suggestionTemplates[this.currentContext] || this.suggestionTemplates.website;
-    
+
     // Clear existing contextual suggestions
     this.removeSuggestionsByType('contextual');
-    
+
     // Add relevant suggestions
     templates.forEach(template => {
       this.addSuggestion({
@@ -561,20 +571,20 @@ class AICodeSuggestions {
   handleSuggestionClick(action) {
     // Handle different suggestion actions
     switch (action) {
-      case 'design':
-        this.showDesignSuggestions();
-        break;
-      case 'performance':
-        this.showPerformanceSuggestions();
-        break;
-      case 'accessibility':
-        this.showAccessibilitySuggestions();
-        break;
-      case 'mobile':
-        this.showMobileSuggestions();
-        break;
-      default:
-        console.log('Suggestion clicked:', action);
+    case 'design':
+      this.showDesignSuggestions();
+      break;
+    case 'performance':
+      this.showPerformanceSuggestions();
+      break;
+    case 'accessibility':
+      this.showAccessibilitySuggestions();
+      break;
+    case 'mobile':
+      this.showMobileSuggestions();
+      break;
+    default:
+      console.log('Suggestion clicked:', action);
     }
   }
 

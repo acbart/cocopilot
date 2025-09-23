@@ -255,13 +255,15 @@ class AIEducation {
         duration: 500
       }
     ];
-    
+
     this.init();
   }
 
   init() {
-    if (this.isInitialized) return;
-    
+    if (this.isInitialized) {
+      return;
+    }
+
     this.createEducationSection();
     this.addEducationStyles();
     this.setupEventListeners();
@@ -270,13 +272,15 @@ class AIEducation {
 
   createEducationSection() {
     const mainContainer = document.querySelector('.container');
-    if (!mainContainer) return;
+    if (!mainContainer) {
+      return;
+    }
 
     // Find a good insertion point (after analytics dashboard)
-    const analyticsSection = document.querySelector('.analytics-dashboard') || 
+    const analyticsSection = document.querySelector('.analytics-dashboard') ||
                             document.querySelector('.data-viz-container') ||
                             document.querySelector('.about-section');
-    
+
     const educationSection = document.createElement('section');
     educationSection.className = 'ai-education-section';
     educationSection.innerHTML = `
@@ -321,7 +325,9 @@ class AIEducation {
   }
 
   addEducationStyles() {
-    if (document.getElementById('ai-education-styles')) return;
+    if (document.getElementById('ai-education-styles')) {
+      return;
+    }
 
     const style = document.createElement('style');
     style.id = 'ai-education-styles';
@@ -752,7 +758,7 @@ class AIEducation {
         }
       }
     `;
-    
+
     document.head.appendChild(style);
   }
 
@@ -775,34 +781,40 @@ class AIEducation {
   }
 
   showLesson(index) {
-    if (index < 0 || index >= this.lessons.length) return;
-    
+    if (index < 0 || index >= this.lessons.length) {
+      return;
+    }
+
     this.currentLesson = index;
     const lesson = this.lessons[index];
-    
+
     // Update content
     const contentElement = document.getElementById('educationContent');
     if (contentElement) {
       contentElement.innerHTML = lesson.content;
     }
-    
+
     // Update navigation
     document.querySelectorAll('.lesson-nav-btn').forEach((btn, i) => {
       btn.classList.toggle('active', i === index);
     });
-    
+
     // Update progress
     const currentLessonSpan = document.querySelector('.current-lesson');
     if (currentLessonSpan) {
       currentLessonSpan.textContent = index + 1;
     }
-    
+
     // Update controls
     const prevBtn = document.querySelector('.education-btn.prev');
     const nextBtn = document.querySelector('.education-btn.next');
-    
-    if (prevBtn) prevBtn.disabled = index === 0;
-    if (nextBtn) nextBtn.disabled = index === this.lessons.length - 1;
+
+    if (prevBtn) {
+      prevBtn.disabled = index === 0;
+    }
+    if (nextBtn) {
+      nextBtn.disabled = index === this.lessons.length - 1;
+    }
   }
 
   nextLesson() {

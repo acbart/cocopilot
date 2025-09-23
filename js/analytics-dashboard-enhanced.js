@@ -35,7 +35,7 @@ class EnhancedAnalyticsDashboard {
     ];
 
     const data = {};
-    
+
     for (const endpoint of endpoints) {
       try {
         const cached = this.getCachedData(endpoint);
@@ -115,7 +115,7 @@ class EnhancedAnalyticsDashboard {
     const pulls = this.repositoryData['/pulls?state=all&per_page=100'] || [];
     const issues = this.repositoryData['/issues?state=all&per_page=100'] || [];
 
-    const aiCommits = commits.filter(commit => 
+    const aiCommits = commits.filter(commit =>
       commit.commit.message.toLowerCase().includes('copilot') ||
       commit.commit.message.toLowerCase().includes('ai') ||
       commit.author?.login === 'github-actions[bot]'
@@ -164,10 +164,12 @@ class EnhancedAnalyticsDashboard {
 
   calculateImprovementRate() {
     const commits = this.repositoryData['/commits?per_page=100'] || [];
-    if (commits.length === 0) return 0;
+    if (commits.length === 0) {
+      return 0;
+    }
 
     const recentCommits = commits.slice(0, 20);
-    const aiCommits = recentCommits.filter(commit => 
+    const aiCommits = recentCommits.filter(commit =>
       commit.commit.message.toLowerCase().includes('copilot') ||
       commit.commit.message.toLowerCase().includes('ai') ||
       commit.author?.login === 'github-actions[bot]'
@@ -179,7 +181,7 @@ class EnhancedAnalyticsDashboard {
   async renderCommitChart() {
     const commits = this.repositoryData['/commits?per_page=100'] || [];
     const commitsByDate = this.groupCommitsByDate(commits);
-    
+
     return `
       <div class="chart-section">
         <h3>📈 Commit Activity Timeline</h3>
@@ -202,30 +204,30 @@ class EnhancedAnalyticsDashboard {
 
   groupCommitsByDate(commits) {
     const groups = {};
-    
+
     commits.forEach(commit => {
       const date = new Date(commit.commit.author.date).toDateString();
       if (!groups[date]) {
         groups[date] = { ai: 0, manual: 0 };
       }
-      
+
       const isAI = commit.commit.message.toLowerCase().includes('copilot') ||
                    commit.commit.message.toLowerCase().includes('ai') ||
                    commit.author?.login === 'github-actions[bot]';
-      
+
       if (isAI) {
         groups[date].ai++;
       } else {
         groups[date].manual++;
       }
     });
-    
+
     return groups;
   }
 
   renderCommitActivityChart(commitsByDate) {
     const dates = Object.keys(commitsByDate).slice(-14); // Last 14 days
-    const maxCommits = Math.max(...dates.map(date => 
+    const maxCommits = Math.max(...dates.map(date =>
       commitsByDate[date].ai + commitsByDate[date].manual
     ));
 
@@ -247,7 +249,7 @@ class EnhancedAnalyticsDashboard {
 
   async renderContributorInsights() {
     const contributors = this.repositoryData['/stats/contributors'] || [];
-    
+
     return `
       <div class="contributor-section">
         <h3>👥 Contributor Insights</h3>
@@ -268,7 +270,7 @@ class EnhancedAnalyticsDashboard {
 
   async renderAIImprovementTimeline() {
     const commits = this.repositoryData['/commits?per_page=100'] || [];
-    const aiCommits = commits.filter(commit => 
+    const aiCommits = commits.filter(commit =>
       commit.commit.message.toLowerCase().includes('copilot') ||
       commit.commit.message.toLowerCase().includes('ai') ||
       commit.author?.login === 'github-actions[bot]'
@@ -297,9 +299,9 @@ class EnhancedAnalyticsDashboard {
     const openIssues = issues.filter(i => i.state === 'open').length;
     const closedIssues = issues.filter(i => i.state === 'closed').length;
     const totalIssues = issues.length;
-    
+
     const healthScore = totalIssues > 0 ? Math.round((closedIssues / totalIssues) * 100) : 100;
-    
+
     return `
       <div class="health-section">
         <h3>🏥 Repository Health</h3>
@@ -335,14 +337,14 @@ class EnhancedAnalyticsDashboard {
     const dashboardContent = document.getElementById('dashboardContent');
 
     if (refreshBtn) {
-      refreshBtn.addEventListener('click', async () => {
+      refreshBtn.addEventListener('click', async() => {
         refreshBtn.textContent = '🔄 Refreshing...';
         refreshBtn.disabled = true;
-        
+
         this.cache.clear();
         await this.fetchRepositoryData();
         await this.renderDashboard();
-        
+
         refreshBtn.textContent = '🔄 Refresh';
         refreshBtn.disabled = false;
       });
