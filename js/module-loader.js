@@ -22,6 +22,7 @@ class ModuleLoader {
     // Modules to load on user interaction
     this.interactionModules = [
       'progress-indicator',
+      'enhanced-mobile-experience',
       'help-system',
       'accessibility-enhancer',
       'smart-search',
@@ -38,6 +39,7 @@ class ModuleLoader {
     
     // Low priority modules
     this.backgroundModules = [
+      'enhanced-analytics',
       'floating-particles',
       'rss-generator',
       'rss-feed-builder',
@@ -261,7 +263,7 @@ class ModuleLoader {
     const currentPage = this.detectCurrentPage();
     
     const pageModules = {
-      home: ['ai-content-suggestions', 'onboarding', 'visual-enhancer'],
+      home: ['ai-content-suggestions', 'guided-tour', 'onboarding', 'visual-enhancer'],
       features: ['ai-code-playground', 'interactive-tutorial'],
       docs: ['comprehensive-help-system', 'code-diff-viewer'],
       timeline: ['timeline', 'automated-changelog'],
