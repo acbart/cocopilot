@@ -1706,15 +1706,27 @@
         }
 
         .showcase-feature:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.15);
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.2);
             border-color: var(--button-gradient-start);
+        }
+
+        .showcase-feature:active {
+            transform: translateY(-2px) scale(1.01);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.25);
         }
 
         .showcase-icon {
             font-size: 2.5rem;
             margin-bottom: 1rem;
             display: block;
+            transition: all 0.3s ease;
+            text-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+        }
+
+        .showcase-feature:hover .showcase-icon {
+            transform: scale(1.1) rotate(5deg);
+            text-shadow: 0 4px 15px rgba(102, 126, 234, 0.5);
         }
 
         .showcase-content h4 {
@@ -3235,47 +3247,31 @@
         });
     </script>
 
-    <!-- Core JavaScript Modules (Critical - Load First) -->
-    <script src="js/i18n.js"></script>
-    <script src="js/enhanced-error-handler.js"></script>
-
-    <!-- Performance and UX Modules (Deferred for faster initial load) -->
-    <script src="js/performance-monitor.js" defer></script>
-    <script src="js/help-system.js" defer></script>
-    <script src="js/accessibility-enhancer.js" defer></script>
-    <script src="js/smart-search.js" defer></script>
-    <script src="js/user-feedback.js" defer></script>
-
-    <!-- UI and Interaction Modules (Deferred) -->
-    <script src="js/advanced-search.js" defer></script>
-    <script src="js/onboarding.js" defer></script>
-    <script src="js/mobile-experience.js" defer></script>
-    <script src="js/enhanced-mobile.js" defer></script>
-
-    <!-- Data and Visualization Modules (Async) -->
-    <script src="js/data-viz.js" async></script>
-    <script src="js/github-activity.js" async></script>
-    <script src="js/timeline.js" async></script>
-    <script src="js/analytics-dashboard-enhanced.js" async></script>
-    <script src="js/interactive-data-viz.js" async></script>
-    <script src="js/community-engagement.js" async></script>
-    <script src="js/enhanced-search-system.js" async></script>
-    <script src="js/automated-changelog.js" async></script>
-    <script src="js/code-diff-viewer.js" async></script>
-    <script src="js/ai-recommendations.js" async></script>
-    <script src="js/ai-education.js" async></script>
-    <script src="js/ai-code-playground.js" async></script>
-    <script src="js/visual-enhancer.js" async></script>
-
-    <!-- Utility Modules (Async) -->
-    <script src="js/performance-enhancements.js" async></script>
-    <script src="js/rss-generator.js" async></script>
-    <script src="js/rss-feed-builder.js" async></script>
-    <script src="js/performance-optimizer.js" async></script>
-    <script src="js/ai-code-suggestions.js" async></script>
-    <script src="js/interactive-tutorial.js" async></script>
-    <script src="js/smart-notification-system.js" async></script>
-    <script src="js/advanced-collaboration-features.js" async></script>
-    <script src="js/comprehensive-help-system.js" async></script>
+    <!-- Intelligent Module Loader (Load First) -->
+    <script src="js/module-loader.js"></script>
+    
+    <!-- Critical Modules (Loaded by Module Loader) -->
+    <!-- These are now loaded intelligently by the module loader based on:
+         - Device capabilities (mobile/desktop, connection speed)
+         - User behavior (interaction patterns, viewport visibility)
+         - Page context (current page, user preferences)
+         - Performance considerations (idle time, request prioritization)
+    -->
+    
+    <!-- 
+    Module Loading Strategy:
+    1. Critical: i18n, enhanced-error-handler, performance-monitor
+    2. Interaction-based: help-system, accessibility-enhancer, smart-search, user-feedback
+    3. Viewport-based: data-viz, github-activity, analytics-dashboard-enhanced
+    4. Page-specific: ai-content-suggestions (home), ai-code-playground (features), etc.
+    5. Background: rss-generator, performance-optimizer, utility modules
+    -->
+    
+    <!-- Fallback for browsers without module loader support -->
+    <noscript>
+        <script src="js/i18n.js"></script>
+        <script src="js/enhanced-error-handler.js"></script>
+        <script src="js/performance-monitor.js"></script>
+    </noscript>
 </body>
 </html>
