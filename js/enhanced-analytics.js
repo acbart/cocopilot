@@ -17,7 +17,7 @@ class EnhancedAnalytics {
       features_used: [],
       errors: []
     };
-    
+
     // Configuration
     this.config = {
       batchSize: 10,
@@ -27,29 +27,29 @@ class EnhancedAnalytics {
       enableScrollTracking: true,
       enablePerformanceMonitoring: true
     };
-    
+
     this.initialize();
   }
 
   async initialize() {
     try {
       console.log('📈 Initializing Enhanced Analytics...');
-      
+
       // Set up tracking
       this.setupEventTracking();
       this.setupPerformanceMonitoring();
       this.setupUserBehaviorTracking();
-      
+
       // Start periodic reporting
       this.startPeriodicReporting();
-      
+
       // Initialize heat mapping if enabled
       if (this.config.enableHeatmap) {
         this.initializeHeatMapping();
       }
-      
+
       console.log('✅ Enhanced Analytics initialized');
-      
+
     } catch (error) {
       console.error('❌ Error initializing Enhanced Analytics:', error);
     }
@@ -66,49 +66,51 @@ class EnhancedAnalytics {
       referrer: document.referrer,
       timestamp: Date.now()
     });
-    
+
     // Track clicks
     document.addEventListener('click', (e) => {
       this.trackClick(e);
     });
-    
+
     // Track form submissions
     document.addEventListener('submit', (e) => {
       this.trackFormSubmission(e);
     });
-    
+
     // Track keyboard interactions
     document.addEventListener('keydown', (e) => {
       this.trackKeyboardInteraction(e);
     });
-    
+
     // Track visibility changes
     document.addEventListener('visibilitychange', () => {
       this.trackVisibilityChange();
     });
-    
+
     // Track errors
     window.addEventListener('error', (e) => {
       this.trackError(e);
     });
-    
+
     window.addEventListener('unhandledrejection', (e) => {
       this.trackError(e, 'promise_rejection');
     });
   }
 
   setupPerformanceMonitoring() {
-    if (!this.config.enablePerformanceMonitoring) return;
-    
+    if (!this.config.enablePerformanceMonitoring) {
+      return;
+    }
+
     // Monitor Core Web Vitals
     this.monitorCoreWebVitals();
-    
+
     // Monitor resource loading
     this.monitorResourceLoading();
-    
+
     // Monitor JavaScript execution time
     this.monitorJSPerformance();
-    
+
     // Custom performance marks
     this.createPerformanceMarks();
   }
@@ -118,13 +120,13 @@ class EnhancedAnalytics {
     if (this.config.enableScrollTracking) {
       this.setupScrollTracking();
     }
-    
+
     // Time on section tracking
     this.setupSectionTimeTracking();
-    
+
     // Feature usage tracking
     this.setupFeatureUsageTracking();
-    
+
     // Mouse movement tracking (for heatmap)
     if (this.config.enableHeatmap) {
       this.setupMouseTracking();
@@ -143,10 +145,10 @@ class EnhancedAnalytics {
       viewportSize: `${window.innerWidth}x${window.innerHeight}`,
       ...data
     };
-    
+
     this.events.push(event);
     this.userBehavior.interactions++;
-    
+
     // Send to Google Analytics if available
     if (window.gtag) {
       gtag('event', eventType, {
@@ -154,12 +156,12 @@ class EnhancedAnalytics {
         custom_parameter: JSON.stringify(data)
       });
     }
-    
+
     // Batch send if we have enough events
     if (this.events.length >= this.config.batchSize) {
       this.sendEvents();
     }
-    
+
     console.log('📊 Event tracked:', eventType, data);
   }
 
@@ -177,12 +179,12 @@ class EnhancedAnalytics {
       isButton: element.tagName === 'BUTTON' || element.type === 'button',
       isLink: element.tagName === 'A'
     };
-    
+
     // Track special interactions
     if (element.classList.contains('feature')) {
       this.userBehavior.features_used.push(element.dataset.feature || 'unknown');
     }
-    
+
     this.trackEvent('click', clickData);
   }
 
@@ -195,7 +197,7 @@ class EnhancedAnalytics {
       method: form.method,
       fieldCount: form.elements.length
     };
-    
+
     this.trackEvent('form_submit', formData);
   }
 
@@ -203,7 +205,7 @@ class EnhancedAnalytics {
     // Only track meaningful keyboard interactions
     const importantKeys = ['Enter', 'Escape', 'Tab', 'Space'];
     const isShortcut = event.ctrlKey || event.metaKey || event.altKey;
-    
+
     if (importantKeys.includes(event.key) || isShortcut) {
       const keyData = {
         key: event.key,
@@ -213,7 +215,7 @@ class EnhancedAnalytics {
         shiftKey: event.shiftKey,
         targetElement: event.target.tagName.toLowerCase()
       };
-      
+
       this.trackEvent('keyboard_interaction', keyData);
     }
   }
@@ -224,7 +226,7 @@ class EnhancedAnalytics {
       visibilityState: document.visibilityState,
       timeOnPage: Date.now() - this.startTime
     };
-    
+
     this.trackEvent('visibility_change', visibilityData);
   }
 
@@ -237,7 +239,7 @@ class EnhancedAnalytics {
       stack: error.error?.stack || error.reason?.stack || 'No stack trace',
       type: type
     };
-    
+
     this.userBehavior.errors.push(errorData);
     this.trackEvent('error', errorData);
   }
@@ -256,7 +258,7 @@ class EnhancedAnalytics {
         }
       });
     });
-    
+
     // Largest Contentful Paint (LCP)
     this.observePerformanceEntries('largest-contentful-paint', (entries) => {
       const lastEntry = entries[entries.length - 1];
@@ -269,7 +271,7 @@ class EnhancedAnalytics {
         });
       }
     });
-    
+
     // Cumulative Layout Shift (CLS)
     let clsValue = 0;
     this.observePerformanceEntries('layout-shift', (entries) => {
@@ -278,7 +280,7 @@ class EnhancedAnalytics {
           clsValue += entry.value;
         }
       });
-      
+
       this.performanceMetrics.cls = clsValue;
       this.trackEvent('core_web_vital', {
         metric: 'CLS',
@@ -307,12 +309,18 @@ class EnhancedAnalytics {
       LCP: { good: 2500, needs_improvement: 4000 },
       CLS: { good: 0.1, needs_improvement: 0.25 }
     };
-    
+
     const threshold = thresholds[metric];
-    if (!threshold) return 'unknown';
-    
-    if (value <= threshold.good) return 'good';
-    if (value <= threshold.needs_improvement) return 'needs_improvement';
+    if (!threshold) {
+      return 'unknown';
+    }
+
+    if (value <= threshold.good) {
+      return 'good';
+    }
+    if (value <= threshold.needs_improvement) {
+      return 'needs_improvement';
+    }
     return 'poor';
   }
 
@@ -327,12 +335,12 @@ class EnhancedAnalytics {
             loadComplete: navigation.loadEventEnd - navigation.loadEventStart,
             totalTime: navigation.loadEventEnd - navigation.fetchStart
           };
-          
+
           this.trackEvent('navigation_timing', this.performanceMetrics.navigation);
         }
       }, 100);
     });
-    
+
     // Monitor resource timing
     this.observePerformanceEntries('resource', (entries) => {
       entries.forEach(entry => {
@@ -349,10 +357,18 @@ class EnhancedAnalytics {
   }
 
   getResourceType(url) {
-    if (url.includes('.js')) return 'javascript';
-    if (url.includes('.css')) return 'stylesheet';
-    if (url.match(/\.(jpg|jpeg|png|gif|svg|webp)$/)) return 'image';
-    if (url.includes('.html')) return 'document';
+    if (url.includes('.js')) {
+      return 'javascript';
+    }
+    if (url.includes('.css')) {
+      return 'stylesheet';
+    }
+    if (url.match(/\.(jpg|jpeg|png|gif|svg|webp)$/)) {
+      return 'image';
+    }
+    if (url.includes('.html')) {
+      return 'document';
+    }
     return 'other';
   }
 
@@ -377,7 +393,7 @@ class EnhancedAnalytics {
       'ui_ready',
       'data_loaded'
     ];
-    
+
     marks.forEach(mark => {
       if (performance.mark) {
         performance.mark(mark);
@@ -388,19 +404,19 @@ class EnhancedAnalytics {
   setupScrollTracking() {
     let maxScrollDepth = 0;
     let scrollTimer = null;
-    
+
     window.addEventListener('scroll', () => {
       clearTimeout(scrollTimer);
-      
+
       scrollTimer = setTimeout(() => {
         const scrollDepth = Math.round(
           (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100
         );
-        
+
         if (scrollDepth > maxScrollDepth) {
           maxScrollDepth = scrollDepth;
           this.userBehavior.scrollDepth = maxScrollDepth;
-          
+
           // Track milestone scroll depths
           if (maxScrollDepth % 25 === 0 && maxScrollDepth > 0) {
             this.trackEvent('scroll_depth', {
@@ -418,7 +434,7 @@ class EnhancedAnalytics {
     const sectionObserver = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         const sectionId = entry.target.id || entry.target.className || 'unknown';
-        
+
         if (entry.isIntersecting) {
           this.userBehavior.timeOnSections[sectionId] = {
             startTime: Date.now(),
@@ -428,7 +444,7 @@ class EnhancedAnalytics {
           const timeSpent = Date.now() - this.userBehavior.timeOnSections[sectionId].startTime;
           this.userBehavior.timeOnSections[sectionId].totalTime += timeSpent;
           this.userBehavior.timeOnSections[sectionId].startTime = null;
-          
+
           // Track significant time spent in sections
           if (timeSpent > 5000) { // More than 5 seconds
             this.trackEvent('section_engagement', {
@@ -440,7 +456,7 @@ class EnhancedAnalytics {
         }
       });
     }, { threshold: 0.5 });
-    
+
     sections.forEach(section => sectionObserver.observe(section));
   }
 
@@ -457,7 +473,7 @@ class EnhancedAnalytics {
         });
       }
     });
-    
+
     // Track button interactions
     document.addEventListener('click', (e) => {
       if (e.target.tagName === 'BUTTON') {
@@ -471,12 +487,12 @@ class EnhancedAnalytics {
   }
 
   setupMouseTracking() {
-    let mouseData = [];
+    const mouseData = [];
     let lastRecordTime = 0;
-    
+
     document.addEventListener('mousemove', (e) => {
       const now = Date.now();
-      
+
       // Sample mouse movements (every 100ms to avoid too much data)
       if (now - lastRecordTime > 100) {
         mouseData.push({
@@ -484,9 +500,9 @@ class EnhancedAnalytics {
           y: e.clientY,
           timestamp: now - this.startTime
         });
-        
+
         lastRecordTime = now;
-        
+
         // Send mouse data in batches
         if (mouseData.length >= 50) {
           this.trackEvent('mouse_heatmap', {
@@ -514,7 +530,7 @@ class EnhancedAnalytics {
   initializeHeatMapping() {
     // Create heatmap visualization (simplified)
     this.heatmapData = new Map();
-    
+
     document.addEventListener('click', (e) => {
       const key = `${Math.floor(e.clientX / 10)}_${Math.floor(e.clientY / 10)}`;
       this.heatmapData.set(key, (this.heatmapData.get(key) || 0) + 1);
@@ -526,11 +542,13 @@ class EnhancedAnalytics {
   }
 
   sendEvents() {
-    if (this.events.length === 0) return;
-    
+    if (this.events.length === 0) {
+      return;
+    }
+
     // In a real implementation, you would send this to your analytics backend
     console.log('📤 Sending analytics events:', this.events.length);
-    
+
     // For now, just log to console and clear events
     this.events.splice(0, this.config.batchSize);
   }
@@ -561,7 +579,7 @@ class EnhancedAnalytics {
         referrer: document.referrer
       }
     };
-    
+
     console.log('📊 Analytics Report:', report);
     return report;
   }
@@ -584,7 +602,7 @@ class EnhancedAnalytics {
     const data = this.generateReport();
     const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
-    
+
     const a = document.createElement('a');
     a.href = url;
     a.download = `cocopilot-analytics-${this.sessionId}.json`;
@@ -623,14 +641,14 @@ function initializeEnhancedAnalytics() {
   if (window.enhancedAnalytics) {
     return;
   }
-  
+
   window.enhancedAnalytics = new EnhancedAnalytics();
-  
+
   // Add global helper functions
   window.trackEvent = (eventName, data) => {
     window.enhancedAnalytics.trackCustomEvent(eventName, data);
   };
-  
+
   window.exportAnalytics = () => {
     window.enhancedAnalytics.exportData();
   };

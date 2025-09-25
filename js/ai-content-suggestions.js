@@ -17,28 +17,28 @@ class AIContentSuggestions {
   async initialize() {
     try {
       console.log('🤖 Initializing AI Content Suggestions System...');
-      
+
       // Create UI components
       this.createSuggestionInterface();
       this.attachEventListeners();
-      
+
       // Analyze current context
       await this.analyzePageContext();
-      
+
       // Generate initial suggestions
       await this.generateSuggestions();
-      
+
       // Start adaptive learning
       this.startBehaviorTracking();
-      
+
       this.isActive = true;
       console.log('✅ AI Content Suggestions System initialized');
-      
+
       // Show welcome suggestion for new users
       if (this.isFirstVisit()) {
         this.showWelcomeSuggestion();
       }
-      
+
     } catch (error) {
       console.error('❌ Error initializing AI Content Suggestions:', error);
     }
@@ -72,10 +72,10 @@ class AIContentSuggestions {
 
     // Add trigger button
     this.createTriggerButton();
-    
+
     // Apply styles
     this.addSuggestionStyles();
-    
+
     document.body.appendChild(this.suggestionContainer);
   }
 
@@ -85,11 +85,11 @@ class AIContentSuggestions {
     trigger.innerHTML = '🧠 AI Tips';
     trigger.setAttribute('aria-label', 'Show AI content suggestions');
     trigger.title = 'Get personalized AI suggestions';
-    
+
     trigger.addEventListener('click', () => {
       this.toggleSuggestionPanel();
     });
-    
+
     document.body.appendChild(trigger);
   }
 
@@ -360,19 +360,19 @@ class AIContentSuggestions {
 
   async generateSuggestions() {
     const suggestions = [];
-    
+
     // Page-specific suggestions
     const pageSuggestions = this.getPageSpecificSuggestions();
     suggestions.push(...pageSuggestions);
-    
+
     // Behavioral suggestions
     const behaviorSuggestions = this.getBehavioralSuggestions();
     suggestions.push(...behaviorSuggestions);
-    
+
     // Learning suggestions
     const learningSuggestions = this.getLearningSuggestions();
     suggestions.push(...learningSuggestions);
-    
+
     // Performance suggestions
     const performanceSuggestions = this.getPerformanceSuggestions();
     suggestions.push(...performanceSuggestions);
@@ -383,58 +383,58 @@ class AIContentSuggestions {
 
   getPageSpecificSuggestions() {
     const suggestions = [];
-    
+
     switch (this.currentPage) {
-      case 'home':
-        suggestions.push({
-          type: 'explore',
-          title: 'Discover AI Features',
-          description: 'Explore our comprehensive AI-powered features including code playground and educational modules.',
-          action: 'View Features',
-          link: 'features.html',
-          priority: 9
-        });
-        
-        suggestions.push({
-          type: 'learn',
-          title: 'Check Project Timeline',
-          description: 'See how this repository has evolved through daily AI improvements.',
-          action: 'View Timeline',
-          link: 'timeline.html',
-          priority: 8
-        });
-        break;
-        
-      case 'features':
-        suggestions.push({
-          type: 'try',
-          title: 'Try Live Demo',
-          description: 'Experience interactive features and see AI capabilities in action.',
-          action: 'Start Demo',
-          onClick: () => this.startInteractiveDemo(),
-          priority: 10
-        });
-        break;
-        
-      case 'docs':
-        suggestions.push({
-          type: 'code',
-          title: 'Explore Code Examples',
-          description: 'See practical implementation examples and best practices.',
-          action: 'View Examples',
-          onClick: () => this.showCodeExamples(),
-          priority: 9
-        });
-        break;
+    case 'home':
+      suggestions.push({
+        type: 'explore',
+        title: 'Discover AI Features',
+        description: 'Explore our comprehensive AI-powered features including code playground and educational modules.',
+        action: 'View Features',
+        link: 'features.html',
+        priority: 9
+      });
+
+      suggestions.push({
+        type: 'learn',
+        title: 'Check Project Timeline',
+        description: 'See how this repository has evolved through daily AI improvements.',
+        action: 'View Timeline',
+        link: 'timeline.html',
+        priority: 8
+      });
+      break;
+
+    case 'features':
+      suggestions.push({
+        type: 'try',
+        title: 'Try Live Demo',
+        description: 'Experience interactive features and see AI capabilities in action.',
+        action: 'Start Demo',
+        onClick: () => this.startInteractiveDemo(),
+        priority: 10
+      });
+      break;
+
+    case 'docs':
+      suggestions.push({
+        type: 'code',
+        title: 'Explore Code Examples',
+        description: 'See practical implementation examples and best practices.',
+        action: 'View Examples',
+        onClick: () => this.showCodeExamples(),
+        priority: 9
+      });
+      break;
     }
-    
+
     return suggestions;
   }
 
   getBehavioralSuggestions() {
     const suggestions = [];
     const preferences = this.userPreferences;
-    
+
     if (preferences.darkMode) {
       suggestions.push({
         type: 'tip',
@@ -445,7 +445,7 @@ class AIContentSuggestions {
         priority: 6
       });
     }
-    
+
     if (preferences.visitCount > 3) {
       suggestions.push({
         type: 'advanced',
@@ -456,7 +456,7 @@ class AIContentSuggestions {
         priority: 8
       });
     }
-    
+
     return suggestions;
   }
 
@@ -483,7 +483,7 @@ class AIContentSuggestions {
 
   getPerformanceSuggestions() {
     const suggestions = [];
-    
+
     if (this.isSlowConnection()) {
       suggestions.push({
         type: 'performance',
@@ -494,7 +494,7 @@ class AIContentSuggestions {
         priority: 9
       });
     }
-    
+
     if (this.isMobileDevice()) {
       suggestions.push({
         type: 'mobile',
@@ -505,13 +505,13 @@ class AIContentSuggestions {
         priority: 7
       });
     }
-    
+
     return suggestions;
   }
 
   displaySuggestions() {
     const content = this.suggestionContainer.querySelector('.suggestions-content');
-    
+
     if (this.suggestions.length === 0) {
       content.innerHTML = `
         <div class="no-suggestions">
@@ -520,10 +520,10 @@ class AIContentSuggestions {
       `;
       return;
     }
-    
+
     // Sort by priority
     this.suggestions.sort((a, b) => b.priority - a.priority);
-    
+
     const suggestionsHTML = this.suggestions.map(suggestion => `
       <div class="suggestion-item" data-type="${suggestion.type}">
         <div class="suggestion-type">${suggestion.type}</div>
@@ -536,9 +536,9 @@ class AIContentSuggestions {
         </button>
       </div>
     `).join('');
-    
+
     content.innerHTML = suggestionsHTML;
-    
+
     // Add click tracking
     content.querySelectorAll('.suggestion-item').forEach((item, index) => {
       item.addEventListener('click', () => {
@@ -568,25 +568,25 @@ class AIContentSuggestions {
     // Close button
     const closeBtn = this.suggestionContainer.querySelector('.close-suggestions');
     closeBtn.addEventListener('click', () => this.hideSuggestionPanel());
-    
+
     // Refresh button
     const refreshBtn = this.suggestionContainer.querySelector('.refresh-suggestions');
     refreshBtn.addEventListener('click', () => this.generateSuggestions());
-    
+
     // Settings button
     const settingsBtn = this.suggestionContainer.querySelector('.suggestions-settings');
     settingsBtn.addEventListener('click', () => this.showSettings());
-    
+
     // Escape key to close
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && this.suggestionContainer.classList.contains('show')) {
         this.hideSuggestionPanel();
       }
     });
-    
+
     // Click outside to close
     document.addEventListener('click', (e) => {
-      if (!this.suggestionContainer.contains(e.target) && 
+      if (!this.suggestionContainer.contains(e.target) &&
           !e.target.classList.contains('ai-suggestions-trigger') &&
           this.suggestionContainer.classList.contains('show')) {
         this.hideSuggestionPanel();
@@ -599,11 +599,11 @@ class AIContentSuggestions {
     document.addEventListener('scroll', () => {
       this.trackScrollBehavior();
     });
-    
+
     document.addEventListener('click', (e) => {
       this.trackClickBehavior(e);
     });
-    
+
     // Track time on sections
     this.observeElementVisibility();
   }
@@ -611,11 +611,21 @@ class AIContentSuggestions {
   // Utility methods
   detectCurrentPage() {
     const path = window.location.pathname;
-    if (path.includes('features')) return 'features';
-    if (path.includes('docs')) return 'docs';
-    if (path.includes('timeline')) return 'timeline';
-    if (path.includes('analytics')) return 'analytics';
-    if (path.includes('community')) return 'community';
+    if (path.includes('features')) {
+      return 'features';
+    }
+    if (path.includes('docs')) {
+      return 'docs';
+    }
+    if (path.includes('timeline')) {
+      return 'timeline';
+    }
+    if (path.includes('analytics')) {
+      return 'analytics';
+    }
+    if (path.includes('community')) {
+      return 'community';
+    }
     return 'home';
   }
 
@@ -628,14 +638,14 @@ class AIContentSuggestions {
       interests: [],
       dismissedSuggestions: []
     };
-    
+
     if (prefs) {
       const parsed = JSON.parse(prefs);
       parsed.visitCount = (parsed.visitCount || 0) + 1;
       this.saveUserPreferences(parsed);
       return { ...defaults, ...parsed };
     }
-    
+
     defaults.visitCount = 1;
     this.saveUserPreferences(defaults);
     return defaults;
@@ -660,14 +670,14 @@ class AIContentSuggestions {
   getVisibleElements() {
     const elements = document.querySelectorAll('h1, h2, h3, .feature, .section');
     const visible = [];
-    
+
     elements.forEach(el => {
       const rect = el.getBoundingClientRect();
       if (rect.top < window.innerHeight && rect.bottom > 0) {
         visible.push(el.tagName.toLowerCase() + (el.className ? '.' + el.className : ''));
       }
     });
-    
+
     return visible;
   }
 
@@ -697,9 +707,9 @@ class AIContentSuggestions {
         </div>
       </div>
     `;
-    
+
     document.body.appendChild(welcomeModal);
-    
+
     // Add welcome modal styles
     const styles = document.createElement('style');
     styles.textContent = `
@@ -757,20 +767,20 @@ class AIContentSuggestions {
         to { opacity: 1; }
       }
     `;
-    
+
     document.head.appendChild(styles);
-    
+
     // Add event listeners
     welcomeModal.querySelector('.start-tour-btn').addEventListener('click', () => {
       document.body.removeChild(welcomeModal);
       this.startGuidedTour();
     });
-    
+
     welcomeModal.querySelector('.dismiss-welcome-btn').addEventListener('click', () => {
       document.body.removeChild(welcomeModal);
       this.showSuggestionPanel();
     });
-    
+
     // Auto-dismiss after 10 seconds
     setTimeout(() => {
       if (document.body.contains(welcomeModal)) {

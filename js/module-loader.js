@@ -11,14 +11,14 @@ class ModuleLoader {
     this.isSlowConnection = this.detectSlowConnection();
     this.isMobileDevice = window.innerWidth < 768;
     this.userInteractionDetected = false;
-    
+
     // Priority modules that should load immediately
     this.criticalModules = [
       'i18n',
       'enhanced-error-handler',
       'performance-monitor'
     ];
-    
+
     // Modules to load on user interaction
     this.interactionModules = [
       'progress-indicator',
@@ -28,7 +28,7 @@ class ModuleLoader {
       'smart-search',
       'user-feedback'
     ];
-    
+
     // Modules to load on viewport intersection
     this.viewportModules = [
       'data-viz',
@@ -36,7 +36,7 @@ class ModuleLoader {
       'timeline',
       'analytics-dashboard-enhanced'
     ];
-    
+
     // Low priority modules
     this.backgroundModules = [
       'enhanced-analytics',
@@ -45,28 +45,28 @@ class ModuleLoader {
       'rss-feed-builder',
       'performance-optimizer'
     ];
-    
+
     this.initialize();
   }
 
   initialize() {
     console.log('📦 Initializing Intelligent Module Loader...');
-    
+
     // Load critical modules immediately
     this.loadCriticalModules();
-    
+
     // Set up interaction listeners
     this.setupInteractionListeners();
-    
+
     // Set up viewport observers
     this.setupViewportObservers();
-    
+
     // Load interaction modules after first user interaction
     this.scheduleInteractionModules();
-    
+
     // Load background modules with idle time
     this.scheduleBackgroundModules();
-    
+
     console.log('✅ Module Loader initialized');
   }
 
@@ -74,7 +74,7 @@ class ModuleLoader {
     if (navigator.connection) {
       const connection = navigator.connection;
       const slowConnections = ['slow-2g', '2g'];
-      return slowConnections.includes(connection.effectiveType) || 
+      return slowConnections.includes(connection.effectiveType) ||
              connection.downlink < 1.5;
     }
     return false;
@@ -84,14 +84,14 @@ class ModuleLoader {
     if (this.loadedModules.has(moduleName)) {
       return true;
     }
-    
+
     if (this.loadingPromises.has(moduleName)) {
       return await this.loadingPromises.get(moduleName);
     }
-    
+
     const loadPromise = this.performModuleLoad(moduleName);
     this.loadingPromises.set(moduleName, loadPromise);
-    
+
     try {
       await loadPromise;
       this.loadedModules.add(moduleName);
@@ -110,34 +110,34 @@ class ModuleLoader {
       const script = document.createElement('script');
       script.src = `js/${moduleName}.js`;
       script.async = true;
-      
+
       // Add loading timeout for slow connections
       const timeout = this.isSlowConnection ? 10000 : 5000;
       const timeoutId = setTimeout(() => {
         reject(new Error(`Module ${moduleName} load timeout`));
       }, timeout);
-      
+
       script.onload = () => {
         clearTimeout(timeoutId);
         resolve();
       };
-      
+
       script.onerror = () => {
         clearTimeout(timeoutId);
         reject(new Error(`Failed to load ${moduleName}`));
       };
-      
+
       document.head.appendChild(script);
     });
   }
 
   async loadCriticalModules() {
     console.log('🚀 Loading critical modules...');
-    
-    const loadPromises = this.criticalModules.map(module => 
+
+    const loadPromises = this.criticalModules.map(module =>
       this.loadModule(module)
     );
-    
+
     try {
       await Promise.all(loadPromises);
       console.log('✅ Critical modules loaded');
@@ -148,20 +148,20 @@ class ModuleLoader {
 
   setupInteractionListeners() {
     const interactionEvents = ['click', 'touchstart', 'keydown', 'scroll'];
-    
+
     const handleFirstInteraction = () => {
       if (!this.userInteractionDetected) {
         this.userInteractionDetected = true;
         console.log('👆 User interaction detected, loading interaction modules...');
         this.loadInteractionModules();
-        
+
         // Remove listeners after first interaction
         interactionEvents.forEach(event => {
           document.removeEventListener(event, handleFirstInteraction, true);
         });
       }
     };
-    
+
     interactionEvents.forEach(event => {
       document.addEventListener(event, handleFirstInteraction, true);
     });
@@ -176,7 +176,7 @@ class ModuleLoader {
       }
     } else {
       // Load all interaction modules in parallel on fast connections
-      const loadPromises = this.interactionModules.map(module => 
+      const loadPromises = this.interactionModules.map(module =>
         this.loadModule(module)
       );
       await Promise.all(loadPromises);
@@ -190,7 +190,7 @@ class ModuleLoader {
       rootMargin: '50px',
       threshold: 0.1
     };
-    
+
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
@@ -198,7 +198,7 @@ class ModuleLoader {
         }
       });
     }, observerOptions);
-    
+
     // Observe dashboard and chart elements
     setTimeout(() => {
       const dashboardElements = document.querySelectorAll(
@@ -210,13 +210,13 @@ class ModuleLoader {
 
   async handleViewportIntersection(element) {
     console.log('👀 Element in viewport, loading related modules...');
-    
-    if (element.classList.contains('project-health-dashboard') || 
+
+    if (element.classList.contains('project-health-dashboard') ||
         element.classList.contains('stats')) {
       await this.loadModule('github-activity');
       await this.loadModule('analytics-dashboard-enhanced');
     }
-    
+
     if (element.classList.contains('features-showcase')) {
       await this.loadModule('data-viz');
       await this.loadModule('interactive-data-viz');
@@ -241,12 +241,12 @@ class ModuleLoader {
           const module = this.backgroundModules.shift();
           this.loadModule(module);
         }
-        
+
         if (this.backgroundModules.length > 0) {
           requestIdleCallback(loadBackgroundModules);
         }
       };
-      
+
       requestIdleCallback(loadBackgroundModules);
     } else {
       // Fallback for browsers without requestIdleCallback
@@ -261,7 +261,7 @@ class ModuleLoader {
   // Load modules based on page content
   loadPageSpecificModules() {
     const currentPage = this.detectCurrentPage();
-    
+
     const pageModules = {
       home: ['ai-content-suggestions', 'guided-tour', 'onboarding', 'visual-enhancer'],
       features: ['ai-code-playground', 'interactive-tutorial'],
@@ -270,7 +270,7 @@ class ModuleLoader {
       analytics: ['analytics-dashboard-enhanced', 'interactive-data-viz'],
       community: ['community-engagement', 'advanced-collaboration-features']
     };
-    
+
     const modules = pageModules[currentPage] || [];
     modules.forEach(module => {
       this.loadModule(module);
@@ -279,28 +279,38 @@ class ModuleLoader {
 
   detectCurrentPage() {
     const path = window.location.pathname;
-    if (path.includes('features')) return 'features';
-    if (path.includes('docs')) return 'docs';
-    if (path.includes('timeline')) return 'timeline';
-    if (path.includes('analytics')) return 'analytics';
-    if (path.includes('community')) return 'community';
+    if (path.includes('features')) {
+      return 'features';
+    }
+    if (path.includes('docs')) {
+      return 'docs';
+    }
+    if (path.includes('timeline')) {
+      return 'timeline';
+    }
+    if (path.includes('analytics')) {
+      return 'analytics';
+    }
+    if (path.includes('community')) {
+      return 'community';
+    }
     return 'home';
   }
 
   // Preload modules based on user behavior
   preloadPredictedModules() {
     const userBehavior = this.analyzeUserBehavior();
-    
+
     if (userBehavior.likesInteractivity) {
       this.loadModule('ai-code-playground');
       this.loadModule('interactive-tutorial');
     }
-    
+
     if (userBehavior.viewsDocumentation) {
       this.loadModule('comprehensive-help-system');
       this.loadModule('code-diff-viewer');
     }
-    
+
     if (userBehavior.usesKeyboardShortcuts) {
       this.loadModule('smart-search');
       this.loadModule('accessibility-enhancer');
@@ -314,7 +324,7 @@ class ModuleLoader {
       viewsDocumentation: document.querySelectorAll('[data-i18n]').length > 0,
       usesKeyboardShortcuts: false // Could be enhanced with actual tracking
     };
-    
+
     return behavior;
   }
 
@@ -322,16 +332,16 @@ class ModuleLoader {
   reportLoadingMetrics() {
     const metrics = {
       loadedModules: this.loadedModules.size,
-      totalModules: this.criticalModules.length + 
-                   this.interactionModules.length + 
-                   this.viewportModules.length + 
+      totalModules: this.criticalModules.length +
+                   this.interactionModules.length +
+                   this.viewportModules.length +
                    this.backgroundModules.length,
       isSlowConnection: this.isSlowConnection,
       isMobileDevice: this.isMobileDevice
     };
-    
+
     console.log('📊 Module Loading Metrics:', metrics);
-    
+
     // Report to analytics if available
     if (window.gtag) {
       gtag('event', 'module_loading', {
@@ -369,10 +379,10 @@ class ModuleLoader {
 // Initialize module loader
 document.addEventListener('DOMContentLoaded', () => {
   window.moduleLoader = new ModuleLoader();
-  
+
   // Load page-specific modules
   window.moduleLoader.loadPageSpecificModules();
-  
+
   // Report metrics after page load
   window.addEventListener('load', () => {
     setTimeout(() => {

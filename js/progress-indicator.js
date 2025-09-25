@@ -12,7 +12,7 @@ class ProgressIndicator {
     this.targetProgress = 0;
     this.isActive = false;
     this.animationId = null;
-    
+
     // Configuration
     this.config = {
       animationSpeed: 0.02,
@@ -26,21 +26,21 @@ class ProgressIndicator {
         error: '#ef4444'
       }
     };
-    
+
     this.initialize();
   }
 
   initialize() {
     console.log('📊 Initializing Progress Indicator...');
-    
+
     this.createProgressIndicator();
     this.attachEventListeners();
-    
+
     // Monitor module loading if module loader is available
     if (window.moduleLoader) {
       this.monitorModuleLoading();
     }
-    
+
     console.log('✅ Progress Indicator initialized');
   }
 
@@ -58,13 +58,13 @@ class ProgressIndicator {
         <div class="progress-details"></div>
       </div>
     `;
-    
+
     // Add styles
     this.addProgressStyles();
-    
+
     // Add to DOM but keep hidden initially
     document.body.appendChild(this.progressContainer);
-    
+
     // Get references to elements
     this.progressBar = this.progressContainer.querySelector('.progress-fill');
     this.progressText = this.progressContainer.querySelector('.progress-text');
@@ -236,11 +236,11 @@ class ProgressIndicator {
     this.isActive = true;
     this.currentProgress = 0;
     this.targetProgress = 0;
-    
+
     this.updateText(text, details);
     this.progressContainer.classList.add('show');
     this.progressContainer.classList.remove('success', 'error', 'warning');
-    
+
     // Start animation
     this.startAnimation();
   }
@@ -248,7 +248,7 @@ class ProgressIndicator {
   hide() {
     this.isActive = false;
     this.stopAnimation();
-    
+
     setTimeout(() => {
       this.progressContainer.classList.remove('show');
     }, this.config.hideDelay);
@@ -256,11 +256,11 @@ class ProgressIndicator {
 
   updateProgress(progress, text = null, details = null) {
     this.targetProgress = Math.max(0, Math.min(100, progress));
-    
+
     if (text) {
       this.updateText(text, details);
     }
-    
+
     // If we're at 100%, show success state briefly
     if (progress >= 100) {
       setTimeout(() => {
@@ -274,7 +274,7 @@ class ProgressIndicator {
     if (this.progressText) {
       this.progressText.textContent = text;
     }
-    
+
     if (details && this.progressDetails) {
       this.progressDetails.textContent = details;
     }
@@ -300,7 +300,7 @@ class ProgressIndicator {
     if (this.animationId) {
       cancelAnimationFrame(this.animationId);
     }
-    
+
     this.animate();
   }
 
@@ -312,38 +312,40 @@ class ProgressIndicator {
   }
 
   animate() {
-    if (!this.isActive) return;
-    
+    if (!this.isActive) {
+      return;
+    }
+
     // Smooth progress animation
     const diff = this.targetProgress - this.currentProgress;
     if (Math.abs(diff) > 0.1) {
       this.currentProgress += diff * this.config.animationSpeed;
       this.progressBar.style.width = this.currentProgress + '%';
     }
-    
+
     this.animationId = requestAnimationFrame(this.animate.bind(this));
   }
 
   attachEventListeners() {
     // Monitor page load progress
     this.monitorPageLoad();
-    
+
     // Monitor navigation changes
     this.monitorNavigation();
-    
+
     // Listen for custom progress events
     document.addEventListener('progress:start', (e) => {
       this.show(e.detail.text, e.detail.details);
     });
-    
+
     document.addEventListener('progress:update', (e) => {
       this.updateProgress(e.detail.progress, e.detail.text, e.detail.details);
     });
-    
+
     document.addEventListener('progress:complete', (e) => {
       this.setSuccessState(e.detail.text, e.detail.details);
     });
-    
+
     document.addEventListener('progress:error', (e) => {
       this.setErrorState(e.detail.text, e.detail.details);
     });
@@ -352,14 +354,16 @@ class ProgressIndicator {
   monitorPageLoad() {
     if (document.readyState === 'loading') {
       this.show('Loading page...', 'Initializing CocoPilot');
-      
+
       let progress = 0;
       const loadingInterval = setInterval(() => {
         progress += Math.random() * 10;
-        if (progress > 90) progress = 90;
-        
+        if (progress > 90) {
+          progress = 90;
+        }
+
         this.updateProgress(progress, 'Loading page...', 'Preparing content');
-        
+
         if (document.readyState === 'complete') {
           clearInterval(loadingInterval);
           this.updateProgress(100, 'Page loaded!', 'Ready to explore');
@@ -376,7 +380,7 @@ class ProgressIndicator {
         this.updateProgress(100, 'Navigation complete!');
       }, 500);
     });
-    
+
     // Monitor form submissions
     document.addEventListener('submit', (e) => {
       this.show('Processing...', 'Submitting form');
@@ -384,25 +388,27 @@ class ProgressIndicator {
   }
 
   monitorModuleLoading() {
-    if (!window.moduleLoader) return;
-    
+    if (!window.moduleLoader) {
+      return;
+    }
+
     // Hook into module loader events
     const originalLoadModule = window.moduleLoader.loadModule.bind(window.moduleLoader);
-    
-    window.moduleLoader.loadModule = async (moduleName) => {
+
+    window.moduleLoader.loadModule = async(moduleName) => {
       this.show('Loading modules...', `Loading ${moduleName}`);
-      
+
       try {
         const result = await originalLoadModule(moduleName);
         const status = window.moduleLoader.getLoadingStatus();
         const progress = (status.loaded / (status.loaded + status.loading + status.queued)) * 100;
-        
+
         this.updateProgress(progress, 'Loading modules...', `${status.loaded} modules loaded`);
-        
+
         if (status.loading === 0 && status.queued === 0) {
           this.setSuccessState('All modules loaded!', `${status.loaded} modules ready`);
         }
-        
+
         return result;
       } catch (error) {
         this.setErrorState('Module loading failed', `Failed to load ${moduleName}`);
@@ -414,29 +420,33 @@ class ProgressIndicator {
   // Public API methods
   showCustomProgress(config) {
     const { text, details, progress = 0, type = 'default' } = config;
-    
+
     this.show(text, details);
     this.updateProgress(progress);
-    
-    if (type === 'success') this.setSuccessState(text, details);
-    else if (type === 'error') this.setErrorState(text, details);
-    else if (type === 'warning') this.setWarningState(text, details);
+
+    if (type === 'success') {
+      this.setSuccessState(text, details);
+    } else if (type === 'error') {
+      this.setErrorState(text, details);
+    } else if (type === 'warning') {
+      this.setWarningState(text, details);
+    }
   }
 
   // Utility methods for common operations
   showLoadingOperation(operation, estimatedTime = 2000) {
     this.show(`${operation}...`, 'Please wait');
-    
+
     let progress = 0;
     const interval = setInterval(() => {
       progress += (100 / estimatedTime) * 100;
       this.updateProgress(Math.min(progress, 95));
-      
+
       if (progress >= 95) {
         clearInterval(interval);
       }
     }, 100);
-    
+
     return {
       complete: (successText = 'Complete!') => {
         clearInterval(interval);
@@ -470,14 +480,14 @@ function initializeProgressIndicator() {
   if (window.progressIndicator) {
     return;
   }
-  
+
   window.progressIndicator = new ProgressIndicator();
-  
+
   // Add global helper functions
   window.showProgress = (text, details, progress) => {
     window.progressIndicator.showCustomProgress({ text, details, progress });
   };
-  
+
   window.hideProgress = () => {
     window.progressIndicator.hide();
   };
