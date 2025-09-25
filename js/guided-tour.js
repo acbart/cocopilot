@@ -13,7 +13,7 @@ class GuidedTour {
     this.spotlight = null;
     this.tourCard = null;
     this.tourProgress = null;
-    
+
     // Configuration
     this.config = {
       spotlightPadding: 10,
@@ -22,28 +22,28 @@ class GuidedTour {
       enableKeyboardNavigation: true,
       enableAutoAdvance: false
     };
-    
+
     this.initialize();
   }
 
   async initialize() {
     try {
       console.log('🎯 Initializing Guided Tour System...');
-      
+
       // Create tour interface
       this.createTourInterface();
-      
+
       // Define tour steps
       this.defineTourSteps();
-      
+
       // Set up event listeners
       this.attachEventListeners();
-      
+
       // Check if user should see tour
       this.checkTourTriggers();
-      
+
       console.log('✅ Guided Tour System initialized');
-      
+
     } catch (error) {
       console.error('❌ Error initializing Guided Tour:', error);
     }
@@ -53,11 +53,11 @@ class GuidedTour {
     // Create overlay
     this.overlay = document.createElement('div');
     this.overlay.className = 'tour-overlay';
-    
+
     // Create spotlight
     this.spotlight = document.createElement('div');
     this.spotlight.className = 'tour-spotlight';
-    
+
     // Create tour card
     this.tourCard = document.createElement('div');
     this.tourCard.className = 'tour-card';
@@ -87,15 +87,15 @@ class GuidedTour {
         </div>
       </div>
     `;
-    
+
     // Add styles
     this.addTourStyles();
-    
+
     // Append to DOM (hidden initially)
     document.body.appendChild(this.overlay);
     document.body.appendChild(this.spotlight);
     document.body.appendChild(this.tourCard);
-    
+
     // Get references
     this.tourProgress = this.tourCard.querySelector('.tour-progress-fill');
     this.tourStepCounter = this.tourCard.querySelector('.tour-step-counter');
@@ -470,7 +470,7 @@ class GuidedTour {
         description: 'Click here to get personalized AI-powered content suggestions based on your interests and behavior!'
       }
     ];
-    
+
     this.totalSteps = this.tourData.length;
     this.createTourDots();
   }
@@ -478,11 +478,13 @@ class GuidedTour {
   createTourDots() {
     const dotsContainer = this.tourCard.querySelector('.tour-dots');
     dotsContainer.innerHTML = '';
-    
+
     for (let i = 0; i < this.totalSteps; i++) {
       const dot = document.createElement('div');
       dot.className = 'tour-dot';
-      if (i === 0) dot.classList.add('active');
+      if (i === 0) {
+        dot.classList.add('active');
+      }
       dot.addEventListener('click', () => this.goToStep(i));
       dotsContainer.appendChild(dot);
     }
@@ -494,31 +496,33 @@ class GuidedTour {
     this.tourCard.querySelector('.tour-skip').addEventListener('click', () => this.endTour());
     this.tourCard.querySelector('.tour-prev').addEventListener('click', () => this.previousStep());
     this.tourCard.querySelector('.tour-next').addEventListener('click', () => this.nextStep());
-    
+
     // Keyboard navigation
     if (this.config.enableKeyboardNavigation) {
       document.addEventListener('keydown', (e) => {
-        if (!this.isActive) return;
-        
+        if (!this.isActive) {
+          return;
+        }
+
         switch (e.key) {
-          case 'Escape':
-            this.endTour();
-            break;
-          case 'ArrowLeft':
-            this.previousStep();
-            break;
-          case 'ArrowRight':
-          case ' ':
-            e.preventDefault();
-            this.nextStep();
-            break;
+        case 'Escape':
+          this.endTour();
+          break;
+        case 'ArrowLeft':
+          this.previousStep();
+          break;
+        case 'ArrowRight':
+        case ' ':
+          e.preventDefault();
+          this.nextStep();
+          break;
         }
       });
     }
-    
+
     // Overlay click to close
     this.overlay.addEventListener('click', () => this.endTour());
-    
+
     // Prevent closing when clicking tour card
     this.tourCard.addEventListener('click', (e) => e.stopPropagation());
   }
@@ -527,35 +531,37 @@ class GuidedTour {
     // Check if user is new or hasn't seen tour
     const hasSeenTour = localStorage.getItem('cocopilot-tour-completed');
     const isFirstVisit = !localStorage.getItem('cocopilot-visited');
-    
+
     if (!hasSeenTour || isFirstVisit) {
       // Show tour after a brief delay
       setTimeout(() => {
         this.startTour();
       }, 2000);
-      
+
       localStorage.setItem('cocopilot-visited', 'true');
     }
   }
 
   startTour() {
-    if (this.isActive) return;
-    
+    if (this.isActive) {
+      return;
+    }
+
     console.log('🎯 Starting guided tour...');
-    
+
     this.isActive = true;
     this.currentStep = 0;
-    
+
     // Show overlay and tour elements
     this.overlay.classList.add('active');
     this.tourCard.classList.add('active');
-    
+
     // Disable page scrolling
     document.body.style.overflow = 'hidden';
-    
+
     // Show first step
     this.showStep(0);
-    
+
     // Track tour start
     if (window.gtag) {
       gtag('event', 'tour_started', {
@@ -565,26 +571,28 @@ class GuidedTour {
   }
 
   endTour() {
-    if (!this.isActive) return;
-    
+    if (!this.isActive) {
+      return;
+    }
+
     console.log('🏁 Ending guided tour...');
-    
+
     this.isActive = false;
-    
+
     // Hide tour elements
     this.overlay.classList.remove('active');
     this.spotlight.classList.remove('active');
     this.tourCard.classList.remove('active');
-    
+
     // Re-enable page scrolling
     document.body.style.overflow = '';
-    
+
     // Clear highlights
     this.clearHighlights();
-    
+
     // Mark tour as completed
     localStorage.setItem('cocopilot-tour-completed', 'true');
-    
+
     // Track tour completion
     if (window.gtag) {
       gtag('event', 'tour_completed', {
@@ -617,32 +625,34 @@ class GuidedTour {
 
   showStep(stepIndex) {
     const step = this.tourData[stepIndex];
-    if (!step) return;
-    
+    if (!step) {
+      return;
+    }
+
     this.currentStep = stepIndex;
-    
+
     // Update tour content
     this.tourIcon.textContent = step.icon;
     this.tourTitle.textContent = step.title;
     this.tourDescription.textContent = step.description;
-    
+
     // Update progress
     const progress = ((stepIndex + 1) / this.totalSteps) * 100;
     this.tourProgress.style.width = progress + '%';
     this.tourStepCounter.textContent = `${stepIndex + 1} of ${this.totalSteps}`;
-    
+
     // Update dots
     this.updateTourDots(stepIndex);
-    
+
     // Update navigation buttons
     this.updateNavigationButtons(stepIndex);
-    
+
     // Position tour elements
     this.positionTourElements(step);
-    
+
     // Highlight target element
     this.highlightElement(step.target);
-    
+
     // Auto-advance if enabled
     if (this.config.enableAutoAdvance && stepIndex < this.totalSteps - 1) {
       clearTimeout(this.autoAdvanceTimer);
@@ -662,25 +672,25 @@ class GuidedTour {
   updateNavigationButtons(stepIndex) {
     const prevBtn = this.tourCard.querySelector('.tour-prev');
     const nextBtn = this.tourCard.querySelector('.tour-next');
-    
+
     prevBtn.disabled = stepIndex === 0;
     nextBtn.textContent = stepIndex === this.totalSteps - 1 ? 'Finish!' : 'Next →';
   }
 
   positionTourElements(step) {
     const target = step.target ? document.querySelector(step.target) : null;
-    
+
     if (target) {
       const rect = target.getBoundingClientRect();
       const padding = this.config.spotlightPadding;
-      
+
       // Position spotlight
       this.spotlight.style.left = (rect.left - padding) + 'px';
       this.spotlight.style.top = (rect.top - padding) + 'px';
       this.spotlight.style.width = (rect.width + padding * 2) + 'px';
       this.spotlight.style.height = (rect.height + padding * 2) + 'px';
       this.spotlight.classList.add('active');
-      
+
       // Position tour card
       this.positionTourCard(step.position, rect);
     } else {
@@ -698,44 +708,44 @@ class GuidedTour {
       width: window.innerWidth,
       height: window.innerHeight
     };
-    
+
     let left, top, transform = '';
-    
+
     switch (position) {
-      case 'top':
-        left = targetRect.left + (targetRect.width / 2);
-        top = targetRect.top - cardRect.height - 20;
-        transform = 'translateX(-50%)';
-        break;
-      case 'bottom':
-        left = targetRect.left + (targetRect.width / 2);
-        top = targetRect.bottom + 20;
-        transform = 'translateX(-50%)';
-        break;
-      case 'left':
-        left = targetRect.left - cardRect.width - 20;
-        top = targetRect.top + (targetRect.height / 2);
-        transform = 'translateY(-50%)';
-        break;
-      case 'right':
-        left = targetRect.right + 20;
-        top = targetRect.top + (targetRect.height / 2);
-        transform = 'translateY(-50%)';
-        break;
-      case 'bottom-left':
-        left = targetRect.left;
-        top = targetRect.bottom + 20;
-        break;
-      default:
-        left = viewport.width / 2;
-        top = viewport.height / 2;
-        transform = 'translate(-50%, -50%)';
+    case 'top':
+      left = targetRect.left + (targetRect.width / 2);
+      top = targetRect.top - cardRect.height - 20;
+      transform = 'translateX(-50%)';
+      break;
+    case 'bottom':
+      left = targetRect.left + (targetRect.width / 2);
+      top = targetRect.bottom + 20;
+      transform = 'translateX(-50%)';
+      break;
+    case 'left':
+      left = targetRect.left - cardRect.width - 20;
+      top = targetRect.top + (targetRect.height / 2);
+      transform = 'translateY(-50%)';
+      break;
+    case 'right':
+      left = targetRect.right + 20;
+      top = targetRect.top + (targetRect.height / 2);
+      transform = 'translateY(-50%)';
+      break;
+    case 'bottom-left':
+      left = targetRect.left;
+      top = targetRect.bottom + 20;
+      break;
+    default:
+      left = viewport.width / 2;
+      top = viewport.height / 2;
+      transform = 'translate(-50%, -50%)';
     }
-    
+
     // Ensure tour card stays within viewport
     left = Math.max(10, Math.min(left, viewport.width - cardRect.width - 10));
     top = Math.max(10, Math.min(top, viewport.height - cardRect.height - 10));
-    
+
     this.tourCard.style.left = left + 'px';
     this.tourCard.style.top = top + 'px';
     this.tourCard.style.transform = transform;
@@ -743,12 +753,12 @@ class GuidedTour {
 
   highlightElement(selector) {
     this.clearHighlights();
-    
+
     if (selector) {
       const element = document.querySelector(selector);
       if (element) {
         element.classList.add('tour-highlight');
-        
+
         // Scroll element into view if needed
         element.scrollIntoView({
           behavior: 'smooth',
@@ -800,9 +810,9 @@ function initializeGuidedTour() {
   if (window.guidedTour) {
     return;
   }
-  
+
   window.guidedTour = new GuidedTour();
-  
+
   // Add global helper functions
   window.startTour = () => {
     window.guidedTour.restartTour();

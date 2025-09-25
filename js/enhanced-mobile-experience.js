@@ -11,12 +11,12 @@ class EnhancedMobileExperience {
     this.swipeThreshold = 50;
     this.tapThreshold = 200;
     this.isActive = false;
-    
+
     // Mobile-specific UI elements
     this.mobileToolbar = null;
     this.swipeIndicators = null;
     this.touchFeedback = null;
-    
+
     // Configuration
     this.config = {
       enableSwipeNavigation: true,
@@ -26,7 +26,7 @@ class EnhancedMobileExperience {
       optimizeScrolling: true,
       enhanceTouchTargets: true
     };
-    
+
     if (this.isMobile) {
       this.initialize();
     }
@@ -35,25 +35,25 @@ class EnhancedMobileExperience {
   async initialize() {
     try {
       console.log('📱 Initializing Enhanced Mobile Experience...');
-      
+
       // Apply mobile optimizations
       this.applyMobileOptimizations();
-      
+
       // Set up touch interactions
       this.setupTouchInteractions();
-      
+
       // Create mobile UI elements
       this.createMobileUI();
-      
+
       // Optimize for mobile performance
       this.optimizeMobilePerformance();
-      
+
       // Setup mobile-specific event listeners
       this.setupMobileEventListeners();
-      
+
       this.isActive = true;
       console.log('✅ Enhanced Mobile Experience initialized');
-      
+
     } catch (error) {
       console.error('❌ Error initializing Enhanced Mobile Experience:', error);
     }
@@ -65,27 +65,27 @@ class EnhancedMobileExperience {
     const isMobileUA = mobileKeywords.some(keyword => userAgent.includes(keyword));
     const isMobileViewport = window.innerWidth <= 768;
     const hasTouchScreen = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
-    
+
     return isMobileUA || (isMobileViewport && hasTouchScreen);
   }
 
   applyMobileOptimizations() {
     // Add mobile-specific CSS class
     document.body.classList.add('mobile-optimized');
-    
+
     // Optimize viewport
     this.optimizeViewport();
-    
+
     // Enhance touch targets
     if (this.config.enhanceTouchTargets) {
       this.enhanceTouchTargets();
     }
-    
+
     // Optimize scrolling
     if (this.config.optimizeScrolling) {
       this.optimizeScrolling();
     }
-    
+
     // Add mobile styles
     this.addMobileStyles();
   }
@@ -98,9 +98,9 @@ class EnhancedMobileExperience {
       viewport.name = 'viewport';
       document.head.appendChild(viewport);
     }
-    
+
     viewport.content = 'width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes';
-    
+
     // Prevent zoom on input focus (iOS)
     const inputs = document.querySelectorAll('input, select, textarea');
     inputs.forEach(input => {
@@ -114,7 +114,7 @@ class EnhancedMobileExperience {
     // Ensure touch targets are at least 44px (iOS HIG recommendation)
     const minTouchSize = 44;
     const touchElements = document.querySelectorAll('button, a, input, select, textarea, [role="button"], [tabindex]:not([tabindex="-1"])');
-    
+
     touchElements.forEach(element => {
       const rect = element.getBoundingClientRect();
       if (rect.width < minTouchSize || rect.height < minTouchSize) {
@@ -131,7 +131,7 @@ class EnhancedMobileExperience {
     // Enable momentum scrolling on iOS
     document.body.style.webkitOverflowScrolling = 'touch';
     document.body.style.overflowScrolling = 'touch';
-    
+
     // Improve scroll performance
     const scrollableElements = document.querySelectorAll('.scroll, .overflow-auto, [style*="overflow"]');
     scrollableElements.forEach(element => {
@@ -331,51 +331,55 @@ class EnhancedMobileExperience {
 
   setupTouchInteractions() {
     let startX, startY, startTime;
-    
+
     document.addEventListener('touchstart', (e) => {
       startX = e.touches[0].clientX;
       startY = e.touches[0].clientY;
       startTime = Date.now();
-      
+
       // Show touch feedback
       if (this.config.enableTouchFeedback) {
         this.showTouchFeedback(e.touches[0]);
       }
     }, { passive: true });
-    
+
     document.addEventListener('touchmove', (e) => {
-      if (!startX || !startY) return;
-      
+      if (!startX || !startY) {
+        return;
+      }
+
       const deltaX = e.touches[0].clientX - startX;
       const deltaY = e.touches[0].clientY - startY;
-      
+
       // Handle pull to refresh
       if (this.config.enablePullToRefresh && window.scrollY === 0 && deltaY > 0) {
         this.handlePullToRefresh(deltaY);
       }
-      
+
       // Handle swipe navigation hints
       if (this.config.enableSwipeNavigation) {
         this.handleSwipeHints(deltaX, deltaY);
       }
     }, { passive: true });
-    
+
     document.addEventListener('touchend', (e) => {
-      if (!startX || !startY || !startTime) return;
-      
+      if (!startX || !startY || !startTime) {
+        return;
+      }
+
       const endX = e.changedTouches[0].clientX;
       const endY = e.changedTouches[0].clientY;
       const endTime = Date.now();
-      
+
       const deltaX = endX - startX;
       const deltaY = endY - startY;
       const deltaTime = endTime - startTime;
-      
+
       // Detect swipe gestures
       if (this.config.enableSwipeNavigation && deltaTime < 300) {
         this.handleSwipeGesture(deltaX, deltaY);
       }
-      
+
       // Reset values
       startX = startY = startTime = null;
       this.hideSwipeIndicators();
@@ -390,9 +394,9 @@ class EnhancedMobileExperience {
     feedback.style.top = (touch.clientY - 25) + 'px';
     feedback.style.width = '50px';
     feedback.style.height = '50px';
-    
+
     document.body.appendChild(feedback);
-    
+
     setTimeout(() => {
       if (feedback.parentNode) {
         feedback.parentNode.removeChild(feedback);
@@ -403,7 +407,7 @@ class EnhancedMobileExperience {
   handleSwipeHints(deltaX, deltaY) {
     const absX = Math.abs(deltaX);
     const absY = Math.abs(deltaY);
-    
+
     // Only show hints for horizontal swipes
     if (absX > absY && absX > 30) {
       if (deltaX > 0) {
@@ -416,14 +420,14 @@ class EnhancedMobileExperience {
 
   showSwipeIndicator(side, text) {
     let indicator = document.querySelector(`.swipe-indicator.${side}`);
-    
+
     if (!indicator) {
       indicator = document.createElement('div');
       indicator.className = `swipe-indicator ${side}`;
       indicator.innerHTML = `<div class="swipe-text">${text}</div>`;
       document.body.appendChild(indicator);
     }
-    
+
     indicator.classList.add('show');
   }
 
@@ -437,7 +441,7 @@ class EnhancedMobileExperience {
   handleSwipeGesture(deltaX, deltaY) {
     const absX = Math.abs(deltaX);
     const absY = Math.abs(deltaY);
-    
+
     // Only handle horizontal swipes that are significant
     if (absX > this.swipeThreshold && absX > absY) {
       if (deltaX > 0) {
@@ -450,19 +454,19 @@ class EnhancedMobileExperience {
 
   handleSwipeRight() {
     console.log('📱 Swipe right detected');
-    
+
     // Navigate to previous section or page
     const sections = document.querySelectorAll('section, .section, [id]');
     const currentSection = this.getCurrentSection();
     const currentIndex = Array.from(sections).indexOf(currentSection);
-    
+
     if (currentIndex > 0) {
       sections[currentIndex - 1].scrollIntoView({
         behavior: 'smooth',
         block: 'start'
       });
     }
-    
+
     // Track swipe gesture
     if (window.enhancedAnalytics) {
       window.enhancedAnalytics.trackCustomEvent('swipe_gesture', {
@@ -474,19 +478,19 @@ class EnhancedMobileExperience {
 
   handleSwipeLeft() {
     console.log('📱 Swipe left detected');
-    
+
     // Navigate to next section or page
     const sections = document.querySelectorAll('section, .section, [id]');
     const currentSection = this.getCurrentSection();
     const currentIndex = Array.from(sections).indexOf(currentSection);
-    
+
     if (currentIndex < sections.length - 1) {
       sections[currentIndex + 1].scrollIntoView({
         behavior: 'smooth',
         block: 'start'
       });
     }
-    
+
     // Track swipe gesture
     if (window.enhancedAnalytics) {
       window.enhancedAnalytics.trackCustomEvent('swipe_gesture', {
@@ -499,14 +503,14 @@ class EnhancedMobileExperience {
   getCurrentSection() {
     const sections = document.querySelectorAll('section, .section, [id]');
     let currentSection = sections[0];
-    
+
     sections.forEach(section => {
       const rect = section.getBoundingClientRect();
       if (rect.top <= window.innerHeight / 2 && rect.bottom >= window.innerHeight / 2) {
         currentSection = section;
       }
     });
-    
+
     return currentSection;
   }
 
@@ -514,7 +518,7 @@ class EnhancedMobileExperience {
     if (deltaY > 100) {
       this.showPullToRefresh();
     }
-    
+
     if (deltaY > 150) {
       this.triggerRefresh();
     }
@@ -522,7 +526,7 @@ class EnhancedMobileExperience {
 
   showPullToRefresh() {
     let indicator = document.querySelector('.pull-to-refresh');
-    
+
     if (!indicator) {
       indicator = document.createElement('div');
       indicator.className = 'pull-to-refresh';
@@ -532,7 +536,7 @@ class EnhancedMobileExperience {
       `;
       document.body.appendChild(indicator);
     }
-    
+
     indicator.classList.add('show');
   }
 
@@ -545,7 +549,7 @@ class EnhancedMobileExperience {
 
   triggerRefresh() {
     console.log('📱 Pull to refresh triggered');
-    
+
     // Show loading state
     const indicator = document.querySelector('.pull-to-refresh');
     if (indicator) {
@@ -554,12 +558,12 @@ class EnhancedMobileExperience {
         <div>Refreshing...</div>
       `;
     }
-    
+
     // Simulate refresh (reload page after delay)
     setTimeout(() => {
       window.location.reload();
     }, 1000);
-    
+
     // Track refresh action
     if (window.enhancedAnalytics) {
       window.enhancedAnalytics.trackCustomEvent('pull_to_refresh', {
@@ -569,8 +573,10 @@ class EnhancedMobileExperience {
   }
 
   createMobileUI() {
-    if (!this.config.enableMobileToolbar) return;
-    
+    if (!this.config.enableMobileToolbar) {
+      return;
+    }
+
     // Create mobile toolbar
     this.mobileToolbar = document.createElement('div');
     this.mobileToolbar.className = 'mobile-toolbar';
@@ -598,9 +604,9 @@ class EnhancedMobileExperience {
         </a>
       </div>
     `;
-    
+
     document.body.appendChild(this.mobileToolbar);
-    
+
     // Show toolbar after page load
     setTimeout(() => {
       this.mobileToolbar.classList.add('show');
@@ -611,11 +617,11 @@ class EnhancedMobileExperience {
     // Hide toolbar when scrolling
     let scrollTimer = null;
     let lastScrollY = window.scrollY;
-    
+
     window.addEventListener('scroll', () => {
       const currentScrollY = window.scrollY;
       const scrollingDown = currentScrollY > lastScrollY;
-      
+
       if (this.mobileToolbar) {
         if (scrollingDown) {
           this.mobileToolbar.classList.remove('show');
@@ -623,12 +629,12 @@ class EnhancedMobileExperience {
           this.mobileToolbar.classList.add('show');
         }
       }
-      
+
       lastScrollY = currentScrollY;
-      
+
       // Clear existing timer
       clearTimeout(scrollTimer);
-      
+
       // Show toolbar again after scrolling stops
       scrollTimer = setTimeout(() => {
         if (this.mobileToolbar) {
@@ -636,7 +642,7 @@ class EnhancedMobileExperience {
         }
       }, 1000);
     }, { passive: true });
-    
+
     // Handle orientation changes
     window.addEventListener('orientationchange', () => {
       setTimeout(() => {
@@ -644,7 +650,7 @@ class EnhancedMobileExperience {
         this.enhanceTouchTargets();
       }, 500);
     });
-    
+
     // Handle focus events for better form interaction
     document.addEventListener('focusin', (e) => {
       if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
@@ -654,7 +660,7 @@ class EnhancedMobileExperience {
         }
       }
     });
-    
+
     document.addEventListener('focusout', (e) => {
       // Show toolbar when keyboard disappears
       setTimeout(() => {
@@ -676,7 +682,7 @@ class EnhancedMobileExperience {
       }
     `;
     document.head.appendChild(hoverStyles);
-    
+
     // Optimize images for mobile
     const images = document.querySelectorAll('img');
     images.forEach(img => {
@@ -684,11 +690,11 @@ class EnhancedMobileExperience {
         img.loading = 'lazy';
       }
     });
-    
+
     // Reduce animation complexity on lower-end devices
     if (navigator.hardwareConcurrency && navigator.hardwareConcurrency < 4) {
       document.body.classList.add('reduced-animations');
-      
+
       const reducedAnimationStyles = document.createElement('style');
       reducedAnimationStyles.textContent = `
         .reduced-animations * {
@@ -753,7 +759,7 @@ function initializeEnhancedMobileExperience() {
   if (window.enhancedMobileExperience) {
     return;
   }
-  
+
   window.enhancedMobileExperience = new EnhancedMobileExperience();
 }
 
