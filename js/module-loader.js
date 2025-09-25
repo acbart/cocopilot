@@ -16,7 +16,8 @@ class ModuleLoader {
     this.criticalModules = [
       'i18n',
       'enhanced-error-handler',
-      'performance-monitor'
+      'performance-monitor',
+      'daily-insights'
     ];
 
     // Modules to load on user interaction
