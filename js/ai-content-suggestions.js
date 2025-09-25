@@ -827,7 +827,7 @@ class AIContentSuggestions {
     // Track scroll patterns
   }
 
-  trackClickBehavior(e) {
+  trackClickBehavior(_e) {
     // Track click patterns
   }
 
@@ -849,11 +849,11 @@ class ContextAnalyzer {
 
 // Suggestion Provider helper class
 class SuggestionProvider {
-  generateContextualSuggestions(context) {
+  generateContextualSuggestions(_context) {
     // Generate suggestions based on context
   }
 
-  prioritizeSuggestions(suggestions) {
+  prioritizeSuggestions(_suggestions) {
     // Sort and prioritize suggestions
   }
 }

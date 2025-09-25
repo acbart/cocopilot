@@ -123,6 +123,7 @@ export default [
         File: 'readonly',
         FileReader: 'readonly',
         performance: 'readonly',
+        Node: 'readonly',
         
         // Google Analytics
         gtag: 'readonly',

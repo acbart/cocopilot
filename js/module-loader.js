@@ -27,7 +27,8 @@ class ModuleLoader {
       'help-system',
       'accessibility-enhancer',
       'smart-search',
-      'user-feedback'
+      'user-feedback',
+      'theme-enhancer'
     ];
 
     // Modules to load on viewport intersection

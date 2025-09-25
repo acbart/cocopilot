@@ -29,8 +29,9 @@ class DailyInsights {
 
   async loadTodaysInsights() {
     const today = new Date();
-    const dayOfYear = Math.floor((today - new Date(today.getFullYear(), 0, 0)) / 1000 / 60 / 60 / 24);
-    
+    // Note: dayOfYear could be used for future insights rotation
+    // const dayOfYear = Math.floor((today - new Date(today.getFullYear(), 0, 0)) / 1000 / 60 / 60 / 24);
+
     // Generate insights based on current date and context
     this.insights = [
       {
@@ -53,7 +54,7 @@ class DailyInsights {
         type: 'performance',
         icon: '⚡',
         title: 'Performance Boost',
-        content: `Today's optimization: ESLint migration improved development workflow efficiency by 25% with better error detection.`,
+        content: 'Today\'s optimization: ESLint migration improved development workflow efficiency by 25% with better error detection.',
         action: 'View Code',
         actionUrl: 'https://github.com/acbart/cocopilot/blob/main/eslint.config.js'
       },
@@ -534,10 +535,10 @@ class DailyInsights {
     if (this.container) {
       this.container.style.display = 'none';
       this.stopRotation();
-      
+
       // Remember user preference
       localStorage.setItem('daily-insights-closed', new Date().toDateString());
-      
+
       if (typeof gtag !== 'undefined') {
         gtag('event', 'daily_insight_closed');
       }
