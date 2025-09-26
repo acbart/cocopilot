@@ -17,11 +17,13 @@ class ModuleLoader {
       'i18n',
       'enhanced-error-handler',
       'performance-monitor',
-      'daily-insights'
+      'daily-insights',
+      'project-health-monitor'
     ];
 
     // Modules to load on user interaction
     this.interactionModules = [
+      'advanced-search-system',
       'progress-indicator',
       'enhanced-mobile-experience',
       'help-system',
@@ -41,6 +43,7 @@ class ModuleLoader {
 
     // Low priority modules
     this.backgroundModules = [
+      'content-management-system',
       'enhanced-analytics',
       'floating-particles',
       'rss-generator',
