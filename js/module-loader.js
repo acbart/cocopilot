@@ -43,6 +43,7 @@ class ModuleLoader {
 
     // Low priority modules
     this.backgroundModules = [
+      'content-management-system',
       'enhanced-analytics',
       'floating-particles',
       'rss-generator',
