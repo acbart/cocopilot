@@ -535,7 +535,7 @@ class AdvancedCollaborationFeatures {
   setupEventListeners() {
     // Toggle collaboration hub
     const toggleBtn = document.querySelector('.collab-toggle-btn');
-    const hub = document.getElementById('collaboration-hub');
+    const _hub = document.getElementById('collaboration-hub');
     const header = document.querySelector('.collaboration-header');
 
     if (toggleBtn) {
@@ -688,7 +688,7 @@ class AdvancedCollaborationFeatures {
     }
   }
 
-  generateAIResponse(message) {
+  generateAIResponse(_message) {
     const responses = [
       'That\'s a great point! AI-driven development really opens up new possibilities.',
       'Interesting perspective! Have you tried exploring the AI code suggestions feature?',
@@ -841,7 +841,7 @@ class AdvancedCollaborationFeatures {
     });
   }
 
-  createSession(sessionId, name, description, isPublic) {
+  createSession(sessionId, name, description, _isPublic) {
     // Add session to list
     const sessionList = document.getElementById('session-list');
     if (sessionList) {
@@ -925,7 +925,7 @@ class AdvancedCollaborationFeatures {
     window.open(githubUrl, '_blank');
   }
 
-  updateSessionStatus(sessionId) {
+  updateSessionStatus(_sessionId) {
     // Update UI to reflect session participation
     const userCount = document.querySelector('.user-count');
     if (userCount) {

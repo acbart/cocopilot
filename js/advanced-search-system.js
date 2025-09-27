@@ -28,12 +28,12 @@ class AdvancedSearchSystem {
     }
 
     console.log('🔍 Initializing Advanced Search System...');
-    
+
     await this.buildSearchIndex();
     this.createSearchInterface();
     this.setupKeyboardShortcuts();
     this.addSearchStyles();
-    
+
     this.isInitialized = true;
     console.log('✅ Advanced Search System initialized');
   }
@@ -116,7 +116,7 @@ class AdvancedSearchSystem {
         content: 'live coding environment ai examples interactive editor real-time execution'
       },
       {
-        id: 'health-monitor', 
+        id: 'health-monitor',
         title: 'Project Health Monitor',
         description: 'Animated dashboard showing real-time project metrics',
         category: 'features',
@@ -125,7 +125,7 @@ class AdvancedSearchSystem {
       },
       {
         id: 'accessibility',
-        title: 'Accessibility Excellence', 
+        title: 'Accessibility Excellence',
         description: 'WCAG 2.1 AA compliance with comprehensive testing',
         category: 'features',
         keywords: ['accessibility', 'wcag', 'inclusive', 'a11y', 'screen reader', 'keyboard'],
@@ -163,7 +163,7 @@ class AdvancedSearchSystem {
         id: 'api-reference',
         title: 'API Reference',
         description: 'Complete API documentation and examples',
-        category: 'documentation', 
+        category: 'documentation',
         keywords: ['api', 'reference', 'methods', 'endpoints', 'documentation'],
         content: 'api reference documentation methods endpoints examples integration'
       },
@@ -293,7 +293,7 @@ class AdvancedSearchSystem {
       searchBtn.title = 'Search (Ctrl+K)';
       searchBtn.setAttribute('aria-label', 'Open search');
       searchBtn.onclick = () => this.showSearch();
-      
+
       quickNav.insertBefore(searchBtn, quickNav.firstChild);
     }
 
@@ -339,7 +339,7 @@ class AdvancedSearchSystem {
       btn.addEventListener('click', () => {
         filterBtns.forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
-        
+
         const query = this.searchInput.value.trim();
         if (query) {
           this.performSearch(query, btn.dataset.category);
@@ -351,7 +351,7 @@ class AdvancedSearchSystem {
     this.searchInput.addEventListener('keydown', (e) => {
       const results = document.querySelectorAll('.search-result-item');
       const activeResult = document.querySelector('.search-result-item.active');
-      
+
       if (e.key === 'ArrowDown') {
         e.preventDefault();
         if (activeResult) {
@@ -391,7 +391,7 @@ class AdvancedSearchSystem {
     this.searchModal.classList.remove('hidden');
     this.searchInput.focus();
     document.body.style.overflow = 'hidden';
-    
+
     // Analytics
     if (window.enhancedAnalytics) {
       window.enhancedAnalytics.trackEvent('search_opened', {
@@ -405,7 +405,7 @@ class AdvancedSearchSystem {
     this.searchInput.value = '';
     this.showWelcome();
     document.body.style.overflow = '';
-    
+
     // Remove active states
     document.querySelectorAll('.search-result-item.active').forEach(item => {
       item.classList.remove('active');
@@ -415,7 +415,7 @@ class AdvancedSearchSystem {
   performSearch(query, category = 'all') {
     const results = this.fuzzySearch(query, category);
     this.displayResults(results, query);
-    
+
     // Update search history
     if (!this.searchHistory.includes(query)) {
       this.searchHistory.unshift(query);
@@ -438,7 +438,9 @@ class AdvancedSearchSystem {
     const results = [];
 
     for (const [id, item] of this.searchIndex) {
-      if (category !== 'all' && item.category !== category) continue;
+      if (category !== 'all' && item.category !== category) {
+        continue;
+      }
 
       let score = 0;
       const searchableText = `${item.title} ${item.description} ${item.keywords.join(' ')} ${item.content}`.toLowerCase();
@@ -449,17 +451,17 @@ class AdvancedSearchSystem {
         if (item.title.toLowerCase().includes(term)) {
           score += 100;
         }
-        
+
         // Matches in keywords get high score
         if (item.keywords.some(keyword => keyword.includes(term))) {
           score += 50;
         }
-        
+
         // Matches in description get medium score
         if (item.description.toLowerCase().includes(term)) {
           score += 30;
         }
-        
+
         // Matches in content get lower score
         if (item.content.includes(term)) {
           score += 10;
@@ -482,7 +484,7 @@ class AdvancedSearchSystem {
   findFuzzyMatches(term, text) {
     let matches = 0;
     const termLength = term.length;
-    
+
     for (let i = 0; i <= text.length - termLength; i++) {
       const substring = text.substr(i, termLength);
       const similarity = this.calculateSimilarity(term, substring);
@@ -490,31 +492,33 @@ class AdvancedSearchSystem {
         matches++;
       }
     }
-    
+
     return matches;
   }
 
   calculateSimilarity(str1, str2) {
     const longer = str1.length > str2.length ? str1 : str2;
     const shorter = str1.length > str2.length ? str2 : str1;
-    
-    if (longer.length === 0) return 1.0;
-    
+
+    if (longer.length === 0) {
+      return 1.0;
+    }
+
     const distance = this.levenshteinDistance(longer, shorter);
     return (longer.length - distance) / longer.length;
   }
 
   levenshteinDistance(str1, str2) {
     const matrix = [];
-    
+
     for (let i = 0; i <= str2.length; i++) {
       matrix[i] = [i];
     }
-    
+
     for (let j = 0; j <= str1.length; j++) {
       matrix[0][j] = j;
     }
-    
+
     for (let i = 1; i <= str2.length; i++) {
       for (let j = 1; j <= str1.length; j++) {
         if (str2.charAt(i - 1) === str1.charAt(j - 1)) {
@@ -528,7 +532,7 @@ class AdvancedSearchSystem {
         }
       }
     }
-    
+
     return matrix[str2.length][str1.length];
   }
 
@@ -577,16 +581,18 @@ class AdvancedSearchSystem {
   }
 
   highlightMatches(text, query) {
-    if (!query) return text;
-    
+    if (!query) {
+      return text;
+    }
+
     const terms = query.split(' ');
     let highlightedText = text;
-    
+
     terms.forEach(term => {
       const regex = new RegExp(`(${term})`, 'gi');
       highlightedText = highlightedText.replace(regex, '<mark>$1</mark>');
     });
-    
+
     return highlightedText;
   }
 
@@ -617,9 +623,9 @@ class AdvancedSearchSystem {
         ${this.searchHistory.length > 0 ? `
           <div class="search-history">
             <span class="history-label">Recent searches:</span>
-            ${this.searchHistory.slice(0, 5).map(term => 
-              `<button class="suggestion-btn" onclick="window.advancedSearch?.performSearch('${term}')">${term}</button>`
-            ).join('')}
+            ${this.searchHistory.slice(0, 5).map(term =>
+    `<button class="suggestion-btn" onclick="window.advancedSearch?.performSearch('${term}')">${term}</button>`
+  ).join('')}
           </div>
         ` : ''}
       </div>
@@ -628,7 +634,9 @@ class AdvancedSearchSystem {
 
   selectResult(id, url) {
     const result = this.searchIndex.get(id);
-    if (!result) return;
+    if (!result) {
+      return;
+    }
 
     // Hide search
     this.hideSearch();

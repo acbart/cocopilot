@@ -10,7 +10,7 @@ class ContentManagementSystem {
     this.updateQueue = [];
     this.contentCache = new Map();
     this.lastUpdate = localStorage.getItem('cms_last_update') || Date.now();
-    
+
     // Content templates for AI-driven updates
     this.contentTemplates = {
       achievements: {
@@ -38,13 +38,13 @@ class ContentManagementSystem {
     }
 
     console.log('📝 Initializing Content Management System...');
-    
+
     await this.initializeContentSources();
     this.createManagementInterface();
     this.setupContentWatchers();
     this.scheduleContentUpdates();
     this.addCMSStyles();
-    
+
     this.isInitialized = true;
     console.log('✅ Content Management System initialized');
   }
@@ -215,19 +215,19 @@ class ContentManagementSystem {
       opacity: 0.3;
       transition: all 0.3s ease;
     `;
-    
+
     cmsTrigger.addEventListener('mouseenter', () => {
       cmsTrigger.style.opacity = '1';
       cmsTrigger.style.transform = 'scale(1.1)';
     });
-    
+
     cmsTrigger.addEventListener('mouseleave', () => {
       cmsTrigger.style.opacity = '0.3';
       cmsTrigger.style.transform = 'scale(1)';
     });
-    
+
     cmsTrigger.onclick = () => this.showCMS();
-    
+
     document.body.appendChild(cmsTrigger);
   }
 
@@ -235,10 +235,10 @@ class ContentManagementSystem {
     // Close/minimize buttons
     document.getElementById('closeCMS')?.addEventListener('click', () => this.hideCMS());
     document.getElementById('minimizeCMS')?.addEventListener('click', () => this.minimizeCMS());
-    
+
     // Refresh content
     document.getElementById('refreshContent')?.addEventListener('click', () => this.refreshAllContent());
-    
+
     // Preview changes
     document.getElementById('previewChanges')?.addEventListener('click', () => this.previewAllChanges());
   }
@@ -274,7 +274,7 @@ class ContentManagementSystem {
   }
 
   formatSourceName(key) {
-    return key.split('-').map(word => 
+    return key.split('-').map(word =>
       word.charAt(0).toUpperCase() + word.slice(1)
     ).join(' ');
   }
@@ -282,37 +282,39 @@ class ContentManagementSystem {
   getSourceStatus(source) {
     const now = Date.now();
     const hoursSinceUpdate = (now - source.lastUpdate) / (1000 * 60 * 60);
-    
+
     switch (source.updateFrequency) {
-      case 'hourly': return hoursSinceUpdate > 1 ? 'outdated' : 'current';
-      case 'daily': return hoursSinceUpdate > 24 ? 'outdated' : 'current';
-      case 'weekly': return hoursSinceUpdate > 168 ? 'outdated' : 'current';
-      case 'session': return 'current';
-      default: return 'unknown';
+    case 'hourly': return hoursSinceUpdate > 1 ? 'outdated' : 'current';
+    case 'daily': return hoursSinceUpdate > 24 ? 'outdated' : 'current';
+    case 'weekly': return hoursSinceUpdate > 168 ? 'outdated' : 'current';
+    case 'session': return 'current';
+    default: return 'unknown';
     }
   }
 
   getSourceStatusIcon(source) {
     const status = this.getSourceStatus(source);
     switch (status) {
-      case 'current': return '✅';
-      case 'outdated': return '⚠️';
-      case 'updating': return '🔄';
-      default: return '❓';
+    case 'current': return '✅';
+    case 'outdated': return '⚠️';
+    case 'updating': return '🔄';
+    default: return '❓';
     }
   }
 
   async generateContent() {
     const contentType = document.getElementById('contentType')?.value;
     const preview = document.getElementById('generatedPreview');
-    
-    if (!contentType || !preview) return;
+
+    if (!contentType || !preview) {
+      return;
+    }
 
     preview.innerHTML = '<div class="generating">🤖 Generating content...</div>';
 
     try {
       const generatedContent = await this.generateContentByType(contentType);
-      
+
       preview.innerHTML = `
         <div class="generated-content">
           <h5>Generated ${contentType}:</h5>
@@ -331,50 +333,50 @@ class ContentManagementSystem {
   async generateContentByType(type) {
     const templates = this.contentTemplates;
     const now = new Date();
-    
+
     switch (type) {
-      case 'achievement':
-        return {
-          type: 'achievement',
-          preview: this.generateAchievement(),
-          data: { 
-            date: now.toISOString().split('T')[0],
-            category: this.randomChoice(templates.achievements.categories)
-          }
-        };
-      
-      case 'insight':
-        return {
-          type: 'insight',
-          preview: this.generateInsight(),
-          data: {
-            type: this.randomChoice(templates.insights.types),
-            icon: this.randomChoice(templates.insights.icons)
-          }
-        };
-      
-      case 'metric':
-        return {
-          type: 'metric',
-          preview: this.generateMetric(),
-          data: {
-            category: this.randomChoice(templates.metrics.categories),
-            trend: this.randomChoice(templates.metrics.trends)
-          }
-        };
-      
-      case 'suggestion':
-        return {
-          type: 'suggestion',
-          preview: this.generateSuggestion(),
-          data: {
-            priority: Math.random() > 0.5 ? 'high' : 'medium',
-            action: this.randomChoice(templates.insights.actions)
-          }
-        };
-      
-      default:
-        throw new Error('Unknown content type');
+    case 'achievement':
+      return {
+        type: 'achievement',
+        preview: this.generateAchievement(),
+        data: {
+          date: now.toISOString().split('T')[0],
+          category: this.randomChoice(templates.achievements.categories)
+        }
+      };
+
+    case 'insight':
+      return {
+        type: 'insight',
+        preview: this.generateInsight(),
+        data: {
+          type: this.randomChoice(templates.insights.types),
+          icon: this.randomChoice(templates.insights.icons)
+        }
+      };
+
+    case 'metric':
+      return {
+        type: 'metric',
+        preview: this.generateMetric(),
+        data: {
+          category: this.randomChoice(templates.metrics.categories),
+          trend: this.randomChoice(templates.metrics.trends)
+        }
+      };
+
+    case 'suggestion':
+      return {
+        type: 'suggestion',
+        preview: this.generateSuggestion(),
+        data: {
+          priority: Math.random() > 0.5 ? 'high' : 'medium',
+          action: this.randomChoice(templates.insights.actions)
+        }
+      };
+
+    default:
+      throw new Error('Unknown content type');
     }
   }
 
@@ -383,7 +385,7 @@ class ContentManagementSystem {
     const icon = this.randomChoice(templates.icons);
     const prefix = this.randomChoice(templates.prefixes);
     const category = this.randomChoice(templates.categories);
-    
+
     const achievements = [
       `${prefix} advanced search capabilities with fuzzy matching`,
       `${prefix} real-time project health monitoring dashboard`,
@@ -392,9 +394,9 @@ class ContentManagementSystem {
       `${prefix} performance optimizations reducing load time by 20%`,
       `${prefix} new AI-driven content generation features`
     ];
-    
+
     const achievement = this.randomChoice(achievements);
-    
+
     return `
       <div class="achievement-preview">
         <span class="achievement-icon">${icon}</span>
@@ -411,7 +413,7 @@ class ContentManagementSystem {
     const templates = this.contentTemplates.insights;
     const icon = this.randomChoice(templates.icons);
     const action = this.randomChoice(templates.actions);
-    
+
     const insights = [
       {
         title: 'AI Development Evolution',
@@ -430,9 +432,9 @@ class ContentManagementSystem {
         content: 'Open-source projects thrive when they combine automated improvements with community contributions and feedback.'
       }
     ];
-    
+
     const insight = this.randomChoice(insights);
-    
+
     return `
       <div class="insight-preview">
         <span class="insight-icon">${icon}</span>
@@ -449,7 +451,7 @@ class ContentManagementSystem {
     const value = Math.floor(Math.random() * 30) + 85; // 85-100
     const trend = Math.random() > 0.7 ? '↗️' : (Math.random() > 0.3 ? '→' : '↘️');
     const change = Math.floor(Math.random() * 10) + 1;
-    
+
     return `
       <div class="metric-preview">
         <div class="metric-value">${value}%</div>
@@ -467,9 +469,9 @@ class ContentManagementSystem {
       'Review the accessibility improvements to ensure inclusive design',
       'Discover the enhanced performance monitoring capabilities'
     ];
-    
+
     const suggestion = this.randomChoice(suggestions);
-    
+
     return `
       <div class="suggestion-preview">
         <div class="suggestion-icon">💡</div>
@@ -485,33 +487,35 @@ class ContentManagementSystem {
 
   async updateContent(sourceKey) {
     const source = this.contentSources.get(sourceKey);
-    if (!source) return;
+    if (!source) {
+      return;
+    }
 
     console.log(`🔄 Updating content for ${sourceKey}...`);
 
     try {
       switch (source.type) {
-        case 'widget':
-          await this.updateWidgetContent(sourceKey, source);
-          break;
-        case 'metrics':
-          await this.updateMetricsContent(sourceKey, source);
-          break;
-        case 'list':
-          await this.updateListContent(sourceKey, source);
-          break;
-        case 'cards':
-          await this.updateCardsContent(sourceKey, source);
-          break;
-        case 'recommendations':
-          await this.updateRecommendationsContent(sourceKey, source);
-          break;
+      case 'widget':
+        await this.updateWidgetContent(sourceKey, source);
+        break;
+      case 'metrics':
+        await this.updateMetricsContent(sourceKey, source);
+        break;
+      case 'list':
+        await this.updateListContent(sourceKey, source);
+        break;
+      case 'cards':
+        await this.updateCardsContent(sourceKey, source);
+        break;
+      case 'recommendations':
+        await this.updateRecommendationsContent(sourceKey, source);
+        break;
       }
 
       // Update last update time
       source.lastUpdate = Date.now();
       localStorage.setItem('cms_last_update', source.lastUpdate.toString());
-      
+
       console.log(`✅ Content updated for ${sourceKey}`);
       this.updateCMSDisplay();
 
@@ -524,7 +528,7 @@ class ContentManagementSystem {
     if (sourceKey === 'daily-insights') {
       // Generate new daily insights
       const newInsights = await this.generateDailyInsights();
-      
+
       // Update the insights if the widget exists
       if (window.dailyInsights) {
         window.dailyInsights.insights = newInsights;
@@ -544,14 +548,14 @@ class ContentManagementSystem {
   async generateDailyInsights() {
     const today = new Date();
     const insights = [];
-    
+
     // Generate contextual insights based on current state
     const baseInsights = [
       {
         type: 'ai-fact',
         icon: '🤖',
         title: 'AI Development Milestone',
-        content: `Today's enhancement: The content management system enables dynamic updates without manual file editing, representing a 40% improvement in content maintenance efficiency.`,
+        content: 'Today\'s enhancement: The content management system enables dynamic updates without manual file editing, representing a 40% improvement in content maintenance efficiency.',
         action: 'View System',
         actionUrl: '#cms-panel'
       },
@@ -615,7 +619,7 @@ class ContentManagementSystem {
     // Schedule regular content updates based on source frequency
     this.contentSources.forEach((source, key) => {
       const updateInterval = this.getUpdateInterval(source.updateFrequency);
-      
+
       setInterval(() => {
         if (this.shouldUpdateContent(source)) {
           this.updateContent(key);
@@ -626,11 +630,11 @@ class ContentManagementSystem {
 
   getUpdateInterval(frequency) {
     switch (frequency) {
-      case 'hourly': return 60 * 60 * 1000;
-      case 'daily': return 24 * 60 * 60 * 1000;
-      case 'weekly': return 7 * 24 * 60 * 60 * 1000;
-      case 'session': return Infinity; // Only update manually
-      default: return 24 * 60 * 60 * 1000;
+    case 'hourly': return 60 * 60 * 1000;
+    case 'daily': return 24 * 60 * 60 * 1000;
+    case 'weekly': return 7 * 24 * 60 * 60 * 1000;
+    case 'session': return Infinity; // Only update manually
+    default: return 24 * 60 * 60 * 1000;
     }
   }
 
@@ -638,14 +642,14 @@ class ContentManagementSystem {
     const now = Date.now();
     const timeSinceUpdate = now - source.lastUpdate;
     const updateInterval = this.getUpdateInterval(source.updateFrequency);
-    
+
     return timeSinceUpdate >= updateInterval;
   }
 
   updateCMSDisplay() {
     const sourcesList = document.getElementById('contentSourcesList');
     const updateQueue = document.getElementById('updateQueue');
-    
+
     if (sourcesList) {
       sourcesList.innerHTML = Array.from(this.contentSources.entries()).map(([key, source]) => `
         <div class="content-source-item" data-source="${key}">
@@ -666,7 +670,7 @@ class ContentManagementSystem {
     }
 
     if (updateQueue) {
-      updateQueue.innerHTML = this.updateQueue.length === 0 
+      updateQueue.innerHTML = this.updateQueue.length === 0
         ? '<div class="queue-empty">No pending updates</div>'
         : this.updateQueue.map(item => `
             <div class="queue-item">

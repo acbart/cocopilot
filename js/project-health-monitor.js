@@ -17,7 +17,7 @@ class ProjectHealthMonitor {
       activity: 85,
       community: 78
     };
-    
+
     this.trends = {
       codeQuality: +2,
       testCoverage: +5,
@@ -263,7 +263,7 @@ class ProjectHealthMonitor {
   generateActivityBars() {
     const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
     const values = [12, 8, 15, 22, 18, 5, 9];
-    
+
     return days.map((day, index) => `
       <div class="activity-bar">
         <div class="bar" style="height: ${(values[index] / 25) * 100}%" data-day="${day}" data-value="${values[index]}"></div>
@@ -771,7 +771,7 @@ class ProjectHealthMonitor {
       const duration = 2000;
       const increment = target / (duration / 16);
       let current = 0;
-      
+
       const timer = setInterval(() => {
         current += increment;
         if (current >= target) {
@@ -792,7 +792,7 @@ class ProjectHealthMonitor {
         isPaused = !isPaused;
         pauseBtn.textContent = isPaused ? '▶️' : '⏸️';
         pauseBtn.setAttribute('aria-label', isPaused ? 'Resume animations' : 'Pause animations');
-        
+
         // Toggle CSS animations
         const monitor = document.querySelector('.visual-health-monitor');
         if (monitor) {
@@ -833,14 +833,14 @@ class ProjectHealthMonitor {
         tooltip.style.fontSize = '12px';
         tooltip.style.pointerEvents = 'none';
         tooltip.style.zIndex = '1000';
-        
+
         document.body.appendChild(tooltip);
-        
+
         const rect = e.target.getBoundingClientRect();
         tooltip.style.left = rect.left + rect.width / 2 - tooltip.offsetWidth / 2 + 'px';
         tooltip.style.top = rect.top - tooltip.offsetHeight - 5 + 'px';
       });
-      
+
       bar.addEventListener('mouseleave', () => {
         const tooltip = document.querySelector('.activity-tooltip');
         if (tooltip) {
@@ -859,7 +859,7 @@ class ProjectHealthMonitor {
 
     // Re-animate with new data
     this.startAnimations();
-    
+
     // Show refresh feedback
     const refreshBtn = document.getElementById('refreshData');
     if (refreshBtn) {
