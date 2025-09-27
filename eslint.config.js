@@ -94,15 +94,15 @@ export default [
         fetch: 'readonly',
         URL: 'readonly',
         URLSearchParams: 'readonly',
-        
+
         // Service Worker globals
         self: 'readonly',
         caches: 'readonly',
         clients: 'readonly',
-        
+
         // Performance API
         PerformanceObserver: 'readonly',
-        
+
         // Browser API globals
         CustomEvent: 'readonly',
         setTimeout: 'readonly',
@@ -124,10 +124,10 @@ export default [
         FileReader: 'readonly',
         performance: 'readonly',
         Node: 'readonly',
-        
+
         // Google Analytics
         gtag: 'readonly',
-        
+
         // Node.js globals (for config files)
         process: 'readonly',
         Buffer: 'readonly',
@@ -136,7 +136,7 @@ export default [
         module: 'readonly',
         exports: 'readonly',
         require: 'readonly',
-        
+
         // Jest globals
         describe: 'readonly',
         it: 'readonly',

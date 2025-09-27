@@ -338,7 +338,7 @@ class AICodeSuggestions {
   setupEventListeners() {
     // Toggle panel visibility
     const toggleBtn = document.querySelector('.ai-toggle-btn');
-    const panel = document.getElementById('ai-suggestions-panel');
+    const _panel = document.getElementById('ai-suggestions-panel');
     const header = document.querySelector('.ai-suggestions-header');
 
     if (toggleBtn) {
@@ -437,7 +437,7 @@ class AICodeSuggestions {
         type: 'ai-response'
       });
 
-    } catch (error) {
+    } catch (_error) {
       this.removeSuggestionsByType('loading');
       this.addSuggestion({
         icon: '❌',
