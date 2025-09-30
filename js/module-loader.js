@@ -19,7 +19,8 @@ class ModuleLoader {
       'performance-monitor',
       'daily-insights',
       'project-health-monitor',
-      'achievement-milestones'
+      'achievement-milestones',
+      'daily-developer-tips'
     ];
 
     // Modules to load on user interaction
