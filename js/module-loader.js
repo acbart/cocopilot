@@ -18,7 +18,9 @@ class ModuleLoader {
       'enhanced-error-handler',
       'performance-monitor',
       'daily-insights',
-      'project-health-monitor'
+      'project-health-monitor',
+      'achievement-milestones',
+      'daily-developer-tips'
     ];
 
     // Modules to load on user interaction
