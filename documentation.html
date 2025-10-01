@@ -83,6 +83,71 @@
             transition: all 0.3s ease;
         }
 
+        /* Skip link for accessibility */
+        .skip-link {
+            position: absolute;
+            top: -40px;
+            left: 6px;
+            background: var(--button-gradient-start);
+            color: white;
+            padding: 8px 12px;
+            text-decoration: none;
+            border-radius: 4px;
+            z-index: 9999;
+            transition: top 0.3s ease;
+            font-weight: 600;
+        }
+
+        .skip-link:focus {
+            top: 6px;
+            outline: 3px solid var(--button-gradient-end);
+            outline-offset: 2px;
+        }
+
+        /* Breadcrumb navigation */
+        .breadcrumb {
+            padding: 15px 0;
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .breadcrumb-list {
+            display: flex;
+            align-items: center;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            flex-wrap: wrap;
+        }
+
+        .breadcrumb-item {
+            display: flex;
+            align-items: center;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .breadcrumb-item a {
+            color: var(--button-gradient-start);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .breadcrumb-item a:hover {
+            color: var(--button-gradient-end);
+            text-decoration: underline;
+        }
+
+        .breadcrumb-separator {
+            margin: 0 8px;
+            color: var(--text-tertiary);
+        }
+
+        .breadcrumb-item:last-child {
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
         .docs-container {
             display: flex;
             min-height: 100vh;
@@ -396,6 +461,7 @@
     </style>
 </head>
 <body>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
     <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">🌙</button>
     <a href="index.html" class="back-to-home">← Back to Home</a>
 
@@ -426,12 +492,21 @@
                 <ul class="nav-list">
                     <li class="nav-item"><a href="#contributing" class="nav-link">Contributing</a></li>
                     <li class="nav-item"><a href="#support" class="nav-link">Support</a></li>
+                    <li class="nav-item"><a href="#faq" class="nav-link">FAQ</a></li>
                     <li class="nav-item"><a href="#roadmap" class="nav-link">Roadmap</a></li>
                 </ul>
             </div>
         </nav>
 
-        <main class="main-content">
+        <main class="main-content" id="main-content">
+            <nav class="breadcrumb" aria-label="Breadcrumb">
+                <ol class="breadcrumb-list">
+                    <li class="breadcrumb-item"><a href="index.html">🏠 Home</a></li>
+                    <li class="breadcrumb-separator" aria-hidden="true">›</li>
+                    <li class="breadcrumb-item" aria-current="page">Documentation</li>
+                </ol>
+            </nav>
+            
             <div class="header">
                 <h1>📚 CocoPilot Documentation</h1>
                 <p>Complete guide to the self-updating AI-driven repository</p>
@@ -749,6 +824,33 @@ git push origin main
                         <h4>AI-Driven</h4>
                         <p>The repository continuously improves itself to address common issues.</p>
                     </div>
+                </div>
+            </section>
+
+            <section id="faq" class="section">
+                <h2>❓ Frequently Asked Questions</h2>
+                
+                <div style="margin-top: 20px;">
+                    <h3>How does CocoPilot self-update?</h3>
+                    <p>CocoPilot uses GitHub Actions to create daily issues that are assigned to GitHub Copilot. Copilot analyzes the repository, proposes improvements, and submits pull requests that are reviewed and merged.</p>
+                    
+                    <h3 style="margin-top: 20px;">Can I contribute to CocoPilot?</h3>
+                    <p>Absolutely! We welcome both AI and human contributions. Check out our <a href="#contributing">Contributing Guidelines</a> to learn how you can help improve the project.</p>
+                    
+                    <h3 style="margin-top: 20px;">Is CocoPilot safe to use as a template?</h3>
+                    <p>Yes! CocoPilot is open source under the MIT License. You can fork it, modify it, and use it as a starting point for your own projects. Just remember to review any AI-generated changes carefully.</p>
+                    
+                    <h3 style="margin-top: 20px;">How often does CocoPilot update?</h3>
+                    <p>The automated workflow runs daily at 09:15 UTC. However, not every run results in changes—Copilot only proposes updates when it identifies meaningful improvements.</p>
+                    
+                    <h3 style="margin-top: 20px;">What technologies power CocoPilot?</h3>
+                    <p>CocoPilot is built with modern web technologies including HTML5, CSS3, vanilla JavaScript (ES6+), and progressive web app (PWA) features. The AI integration uses GitHub Copilot and GitHub Actions.</p>
+                    
+                    <h3 style="margin-top: 20px;">Does CocoPilot work offline?</h3>
+                    <p>Yes! CocoPilot includes a service worker that enables offline functionality. Once you've visited the site, it will cache essential resources for offline access.</p>
+                    
+                    <h3 style="margin-top: 20px;">How can I track what changes are made?</h3>
+                    <p>All changes are tracked through GitHub issues, pull requests, and commits. Check the <a href="https://github.com/acbart/cocopilot/pulls">Pull Requests</a> tab and <a href="CHANGELOG.md">CHANGELOG</a> for detailed history.</p>
                 </div>
             </section>
 
