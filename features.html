@@ -104,6 +104,53 @@
             outline-offset: 2px;
         }
 
+        /* Breadcrumb navigation */
+        .breadcrumb {
+            padding: 15px 20px;
+            margin-bottom: 20px;
+            background: var(--container-bg);
+            border-radius: 15px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+        }
+
+        .breadcrumb-list {
+            display: flex;
+            align-items: center;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            flex-wrap: wrap;
+        }
+
+        .breadcrumb-item {
+            display: flex;
+            align-items: center;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .breadcrumb-item a {
+            color: var(--button-gradient-start);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .breadcrumb-item a:hover {
+            color: var(--button-gradient-end);
+            text-decoration: underline;
+        }
+
+        .breadcrumb-separator {
+            margin: 0 8px;
+            color: var(--text-tertiary);
+        }
+
+        .breadcrumb-item:last-child {
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
         .container {
             max-width: 1400px;
             margin: 0 auto;
@@ -527,6 +574,14 @@
     <a href="index.html" class="back-to-home">← Back to Home</a>
 
     <div class="container" id="main-content">
+        <nav class="breadcrumb" aria-label="Breadcrumb">
+            <ol class="breadcrumb-list">
+                <li class="breadcrumb-item"><a href="index.html">🏠 Home</a></li>
+                <li class="breadcrumb-separator" aria-hidden="true">›</li>
+                <li class="breadcrumb-item" aria-current="page">Features</li>
+            </ol>
+        </nav>
+        
         <header class="header">
             <h1>🚀 CocoPilot Features</h1>
             <p>Explore the comprehensive suite of AI-driven features that make CocoPilot unique. From automated improvements to advanced accessibility, discover what makes this repository special.</p>
