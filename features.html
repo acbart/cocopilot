@@ -83,6 +83,27 @@
             transition: all 0.3s ease;
         }
 
+        /* Skip link for accessibility */
+        .skip-link {
+            position: absolute;
+            top: -40px;
+            left: 6px;
+            background: var(--button-gradient-start);
+            color: white;
+            padding: 8px 12px;
+            text-decoration: none;
+            border-radius: 4px;
+            z-index: 9999;
+            transition: top 0.3s ease;
+            font-weight: 600;
+        }
+
+        .skip-link:focus {
+            top: 6px;
+            outline: 3px solid var(--button-gradient-end);
+            outline-offset: 2px;
+        }
+
         .container {
             max-width: 1400px;
             margin: 0 auto;
@@ -501,10 +522,11 @@
     </style>
 </head>
 <body>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
     <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">🌙</button>
     <a href="index.html" class="back-to-home">← Back to Home</a>
 
-    <div class="container">
+    <div class="container" id="main-content">
         <header class="header">
             <h1>🚀 CocoPilot Features</h1>
             <p>Explore the comprehensive suite of AI-driven features that make CocoPilot unique. From automated improvements to advanced accessibility, discover what makes this repository special.</p>
