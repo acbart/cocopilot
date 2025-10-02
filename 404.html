@@ -90,6 +90,61 @@
             line-height: 1.6;
         }
 
+        .search-box {
+            margin-bottom: 30px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 15px;
+            font-size: 1rem;
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.9);
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+        }
+
+        [data-theme="dark"] .search-input {
+            background: rgba(45, 55, 72, 0.9);
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--bg-gradient-start);
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .search-suggestions {
+            margin-top: 15px;
+            text-align: left;
+            display: none;
+        }
+
+        .search-suggestions.active {
+            display: block;
+        }
+
+        .suggestion-item {
+            padding: 10px 15px;
+            background: rgba(102, 126, 234, 0.05);
+            border-radius: 8px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .suggestion-item:hover {
+            background: rgba(102, 126, 234, 0.15);
+            transform: translateX(5px);
+        }
+
+        .suggestion-link {
+            text-decoration: none;
+            color: var(--text-primary);
+            display: block;
+        }
+
         .navigation-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -186,11 +241,24 @@
             But don't worry – CocoPilot has plenty of amazing features to explore!
         </p>
 
+        <div class="search-box">
+            <input 
+                type="search" 
+                class="search-input" 
+                placeholder="🔍 Search for features, docs, or pages..." 
+                aria-label="Search site"
+                oninput="handleSearch(event)"
+            >
+            <div class="search-suggestions" id="searchSuggestions"></div>
+        </div>
+
         <div class="navigation-grid">
             <a href="index.html" class="nav-btn">🏠 Home</a>
             <a href="features.html" class="nav-btn">🚀 Features</a>
             <a href="documentation.html" class="nav-btn">📚 Docs</a>
             <a href="community.html" class="nav-btn">👥 Community</a>
+            <a href="timeline.html" class="nav-btn">📅 Timeline</a>
+            <a href="analytics.html" class="nav-btn">📊 Analytics</a>
         </div>
 
         <div class="ai-suggestion">
@@ -204,6 +272,49 @@
     </div>
 
     <script>
+        // Search functionality
+        const searchData = [
+            { title: 'Home', url: 'index.html', keywords: ['home', 'main', 'start', 'dashboard', 'overview'] },
+            { title: 'Features', url: 'features.html', keywords: ['features', 'capabilities', 'functions', 'tools'] },
+            { title: 'Documentation', url: 'documentation.html', keywords: ['docs', 'documentation', 'guide', 'help', 'manual', 'tutorial'] },
+            { title: 'Community', url: 'community.html', keywords: ['community', 'people', 'contributors', 'team', 'collaboration'] },
+            { title: 'Timeline', url: 'timeline.html', keywords: ['timeline', 'history', 'roadmap', 'milestones', 'evolution'] },
+            { title: 'Analytics', url: 'analytics.html', keywords: ['analytics', 'metrics', 'statistics', 'data', 'insights', 'performance'] },
+            { title: 'AI Education', url: 'index.html#ai-education', keywords: ['education', 'learning', 'tutorials', 'lessons', 'teaching', 'ai'] },
+            { title: 'Code Playground', url: 'index.html#playground', keywords: ['playground', 'code', 'editor', 'demo', 'interactive', 'try'] },
+            { title: 'RSS Feed', url: 'feed.xml', keywords: ['rss', 'feed', 'updates', 'subscribe', 'news'] }
+        ];
+
+        function handleSearch(event) {
+            const query = event.target.value.toLowerCase().trim();
+            const suggestions = document.getElementById('searchSuggestions');
+            
+            if (query.length < 2) {
+                suggestions.classList.remove('active');
+                suggestions.innerHTML = '';
+                return;
+            }
+
+            const matches = searchData.filter(item => 
+                item.title.toLowerCase().includes(query) ||
+                item.keywords.some(keyword => keyword.includes(query))
+            ).slice(0, 5);
+
+            if (matches.length > 0) {
+                suggestions.classList.add('active');
+                suggestions.innerHTML = matches.map(match => `
+                    <div class="suggestion-item">
+                        <a href="${match.url}" class="suggestion-link">
+                            <strong>${match.title}</strong>
+                        </a>
+                    </div>
+                `).join('');
+            } else {
+                suggestions.classList.add('active');
+                suggestions.innerHTML = '<div class="suggestion-item">No results found. Try the navigation buttons below!</div>';
+            }
+        }
+
         // Theme toggle functionality
         function toggleTheme() {
             const body = document.body;

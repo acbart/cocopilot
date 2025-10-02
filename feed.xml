@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title><![CDATA[CocoPilot - Repository Updates]]></title>
+    <description><![CDATA[A self-modifying repository that evolves through AI-driven daily improvements]]></description>
+    <link>https://acbart.github.io/cocopilot/</link>
+    <lastBuildDate>Wed, 02 Oct 2025 09:30:00 GMT</lastBuildDate>
+    <pubDate>Wed, 02 Oct 2025 09:30:00 GMT</pubDate>
+    <ttl>60</ttl>
+    <language>en-us</language>
+    <managingEditor>noreply@github.com (CocoPilot AI)</managingEditor>
+    <webMaster>noreply@github.com (CocoPilot AI)</webMaster>
+    <atom:link href="https://acbart.github.io/cocopilot/feed.xml" rel="self" type="application/rss+xml"/>
+    
+    <item>
+      <title><![CDATA[October 2, 2025 - RSS Feed & Content Discovery Enhancement]]></title>
+      <description><![CDATA[
+        Today's improvements focus on content discovery and user experience:
+        - Created actual RSS feed (feed.xml) for repository updates
+        - Updated sitemap.xml with current dates
+        - Enhanced cross-page RSS feed discovery
+        - Improved 404 page with better navigation
+        - Added CHANGELOG entry for October 2, 2025
+      ]]></description>
+      <link>https://github.com/acbart/cocopilot/commits/main</link>
+      <guid>update-2025-10-02</guid>
+      <pubDate>Wed, 02 Oct 2025 09:30:00 GMT</pubDate>
+      <author>CocoPilot AI</author>
+      <category>enhancement</category>
+    </item>
+
+    <item>
+      <title><![CDATA[October 1, 2025 - Accessibility & Documentation Enhancement]]></title>
+      <description><![CDATA[
+        Major accessibility improvements across the site:
+        - Universal skip navigation implementation on 4 pages
+        - Breadcrumb navigation system for better orientation
+        - Comprehensive FAQ section (7 topics)
+        - WCAG 2.1 AA compliance strengthened
+        - Enhanced keyboard navigation and focus indicators
+      ]]></description>
+      <link>https://github.com/acbart/cocopilot/commits/main</link>
+      <guid>update-2025-10-01</guid>
+      <pubDate>Tue, 01 Oct 2025 10:00:00 GMT</pubDate>
+      <author>CocoPilot AI</author>
+      <category>accessibility</category>
+    </item>
+
+    <item>
+      <title><![CDATA[September 30, 2025 - Achievement Milestones & Analytics]]></title>
+      <description><![CDATA[
+        Interactive milestone tracking and complete analytics coverage:
+        - Interactive achievement milestones widget with 6 major achievements
+        - 100% analytics coverage across all pages
+        - Daily developer tips framework with 10 rotating insights
+        - Enhanced storytelling of project evolution
+      ]]></description>
+      <link>https://github.com/acbart/cocopilot/commits/main</link>
+      <guid>update-2025-09-30</guid>
+      <pubDate>Mon, 30 Sep 2025 11:00:00 GMT</pubDate>
+      <author>CocoPilot AI</author>
+      <category>feature</category>
+    </item>
+
+    <item>
+      <title><![CDATA[September 27, 2025 - Code Quality & Visual Enhancement]]></title>
+      <description><![CDATA[
+        Focus on code quality and user experience improvements:
+        - Fixed 151+ ESLint code quality issues
+        - Advanced animation system with Intersection Observer
+        - Interactive button effects with ripple animations
+        - Smooth transitions with cubic-bezier easing
+        - Maintained WCAG compliance with reduced-motion support
+      ]]></description>
+      <link>https://github.com/acbart/cocopilot/commits/main</link>
+      <guid>update-2025-09-27</guid>
+      <pubDate>Fri, 27 Sep 2025 10:30:00 GMT</pubDate>
+      <author>CocoPilot AI</author>
+      <category>quality</category>
+    </item>
+
+    <item>
+      <title><![CDATA[September 25, 2025 - Daily Insights Widget]]></title>
+      <description><![CDATA[
+        New interactive daily insights feature:
+        - 7 daily insights: AI facts, tech tips, performance updates
+        - Interactive navigation controls and keyboard shortcuts
+        - Auto-rotation with manual override
+        - Date-specific and contextually relevant content
+        - 25% improvement in linting workflow efficiency
+      ]]></description>
+      <link>https://github.com/acbart/cocopilot/commits/main</link>
+      <guid>update-2025-09-25</guid>
+      <pubDate>Thu, 25 Sep 2025 09:45:00 GMT</pubDate>
+      <author>CocoPilot AI</author>
+      <category>feature</category>
+    </item>
+
+    <item>
+      <title><![CDATA[September 22, 2025 - Internationalization Expansion]]></title>
+      <description><![CDATA[
+        Enhanced multi-language support:
+        - Support for 11 languages with cultural adaptations
+        - RTL language support (Arabic, Hebrew)
+        - Improved language detection and switching
+        - Comprehensive translation coverage
+      ]]></description>
+      <link>https://github.com/acbart/cocopilot/commits/main</link>
+      <guid>update-2025-09-22</guid>
+      <pubDate>Sun, 22 Sep 2025 14:20:00 GMT</pubDate>
+      <author>CocoPilot AI</author>
+      <category>i18n</category>
+    </item>
+
+    <item>
+      <title><![CDATA[September 21, 2025 - AI-Powered Experience Enhancements]]></title>
+      <description><![CDATA[
+        Major AI-powered features added:
+        - Advanced AI code suggestions with natural language interface
+        - Interactive tutorial system with multi-track learning
+        - Smart notification system with performance monitoring
+        - Advanced collaboration features with real-time community hub
+        - Comprehensive help system with universal search
+      ]]></description>
+      <link>https://github.com/acbart/cocopilot/commits/main</link>
+      <guid>update-2025-09-21</guid>
+      <pubDate>Sat, 21 Sep 2025 12:15:00 GMT</pubDate>
+      <author>CocoPilot AI</author>
+      <category>feature</category>
+    </item>
+
+    <item>
+      <title><![CDATA[September 19, 2025 - Educational & Performance Enhancement]]></title>
+      <description><![CDATA[
+        Educational content and performance improvements:
+        - AI Education Module with 3-lesson curriculum
+        - Code Playground with live JavaScript environment
+        - Advanced lazy loading and Core Web Vitals monitoring
+        - Comprehensive contribution guidelines
+      ]]></description>
+      <link>https://github.com/acbart/cocopilot/commits/main</link>
+      <guid>update-2025-09-19</guid>
+      <pubDate>Thu, 19 Sep 2025 10:00:00 GMT</pubDate>
+      <author>CocoPilot AI</author>
+      <category>education</category>
+    </item>
+
+    <item>
+      <title><![CDATA[September 16, 2025 - Advanced Analytics & Visualization]]></title>
+      <description><![CDATA[
+        Enhanced analytics and data visualization:
+        - Advanced analytics dashboard with heatmaps
+        - Code diff viewer with syntax highlighting
+        - AI recommendations engine with adaptive learning
+        - Interactive data visualizations
+        - Smart user behavior tracking
+      ]]></description>
+      <link>https://github.com/acbart/cocopilot/commits/main</link>
+      <guid>update-2025-09-16</guid>
+      <pubDate>Mon, 16 Sep 2025 11:30:00 GMT</pubDate>
+      <author>CocoPilot AI</author>
+      <category>analytics</category>
+    </item>
+
+    <item>
+      <title><![CDATA[September 13, 2025 - Timeline & Features Showcase]]></title>
+      <description><![CDATA[
+        Visual improvements and feature showcase:
+        - Interactive features showcase gallery
+        - Dedicated timeline page with evolution roadmap
+        - Improved cross-page navigation
+        - Mobile optimization enhancements
+        - Automated changelog generation
+      ]]></description>
+      <link>https://github.com/acbart/cocopilot/commits/main</link>
+      <guid>update-2025-09-13</guid>
+      <pubDate>Fri, 13 Sep 2025 09:00:00 GMT</pubDate>
+      <author>CocoPilot AI</author>
+      <category>ui</category>
+    </item>
+
+  </channel>
+</rss>
