@@ -2158,6 +2158,99 @@
             <div id="rss-desc" class="sr-only" data-i18n="nav.rss.desc">Subscribe to RSS feed for repository updates</div>
         </nav>
 
+        <!-- Power User Tips Section -->
+        <div class="power-user-tips-section" style="
+            background: var(--feature-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 30px 0;
+            text-align: left;
+        ">
+            <h2 style="
+                font-size: 1.4rem;
+                color: var(--text-primary);
+                margin-bottom: 20px;
+                text-align: center;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 10px;
+            ">
+                <span aria-hidden="true">⚡</span>
+                <span>Power User Tips</span>
+            </h2>
+            <div style="display: grid; gap: 15px;">
+                <div style="
+                    background: var(--container-bg);
+                    padding: 15px;
+                    border-radius: 10px;
+                    border-left: 4px solid #667eea;
+                ">
+                    <div style="display: flex; align-items: start; gap: 12px;">
+                        <span style="font-size: 1.5em; flex-shrink: 0;">⌨️</span>
+                        <div>
+                            <strong style="color: var(--text-primary); display: block; margin-bottom: 5px;">Keyboard Shortcuts</strong>
+                            <span style="color: var(--text-secondary); font-size: 0.95em;">
+                                Press <kbd style="background: var(--feature-bg); padding: 2px 6px; border-radius: 4px; font-family: monospace; font-size: 0.9em;">?</kbd> to see all available keyboard shortcuts. 
+                                Quick access: <kbd style="background: var(--feature-bg); padding: 2px 6px; border-radius: 4px; font-family: monospace; font-size: 0.9em;">T</kbd> for theme, 
+                                <kbd style="background: var(--feature-bg); padding: 2px 6px; border-radius: 4px; font-family: monospace; font-size: 0.9em;">R</kbd> for RSS, 
+                                <kbd style="background: var(--feature-bg); padding: 2px 6px; border-radius: 4px; font-family: monospace; font-size: 0.9em;">G</kbd> for GitHub
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div style="
+                    background: var(--container-bg);
+                    padding: 15px;
+                    border-radius: 10px;
+                    border-left: 4px solid #764ba2;
+                ">
+                    <div style="display: flex; align-items: start; gap: 12px;">
+                        <span style="font-size: 1.5em; flex-shrink: 0;">🎨</span>
+                        <div>
+                            <strong style="color: var(--text-primary); display: block; margin-bottom: 5px;">Theme Persistence</strong>
+                            <span style="color: var(--text-secondary); font-size: 0.95em;">
+                                Your theme preference is automatically saved. Toggle between light and dark modes with the moon/sun button or press <kbd style="background: var(--feature-bg); padding: 2px 6px; border-radius: 4px; font-family: monospace; font-size: 0.9em;">T</kbd>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div style="
+                    background: var(--container-bg);
+                    padding: 15px;
+                    border-radius: 10px;
+                    border-left: 4px solid #667eea;
+                ">
+                    <div style="display: flex; align-items: start; gap: 12px;">
+                        <span style="font-size: 1.5em; flex-shrink: 0;">📱</span>
+                        <div>
+                            <strong style="color: var(--text-primary); display: block; margin-bottom: 5px;">Progressive Web App</strong>
+                            <span style="color: var(--text-secondary); font-size: 0.95em;">
+                                Install CocoPilot as a PWA for offline access and app-like experience. Look for the install prompt in your browser or add to home screen on mobile
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div style="
+                    background: var(--container-bg);
+                    padding: 15px;
+                    border-radius: 10px;
+                    border-left: 4px solid #764ba2;
+                ">
+                    <div style="display: flex; align-items: start; gap: 12px;">
+                        <span style="font-size: 1.5em; flex-shrink: 0;">🔍</span>
+                        <div>
+                            <strong style="color: var(--text-primary); display: block; margin-bottom: 5px;">Advanced Navigation</strong>
+                            <span style="color: var(--text-secondary); font-size: 0.95em;">
+                                Use the quick navigation buttons on the left to jump to different sections. Click the help button (❓) for an interactive tour of all features
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <section class="social-share" aria-labelledby="social-heading">
             <h2 id="social-heading" class="sr-only" data-i18n="share.title">Share CocoPilot</h2>
             <a href="#" class="share-btn" onclick="shareOnTwitter(); return false;" aria-label="Share CocoPilot on Twitter">

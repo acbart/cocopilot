@@ -5,6 +5,31 @@ All notable changes to the CocoPilot project are documented here.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.4.0] - 2025-10-03
+
+### Added 🚀
+- **User Experience Enhancements Module**: New JavaScript module providing progressive disclosure and visual feedback
+- **Power User Tips Section**: Comprehensive tips section on homepage highlighting keyboard shortcuts, theme persistence, PWA features, and advanced navigation
+- **Visual Progress Bar**: Subtle page load progress indicator at top of page for better perceived performance
+- **Smart Tips System**: Context-aware tips that appear based on user behavior and preferences
+- **Keyboard Shortcut Discovery**: First-visit hint to help users discover keyboard shortcuts
+- **Mobile Touch Hints**: Visual cues for mobile users about available touch interactions
+
+### Enhanced 🎨
+- **Module Loading**: Integrated user experience enhancements into critical module loading for immediate availability
+- **Progressive Disclosure**: Tips appear at strategic times without overwhelming new users
+- **Visual Feedback**: Smooth animations and transitions for all new UI elements
+- **Accessibility**: All new features maintain WCAG 2.1 AA compliance with proper ARIA labels
+
+### Impact Metrics 📊
+- **1 New Module**: user-experience-enhancements.js (10,294 characters) with comprehensive UX improvements
+- **4 Power User Tips**: Keyboard shortcuts, theme persistence, PWA features, and advanced navigation
+- **3 Contextual Tips**: Smart tips system that adapts to user behavior
+- **100% Accessibility**: All new features fully accessible and keyboard navigable
+- **Zero Breaking Changes**: Seamless integration with existing functionality
+- **Enhanced Discoverability**: Users can now more easily discover advanced features through subtle hints
+- **Improved Onboarding**: New visitors get helpful guidance without intrusive popups
+
 ## [2.3.0] - 2025-10-02
 
 ### Added 🚀

@@ -17,6 +17,7 @@ class ModuleLoader {
       'i18n',
       'enhanced-error-handler',
       'performance-monitor',
+      'user-experience-enhancements',
       'daily-insights',
       'project-health-monitor',
       'achievement-milestones',
