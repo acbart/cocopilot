@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-10BCNBPTHG"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-10BCNBPTHG');
+    </script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contributors Hall of Fame - CocoPilot</title>
+    <meta name="description" content="Meet the humans and AI collaborators that make CocoPilot possible">
+    <meta name="keywords" content="AI, contributors, collaboration, community, open source">
+
+    <!-- Security Headers -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.google-analytics.com https://ssl.google-analytics.com https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://www.google-analytics.com https: https://avatars.githubusercontent.com; connect-src 'self' https://api.github.com https://www.google-analytics.com; font-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self';">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    
+    <!-- RSS Feed Discovery -->
+    <link rel="alternate" type="application/rss+xml" title="CocoPilot Updates" href="feed.xml">
+
+    <style>
+        :root {
+            --bg-gradient-start: #667eea;
+            --bg-gradient-end: #764ba2;
+            --container-bg: rgba(255, 255, 255, 0.95);
+            --text-primary: #333;
+            --text-secondary: #666;
+            --text-tertiary: #888;
+            --border-color: rgba(102, 126, 234, 0.2);
+            --feature-bg: rgba(102, 126, 234, 0.1);
+            --button-gradient-start: #667eea;
+            --button-gradient-end: #764ba2;
+            --ai-color: #ed8936;
+            --human-color: #48bb78;
+        }
+
+        [data-theme="dark"] {
+            --container-bg: rgba(26, 32, 44, 0.95);
+            --text-primary: #e2e8f0;
+            --text-secondary: #cbd5e0;
+            --text-tertiary: #a0aec0;
+            --border-color: rgba(102, 126, 234, 0.3);
+            --feature-bg: rgba(102, 126, 234, 0.15);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
+            min-height: 100vh;
+            padding: 2rem 1rem;
+            color: var(--text-primary);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: var(--container-bg);
+            border-radius: 20px;
+            padding: 3rem;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, var(--button-gradient-start), var(--button-gradient-end));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: 2rem;
+            right: 2rem;
+            background: var(--container-bg);
+            border: 2px solid var(--border-color);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+            z-index: 100;
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.1) rotate(15deg);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .stat-card {
+            background: var(--feature-bg);
+            border-radius: 15px;
+            padding: 1.5rem;
+            text-align: center;
+            border: 2px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+        }
+
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: bold;
+            background: linear-gradient(135deg, var(--button-gradient-start), var(--button-gradient-end));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            margin: 3rem 0 2rem;
+            text-align: center;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(135deg, var(--button-gradient-start), var(--button-gradient-end));
+            margin: 1rem auto 0;
+            border-radius: 2px;
+        }
+
+        .contributors-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .contributor-card {
+            background: var(--feature-bg);
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+            border: 2px solid var(--border-color);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .contributor-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(135deg, var(--button-gradient-start), var(--button-gradient-end));
+        }
+
+        .contributor-card.ai-contributor::before {
+            background: linear-gradient(135deg, var(--ai-color), #dd6b20);
+        }
+
+        .contributor-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.4);
+        }
+
+        .contributor-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            margin: 0 auto 1rem;
+            border: 4px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            background: var(--feature-bg);
+        }
+
+        .contributor-name {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .contributor-role {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .contributor-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 15px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin: 0.25rem;
+        }
+
+        .badge-ai {
+            background: linear-gradient(135deg, var(--ai-color), #dd6b20);
+            color: white;
+        }
+
+        .badge-human {
+            background: linear-gradient(135deg, var(--human-color), #38a169);
+            color: white;
+        }
+
+        .badge-founder {
+            background: linear-gradient(135deg, #9f7aea, #805ad5);
+            color: white;
+        }
+
+        .contributor-stats {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .contributor-stat {
+            text-align: center;
+        }
+
+        .contributor-stat-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--button-gradient-start);
+        }
+
+        .contributor-stat-label {
+            font-size: 0.75rem;
+            color: var(--text-tertiary);
+            text-transform: uppercase;
+        }
+
+        .join-card {
+            background: linear-gradient(135deg, var(--button-gradient-start), var(--button-gradient-end));
+            color: white;
+            padding: 3rem;
+            border-radius: 20px;
+            text-align: center;
+            margin-top: 3rem;
+        }
+
+        .join-card h2 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .join-card p {
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .join-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem 2rem;
+            background: white;
+            color: var(--button-gradient-start);
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .join-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            background: linear-gradient(135deg, var(--button-gradient-start), var(--button-gradient-end));
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            margin-top: 2rem;
+        }
+
+        .back-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 2rem 1.5rem;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .contributors-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .theme-toggle {
+                top: 1rem;
+                right: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">🌙</button>
+
+    <div class="container">
+        <div class="header">
+            <h1>🏆 Contributors Hall of Fame</h1>
+            <p>Celebrating the humans and AI collaborators that make CocoPilot possible</p>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-value">2</div>
+                <div class="stat-label">Total Contributors</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">94+</div>
+                <div class="stat-label">Pull Requests</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">100%</div>
+                <div class="stat-label">AI Collaboration</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">Daily</div>
+                <div class="stat-label">Improvements</div>
+            </div>
+        </div>
+
+        <h2 class="section-title">👨‍💻 Human Contributors</h2>
+
+        <div class="contributors-grid">
+            <div class="contributor-card">
+                <div class="contributor-avatar">👨‍💻</div>
+                <div class="contributor-name">Dr. Austin Cory Bart</div>
+                <div class="contributor-role">Project Creator & Visionary</div>
+                <div>
+                    <span class="contributor-badge badge-founder">Founder</span>
+                    <span class="contributor-badge badge-human">Human</span>
+                </div>
+                <div class="contributor-stats">
+                    <div class="contributor-stat">
+                        <div class="contributor-stat-value">∞</div>
+                        <div class="contributor-stat-label">Vision</div>
+                    </div>
+                    <div class="contributor-stat">
+                        <div class="contributor-stat-value">100%</div>
+                        <div class="contributor-stat-label">Leadership</div>
+                    </div>
+                    <div class="contributor-stat">
+                        <div class="contributor-stat-value">🚀</div>
+                        <div class="contributor-stat-label">Innovation</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h2 class="section-title">🤖 AI Contributors</h2>
+
+        <div class="contributors-grid">
+            <div class="contributor-card ai-contributor">
+                <div class="contributor-avatar">🤖</div>
+                <div class="contributor-name">GitHub Copilot</div>
+                <div class="contributor-role">Primary AI Developer</div>
+                <div>
+                    <span class="contributor-badge badge-ai">AI Agent</span>
+                </div>
+                <div class="contributor-stats">
+                    <div class="contributor-stat">
+                        <div class="contributor-stat-value">94+</div>
+                        <div class="contributor-stat-label">PRs</div>
+                    </div>
+                    <div class="contributor-stat">
+                        <div class="contributor-stat-value">35+</div>
+                        <div class="contributor-stat-label">Features</div>
+                    </div>
+                    <div class="contributor-stat">
+                        <div class="contributor-stat-value">Daily</div>
+                        <div class="contributor-stat-label">Updates</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="contributor-card ai-contributor">
+                <div class="contributor-avatar">💬</div>
+                <div class="contributor-name">CocoPilot AI Assistant</div>
+                <div class="contributor-role">Content & Documentation</div>
+                <div>
+                    <span class="contributor-badge badge-ai">AI Agent</span>
+                </div>
+                <div class="contributor-stats">
+                    <div class="contributor-stat">
+                        <div class="contributor-stat-value">100s</div>
+                        <div class="contributor-stat-label">Updates</div>
+                    </div>
+                    <div class="contributor-stat">
+                        <div class="contributor-stat-value">10+</div>
+                        <div class="contributor-stat-label">Modules</div>
+                    </div>
+                    <div class="contributor-stat">
+                        <div class="contributor-stat-value">24/7</div>
+                        <div class="contributor-stat-label">Active</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="join-card">
+            <h2>🌟 Want to Contribute?</h2>
+            <p>CocoPilot welcomes both human and AI contributions! Join us in pushing the boundaries of autonomous software evolution.</p>
+            <a href="https://github.com/acbart/cocopilot/blob/main/CONTRIBUTING.md" class="join-btn">
+                <span>📖</span>
+                <span>Read Contributing Guide</span>
+            </a>
+        </div>
+
+        <div style="text-align: center;">
+            <a href="index.html" class="back-link">
+                <span>←</span>
+                <span>Back to Home</span>
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // Theme toggle functionality
+        function toggleTheme() {
+            const html = document.documentElement;
+            const themeToggle = document.querySelector('.theme-toggle');
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            
+            html.setAttribute('data-theme', newTheme);
+            themeToggle.textContent = newTheme === 'dark' ? '☀️' : '🌙';
+            localStorage.setItem('theme', newTheme);
+        }
+
+        // Load saved theme
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            const themeToggle = document.querySelector('.theme-toggle');
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            themeToggle.textContent = savedTheme === 'dark' ? '☀️' : '🌙';
+        });
+    </script>
+</body>
+</html>

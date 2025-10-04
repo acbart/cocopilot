@@ -23,6 +23,9 @@ CocoPilot is an experimental project that demonstrates autonomous code evolution
 - **✨ Features Showcase**: Comprehensive gallery highlighting key capabilities
 - **🌍 Internationalization**: Support for 11 languages with cultural adaptations
 - **♿ Accessibility Excellence**: WCAG 2.1 AA compliance with comprehensive testing
+- **🎉 What's New**: Interactive changelog viewer with filterable timeline
+- **🏆 Contributors Hall of Fame**: Celebrating both human and AI collaborators
+- **⌨️ Keyboard Shortcuts**: Comprehensive productivity guide with 25+ shortcuts
 
 ### 🆕 Latest AI-Powered Experience Enhancements (September 21, 2025)
 
@@ -99,6 +102,16 @@ cocopilot/
 ```
 
 ## 🚀 Getting Started
+
+### Quick Links
+
+- 🏠 [Homepage](https://acbart.github.io/cocopilot/) - Explore the main dashboard
+- 🎉 [What's New](https://acbart.github.io/cocopilot/whats-new.html) - Latest improvements and updates
+- 🏆 [Contributors](https://acbart.github.io/cocopilot/contributors.html) - Hall of Fame for our collaborators
+- ⌨️ [Keyboard Shortcuts](https://acbart.github.io/cocopilot/shortcuts.html) - Productivity tips and shortcuts
+- 📅 [Timeline](https://acbart.github.io/cocopilot/timeline.html) - Project evolution roadmap
+- 📊 [Analytics](https://acbart.github.io/cocopilot/analytics.html) - Repository metrics and insights
+- 📚 [Documentation](https://acbart.github.io/cocopilot/documentation.html) - Complete user guide
 
 ### Viewing the Project
 

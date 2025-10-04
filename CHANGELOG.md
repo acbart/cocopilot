@@ -5,6 +5,32 @@ All notable changes to the CocoPilot project are documented here.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.5.0] - 2025-10-04
+
+### Added 🚀
+- **What's New Changelog Viewer**: Interactive page showcasing recent improvements with filterable timeline
+- **Contributors Hall of Fame**: Dedicated page celebrating both human and AI contributors
+- **Keyboard Shortcuts Guide**: Comprehensive documentation page for all keyboard shortcuts
+- **Enhanced Navigation**: Added links to new pages in main site navigation
+- **Category Filtering**: Filter changelog updates by features, enhancements, fixes, and documentation
+- **Contributor Cards**: Beautiful visual cards with metrics for each contributor type
+
+### Enhanced 🎨
+- **Timeline Visualization**: Smooth animations and gradient design for changelog items
+- **Stats Dashboard**: Added contributor statistics (PRs, features, daily improvements)
+- **Search Functionality**: Real-time search for keyboard shortcuts
+- **Theme Consistency**: Full dark/light theme support across all new pages
+- **Mobile Optimization**: Responsive design for all new content
+
+### Impact Metrics 📊
+- **3 New Pages**: What's New (21KB), Contributors Hall of Fame (17KB), Keyboard Shortcuts (22KB)
+- **6 Recent Updates**: Documented with full details from Sept 27 - Oct 4, 2025
+- **25+ Keyboard Shortcuts**: Documented across 5 categories (navigation, theme, accessibility, features, general)
+- **Sitemap Enhanced**: Added new pages for better SEO discoverability
+- **100% Mobile Responsive**: All new pages work perfectly on mobile devices
+- **Zero Breaking Changes**: Seamless integration with existing infrastructure
+- **Accessibility Maintained**: ARIA labels and screen reader support for all new features
+
 ## [2.4.0] - 2025-10-03
 
 ### Added 🚀
