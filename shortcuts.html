@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-10BCNBPTHG"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-10BCNBPTHG');
+    </script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Keyboard Shortcuts - CocoPilot</title>
+    <meta name="description" content="Master CocoPilot with keyboard shortcuts for faster navigation and productivity">
+    <meta name="keywords" content="keyboard shortcuts, productivity, navigation, accessibility">
+
+    <!-- Security Headers -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.google-analytics.com https://ssl.google-analytics.com https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://www.google-analytics.com https:; connect-src 'self' https://api.github.com https://www.google-analytics.com; font-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self';">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    
+    <!-- RSS Feed Discovery -->
+    <link rel="alternate" type="application/rss+xml" title="CocoPilot Updates" href="feed.xml">
+
+    <style>
+        :root {
+            --bg-gradient-start: #667eea;
+            --bg-gradient-end: #764ba2;
+            --container-bg: rgba(255, 255, 255, 0.95);
+            --text-primary: #333;
+            --text-secondary: #666;
+            --text-tertiary: #888;
+            --border-color: rgba(102, 126, 234, 0.2);
+            --feature-bg: rgba(102, 126, 234, 0.1);
+            --button-gradient-start: #667eea;
+            --button-gradient-end: #764ba2;
+            --key-bg: #f7fafc;
+            --key-border: #cbd5e0;
+        }
+
+        [data-theme="dark"] {
+            --container-bg: rgba(26, 32, 44, 0.95);
+            --text-primary: #e2e8f0;
+            --text-secondary: #cbd5e0;
+            --text-tertiary: #a0aec0;
+            --border-color: rgba(102, 126, 234, 0.3);
+            --feature-bg: rgba(102, 126, 234, 0.15);
+            --key-bg: #2d3748;
+            --key-border: #4a5568;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
+            min-height: 100vh;
+            padding: 2rem 1rem;
+            color: var(--text-primary);
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: var(--container-bg);
+            border-radius: 20px;
+            padding: 3rem;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, var(--button-gradient-start), var(--button-gradient-end));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: 2rem;
+            right: 2rem;
+            background: var(--container-bg);
+            border: 2px solid var(--border-color);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+            z-index: 100;
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.1) rotate(15deg);
+        }
+
+        .search-box {
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 1rem 1rem 1rem 3rem;
+            border: 2px solid var(--border-color);
+            border-radius: 15px;
+            background: var(--feature-bg);
+            color: var(--text-primary);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--button-gradient-start);
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.2rem;
+            color: var(--text-tertiary);
+        }
+
+        .category {
+            margin-bottom: 3rem;
+        }
+
+        .category-title {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 3px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .category-icon {
+            font-size: 1.8rem;
+        }
+
+        .shortcuts-grid {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .shortcut-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 1.5rem;
+            background: var(--feature-bg);
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+
+        .shortcut-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.2);
+        }
+
+        .shortcut-description {
+            flex: 1;
+            color: var(--text-primary);
+            font-size: 1rem;
+        }
+
+        .shortcut-keys {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+
+        .key {
+            display: inline-block;
+            padding: 0.4rem 0.8rem;
+            background: var(--key-bg);
+            border: 2px solid var(--key-border);
+            border-radius: 6px;
+            font-family: 'Monaco', 'Courier New', monospace;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            min-width: 2.5rem;
+            text-align: center;
+        }
+
+        .key-separator {
+            color: var(--text-tertiary);
+            font-weight: bold;
+        }
+
+        .tip-box {
+            background: linear-gradient(135deg, var(--button-gradient-start), var(--button-gradient-end));
+            color: white;
+            padding: 2rem;
+            border-radius: 15px;
+            margin-top: 2rem;
+            text-align: center;
+        }
+
+        .tip-box h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .tip-box p {
+            font-size: 1.1rem;
+            opacity: 0.95;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            background: linear-gradient(135deg, var(--button-gradient-start), var(--button-gradient-end));
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            margin-top: 2rem;
+        }
+
+        .back-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 3rem;
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 2rem 1.5rem;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .shortcut-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+
+            .theme-toggle {
+                top: 1rem;
+                right: 1rem;
+            }
+        }
+
+        @media print {
+            body {
+                background: white;
+            }
+
+            .container {
+                box-shadow: none;
+            }
+
+            .theme-toggle,
+            .back-link {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">🌙</button>
+
+    <div class="container">
+        <div class="header">
+            <h1>⌨️ Keyboard Shortcuts</h1>
+            <p>Master CocoPilot with these productivity shortcuts</p>
+        </div>
+
+        <div class="search-box">
+            <span class="search-icon">🔍</span>
+            <input 
+                type="text" 
+                class="search-input" 
+                id="searchInput"
+                placeholder="Search shortcuts..."
+                aria-label="Search keyboard shortcuts"
+            >
+        </div>
+
+        <div id="shortcutsContainer">
+            <div class="category" data-category="navigation">
+                <h2 class="category-title">
+                    <span class="category-icon">🧭</span>
+                    Navigation
+                </h2>
+                <div class="shortcuts-grid">
+                    <div class="shortcut-item">
+                        <span class="shortcut-description">Show keyboard shortcuts help</span>
+                        <div class="shortcut-keys">
+                            <kbd class="key">?</kbd>
+                        </div>
+                    </div>
+                    <div class="shortcut-item">
+                        <span class="shortcut-description">Open search</span>
+                        <div class="shortcut-keys">
+                            <kbd class="key">Ctrl</kbd>
+                            <span class="key-separator">+</span>
+                            <kbd class="key">K</kbd>
+                        </div>
+                    </div>
+                    <div class="shortcut-item">
+                        <span class="shortcut-description">Go to GitHub repository</span>
+                        <div class="shortcut-keys">
+                            <kbd class="key">G</kbd>
+                        </div>
+                    </div>
+                    <div class="shortcut-item">
+                        <span class="shortcut-description">Open RSS feed</span>
+                        <div class="shortcut-keys">
+                            <kbd class="key">R</kbd>
+                        </div>
+                    </div>
+                    <div class="shortcut-item">
+                        <span class="shortcut-description">Scroll to top</span>
+                        <div class="shortcut-keys">
+                            <kbd class="key">Home</kbd>
+                        </div>
+                    </div>
+                    <div class="shortcut-item">
+                        <span class="shortcut-description">Scroll to bottom</span>
+                        <div class="shortcut-keys">
+                            <kbd class="key">End</kbd>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="category" data-category="theme">
+                <h2 class="category-title">
+                    <span class="category-icon">🎨</span>
+                    Theme & Display
+                </h2>
+                <div class="shortcuts-grid">
+                    <div class="shortcut-item">
+                        <span class="shortcut-description">Toggle dark/light theme</span>
+                        <div class="shortcut-keys">
+                            <kbd class="key">T</kbd>
+                        </div>
+                    </div>
+                    <div class="shortcut-item">
+                        <span class="shortcut-description">Increase font size</span>
+                        <div class="shortcut-keys">
+                            <kbd class="key">Ctrl</kbd>
+                            <span class="key-separator">+</span>
+                            <kbd class="key">+</kbd>
+                        </div>
+                    </div>
+                    <div class="shortcut-item">
+                        <span class="shortcut-description">Decrease font size</span>
+                        <div class="shortcut-keys">
+                            <kbd class="key">Ctrl</kbd>
+                            <span class="key-separator">+</span>
+                            <kbd class="key">-</kbd>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="category" data-category="accessibility">
+                <h2 class="category-title">
+                    <span class="category-icon">♿</span>
+                    Accessibility
+                </h2>
+                <div class="shortcuts-grid">
+                    <div class="shortcut-item">
+                        <span class="shortcut-description">Open accessibility panel</span>
+                        <div class="shortcut-keys">
+                            <kbd class="key">Alt</kbd>
+                            <span class="key-separator">+</span>
+                            <kbd class="key">0</kbd>
+                        </div>
+                    </div>
+                    <div class="shortcut-item">
+                        <span class="shortcut-description">Skip to main content</span>
+                        <div class="shortcut-keys">
+                            <kbd class="key">Tab</kbd>
+                            <span class="key-separator">→</span>
+                            <kbd class="key">Enter</kbd>
+                        </div>
+                    </div>
+                    <div class="shortcut-item">
+                        <span class="shortcut-description">Toggle high contrast mode</span>
+                        <div class="shortcut-keys">
+                            <kbd class="key">Ctrl</kbd>
+                            <span class="key-separator">+</span>
+                            <kbd class="key">Alt</kbd>
+                            <span class="key-separator">+</span>
+                            <kbd class="key">H</kbd>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="category" data-category="features">
+                <h2 class="category-title">
+                    <span class="category-icon">✨</span>
+                    Features
+                </h2>
+                <div class="shortcuts-grid">
+                    <div class="shortcut-item">
+                        <span class="shortcut-description">Start interactive tour</span>
+                        <div class="shortcut-keys">
+                            <kbd class="key">Ctrl</kbd>
+                            <span class="key-separator">+</span>
+                            <kbd class="key">Shift</kbd>
+                            <span class="key-separator">+</span>
+                            <kbd class="key">T</kbd>
+                        </div>
+                    </div>
+                    <div class="shortcut-item">
+                        <span class="shortcut-description">Open content management</span>
+                        <div class="shortcut-keys">
+                            <kbd class="key">Ctrl</kbd>
+                            <span class="key-separator">+</span>
+                            <kbd class="key">Shift</kbd>
+                            <span class="key-separator">+</span>
+                            <kbd class="key">C</kbd>
+                        </div>
+                    </div>
+                    <div class="shortcut-item">
+                        <span class="shortcut-description">Toggle AI suggestions</span>
+                        <div class="shortcut-keys">
+                            <kbd class="key">Ctrl</kbd>
+                            <span class="key-separator">+</span>
+                            <kbd class="key">Shift</kbd>
+                            <span class="key-separator">+</span>
+                            <kbd class="key">A</kbd>
+                        </div>
+                    </div>
+                    <div class="shortcut-item">
+                        <span class="shortcut-description">Show performance metrics</span>
+                        <div class="shortcut-keys">
+                            <kbd class="key">Ctrl</kbd>
+                            <span class="key-separator">+</span>
+                            <kbd class="key">Shift</kbd>
+                            <span class="key-separator">+</span>
+                            <kbd class="key">P</kbd>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="category" data-category="general">
+                <h2 class="category-title">
+                    <span class="category-icon">🔧</span>
+                    General
+                </h2>
+                <div class="shortcuts-grid">
+                    <div class="shortcut-item">
+                        <span class="shortcut-description">Close modal/dialog</span>
+                        <div class="shortcut-keys">
+                            <kbd class="key">Esc</kbd>
+                        </div>
+                    </div>
+                    <div class="shortcut-item">
+                        <span class="shortcut-description">Refresh page</span>
+                        <div class="shortcut-keys">
+                            <kbd class="key">F5</kbd>
+                        </div>
+                    </div>
+                    <div class="shortcut-item">
+                        <span class="shortcut-description">Print page</span>
+                        <div class="shortcut-keys">
+                            <kbd class="key">Ctrl</kbd>
+                            <span class="key-separator">+</span>
+                            <kbd class="key">P</kbd>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="no-results" id="noResults" style="display: none;">
+            <p>No shortcuts found matching your search.</p>
+        </div>
+
+        <div class="tip-box">
+            <h3>💡 Pro Tip</h3>
+            <p>Press <kbd class="key" style="background: rgba(255,255,255,0.2); border-color: rgba(255,255,255,0.3);">?</kbd> anywhere on the site to see available shortcuts!</p>
+        </div>
+
+        <div style="text-align: center;">
+            <a href="index.html" class="back-link">
+                <span>←</span>
+                <span>Back to Home</span>
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // Theme toggle functionality
+        function toggleTheme() {
+            const html = document.documentElement;
+            const themeToggle = document.querySelector('.theme-toggle');
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            
+            html.setAttribute('data-theme', newTheme);
+            themeToggle.textContent = newTheme === 'dark' ? '☀️' : '🌙';
+            localStorage.setItem('theme', newTheme);
+        }
+
+        // Load saved theme
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            const themeToggle = document.querySelector('.theme-toggle');
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            themeToggle.textContent = savedTheme === 'dark' ? '☀️' : '🌙';
+        });
+
+        // Search functionality
+        const searchInput = document.getElementById('searchInput');
+        const shortcutsContainer = document.getElementById('shortcutsContainer');
+        const noResults = document.getElementById('noResults');
+
+        searchInput.addEventListener('input', (e) => {
+            const searchTerm = e.target.value.toLowerCase();
+            const categories = shortcutsContainer.querySelectorAll('.category');
+            let hasResults = false;
+
+            categories.forEach(category => {
+                const shortcuts = category.querySelectorAll('.shortcut-item');
+                let categoryHasResults = false;
+
+                shortcuts.forEach(shortcut => {
+                    const description = shortcut.querySelector('.shortcut-description').textContent.toLowerCase();
+                    const keys = shortcut.querySelector('.shortcut-keys').textContent.toLowerCase();
+                    const matches = description.includes(searchTerm) || keys.includes(searchTerm);
+
+                    if (matches) {
+                        shortcut.style.display = 'flex';
+                        categoryHasResults = true;
+                        hasResults = true;
+                    } else {
+                        shortcut.style.display = 'none';
+                    }
+                });
+
+                category.style.display = categoryHasResults ? 'block' : 'none';
+            });
+
+            shortcutsContainer.style.display = hasResults ? 'block' : 'none';
+            noResults.style.display = hasResults ? 'none' : 'block';
+        });
+
+        // Add keyboard shortcut to toggle theme
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 't' || e.key === 'T') {
+                if (!e.target.matches('input, textarea')) {
+                    toggleTheme();
+                }
+            }
+        });
+    </script>
+</body>
+</html>
