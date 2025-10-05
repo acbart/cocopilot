@@ -15,6 +15,10 @@
     <title>CocoPilot - Self-Updating Repository</title>
     <meta name="description" content="A self-modifying repository that evolves through AI-driven daily improvements">
     <meta name="keywords" content="AI, automation, GitHub, self-updating, repository">
+    <meta name="robots" content="index, follow">
+    <meta name="author" content="CocoPilot AI">
+    <link rel="canonical" href="https://acbart.github.io/cocopilot/">
+
 
     <!-- Security Headers -->
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.google-analytics.com https://ssl.google-analytics.com https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://www.google-analytics.com https:; connect-src 'self' https://api.github.com https://www.google-analytics.com;; font-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self';">
@@ -28,6 +32,8 @@
     <meta property="og:title" content="CocoPilot - Self-Updating Repository">
     <meta property="og:description" content="A self-modifying repository that evolves through AI-driven daily improvements">
     <meta property="og:url" content="https://acbart.github.io/cocopilot/">
+    <meta property="og:image" content="https://acbart.github.io/cocopilot/favicon.svg">
+    <meta property="og:image:alt" content="CocoPilot - AI-powered self-updating repository">
 
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
@@ -288,6 +294,11 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+            /* Add subtle text shadow for depth */
+            filter: drop-shadow(0 2px 4px rgba(102, 126, 234, 0.2));
+            /* Improve rendering */
+            font-weight: 700;
+            letter-spacing: -0.5px;
         }
 
         .subtitle {
@@ -580,12 +591,22 @@
 
         .status {
             display: inline-block;
-            background: #28a745;
+            background: linear-gradient(135deg, #28a745, #20c997);
             color: white;
-            padding: 4px 12px;
-            border-radius: 15px;
-            font-size: 0.8rem;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.85rem;
             margin: 10px 0;
+            box-shadow: 0 2px 8px rgba(40, 167, 69, 0.3);
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            /* Add subtle pulse animation */
+            animation: pulse-glow 2s ease-in-out infinite;
+        }
+        
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 2px 8px rgba(40, 167, 69, 0.3); }
+            50% { box-shadow: 0 2px 12px rgba(40, 167, 69, 0.5); }
         }
 
         /* Project Health Dashboard */
@@ -596,6 +617,8 @@
             padding: 25px;
             margin: 30px 0;
             box-shadow: 0 4px 15px rgba(102, 126, 234, 0.1);
+            /* Reserve minimum height to reduce CLS */
+            min-height: 300px;
         }
 
         .dashboard-title {
@@ -619,6 +642,11 @@
             padding: 15px;
             text-align: center;
             transition: transform 0.2s ease, box-shadow 0.2s ease;
+            /* Reserve space to prevent layout shift */
+            min-height: 120px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
 
         .health-metric:hover {
@@ -1285,13 +1313,21 @@
 
         .stat-item {
             background: var(--feature-bg);
-            padding: 8px 15px;
+            padding: 10px 16px;
             border-radius: 20px;
             border: 1px solid var(--border-color);
             font-size: 0.9rem;
             display: flex;
             align-items: center;
-            gap: 5px;
+            gap: 6px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            /* Reserve space to prevent layout shift */
+            min-width: 80px;
+        }
+        
+        .stat-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
         }
 
         .stat-value {
