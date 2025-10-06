@@ -5,6 +5,28 @@ All notable changes to the CocoPilot project are documented here.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.7.0] - 2025-10-06
+
+### Added 🚀
+- **Interactive FAQ Section**: Added comprehensive Frequently Asked Questions section to homepage
+- **Expandable Q&A Interface**: Accordion-style FAQ with smooth expand/collapse animations
+- **6 Essential Questions**: Covering project overview, updates, contributions, technologies, licensing, and news
+- **Accessibility Support**: Proper ARIA attributes (aria-expanded) for screen reader compatibility
+- **Mobile Optimization**: Touch-friendly FAQ interactions with responsive design
+
+### Enhanced 🎨
+- **User Onboarding**: Improved new user experience with instant answers to common questions
+- **Visual Consistency**: FAQ section matches site design language with gradient backgrounds
+- **Interactive Feedback**: Hover effects and smooth transitions for better user engagement
+- **Strategic Placement**: FAQ positioned before footer for easy discovery
+
+### Impact Metrics 📊
+- **User Empowerment**: Reduce support inquiries by answering common questions directly
+- **Professional Polish**: Following FAQ best practices with semantic HTML and proper structure
+- **Zero Breaking Changes**: Seamless integration without disrupting existing features
+- **Performance Maintained**: Lightweight animations respecting prefers-reduced-motion
+- **Accessibility First**: Full keyboard navigation and screen reader support
+
 ## [2.6.0] - 2025-10-05
 
 ### Added 🚀
