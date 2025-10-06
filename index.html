@@ -549,6 +549,113 @@
             outline-offset: 2px;
         }
 
+        /* FAQ Section Styles */
+        .faq-section {
+            background: var(--feature-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 15px;
+            padding: 35px 30px;
+            margin: 40px 0;
+        }
+
+        .faq-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .faq-item {
+            background: var(--container-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            margin-bottom: 15px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .faq-item:hover {
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .faq-question {
+            width: 100%;
+            background: transparent;
+            border: none;
+            padding: 20px;
+            text-align: left;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            transition: all 0.2s ease;
+        }
+
+        .faq-question:hover {
+            background: var(--feature-bg);
+        }
+
+        .faq-icon {
+            font-size: 0.8rem;
+            transition: transform 0.3s ease;
+            color: var(--bg-gradient-start);
+            font-weight: bold;
+        }
+
+        .faq-question[aria-expanded="true"] .faq-icon {
+            transform: rotate(90deg);
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease, padding 0.3s ease;
+            padding: 0 20px;
+        }
+
+        .faq-question[aria-expanded="true"] + .faq-answer {
+            max-height: 500px;
+            padding: 0 20px 20px 20px;
+        }
+
+        .faq-answer p {
+            color: var(--text-secondary);
+            line-height: 1.7;
+            margin: 0;
+            font-size: 0.95rem;
+        }
+
+        .faq-answer a {
+            color: var(--bg-gradient-start);
+            text-decoration: underline;
+            transition: color 0.2s ease;
+        }
+
+        .faq-answer a:hover {
+            color: var(--bg-gradient-end);
+        }
+
+        @media (max-width: 768px) {
+            .faq-section {
+                padding: 25px 20px;
+            }
+
+            .faq-question {
+                padding: 15px;
+                font-size: 0.95rem;
+            }
+
+            .faq-answer {
+                font-size: 0.9rem;
+            }
+
+            .faq-question[aria-expanded="true"] + .faq-answer {
+                padding: 0 15px 15px 15px;
+            }
+        }
+
         .footer {
             margin-top: 40px;
             padding-top: 20px;
@@ -2305,6 +2412,84 @@
             </a>
         </section>
 
+        <!-- FAQ Section -->
+        <section class="faq-section" aria-labelledby="faq-heading">
+            <h2 id="faq-heading" style="
+                font-size: 1.8rem;
+                color: var(--text-primary);
+                margin-bottom: 30px;
+                text-align: center;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 10px;
+            ">
+                <span aria-hidden="true">❓</span>
+                <span>Frequently Asked Questions</span>
+            </h2>
+            <div class="faq-container">
+                <div class="faq-item">
+                    <button type="button" class="faq-question" aria-expanded="false" onclick="toggleFAQ(this)">
+                        <span class="faq-icon">▶</span>
+                        <span>What is CocoPilot and how does it work?</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p>CocoPilot is an experimental self-updating repository that uses GitHub Copilot and GitHub Actions to autonomously improve itself. Every day, an automated workflow creates an issue, which is analyzed by GitHub Copilot. The AI then makes thoughtful improvements to the code, documentation, or features, and submits them as pull requests.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <button type="button" class="faq-question" aria-expanded="false" onclick="toggleFAQ(this)">
+                        <span class="faq-icon">▶</span>
+                        <span>How often does CocoPilot update itself?</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p>CocoPilot runs daily updates at 09:15 UTC. Each day, the system analyzes the repository's current state and implements incremental improvements. You can track all changes through the <a href="whats-new.html">What's New</a> page or view the complete history in the <a href="https://github.com/acbart/cocopilot/blob/main/CHANGELOG.md" target="_blank">Changelog</a>.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <button type="button" class="faq-question" aria-expanded="false" onclick="toggleFAQ(this)">
+                        <span class="faq-icon">▶</span>
+                        <span>Can I contribute to CocoPilot?</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Absolutely! CocoPilot welcomes both human and AI contributions. You can report bugs, suggest features, improve documentation, or submit pull requests. Check out our <a href="https://github.com/acbart/cocopilot/blob/main/CONTRIBUTING.md" target="_blank">Contributing Guidelines</a> to learn more about how to get involved.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <button type="button" class="faq-question" aria-expanded="false" onclick="toggleFAQ(this)">
+                        <span class="faq-icon">▶</span>
+                        <span>What technologies power CocoPilot?</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p>CocoPilot uses a modern tech stack including: GitHub Copilot for AI-driven code generation, GitHub Actions for automation, Progressive Web App (PWA) technology for offline support, modern JavaScript with lazy loading for performance, and comprehensive testing with Jest and Playwright.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <button type="button" class="faq-question" aria-expanded="false" onclick="toggleFAQ(this)">
+                        <span class="faq-icon">▶</span>
+                        <span>Is CocoPilot free to use?</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Yes! CocoPilot is completely free and open source under the MIT License. You can view, fork, and modify the code as you wish. The project is designed as a learning resource and demonstration of AI-assisted development practices.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <button type="button" class="faq-question" aria-expanded="false" onclick="toggleFAQ(this)">
+                        <span class="faq-icon">▶</span>
+                        <span>How can I stay updated with CocoPilot's changes?</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p>There are several ways to track updates: subscribe to our <a href="feed.xml">RSS feed</a>, watch the repository on GitHub, check the <a href="whats-new.html">What's New</a> page, or follow the daily issues and pull requests in the repository.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <footer class="footer" role="contentinfo">
             <p><span data-i18n="footer.powered">Powered by GitHub Copilot</span> &amp; <span data-i18n="footer.updated">Last updated:</span> <span id="lastUpdate"></span></p>
             <nav class="footer-links" aria-label="Documentation and resources">
@@ -2856,6 +3041,21 @@
                 document.body.setAttribute('data-theme', 'dark');
                 themeToggle.textContent = '☀️';
             }
+        }
+
+        // Toggle FAQ item
+        function toggleFAQ(button) {
+            const isExpanded = button.getAttribute('aria-expanded') === 'true';
+            
+            // Close all other FAQ items
+            document.querySelectorAll('.faq-question').forEach(q => {
+                if (q !== button) {
+                    q.setAttribute('aria-expanded', 'false');
+                }
+            });
+            
+            // Toggle current FAQ item
+            button.setAttribute('aria-expanded', !isExpanded);
         }
 
         // Quick navigation scrolling function
