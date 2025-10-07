@@ -771,6 +771,19 @@
             font-weight: 700;
             color: var(--text-primary);
             margin-bottom: 4px;
+            /* Add subtle emphasis on load */
+            animation: fadeInScale 0.5s ease-out;
+        }
+
+        @keyframes fadeInScale {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
         }
 
         .metric-label {
@@ -2020,7 +2033,7 @@
                 <div class="health-metric">
                     <div class="metric-icon">🚀</div>
                     <div class="metric-content">
-                        <div class="metric-value" id="totalFeatures">35+</div>
+                        <div class="metric-value" id="totalFeatures">47+</div>
                         <div class="metric-label">Active Features</div>
                     </div>
                 </div>
