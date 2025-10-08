@@ -1,6 +1,6 @@
 {
   "name": "cocopilot",
-  "version": "2.1.0",
+  "version": "2.8.0",
   "description": "A self-modifying repository that evolves through AI-driven daily improvements",
   "main": "index.html",
   "type": "module",
