@@ -1969,6 +1969,103 @@
                 font-size: 1.2rem;
             }
         }
+
+        /* Daily Insight Section */
+        .daily-insight {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.05));
+            border: 2px solid var(--border-color);
+            border-radius: 15px;
+            padding: 25px 30px;
+            margin: 30px 0;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .daily-insight:hover {
+            border-color: var(--button-gradient-start);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .daily-insight::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(102, 126, 234, 0.05) 0%, transparent 70%);
+            animation: pulseGlow 8s ease-in-out infinite;
+        }
+
+        @keyframes pulseGlow {
+            0%, 100% { opacity: 0.5; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.1); }
+        }
+
+        .daily-insight-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .daily-insight-icon {
+            font-size: 2rem;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-5px); }
+        }
+
+        .daily-insight-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin: 0;
+        }
+
+        .daily-insight-content {
+            position: relative;
+            z-index: 1;
+            color: var(--text-secondary);
+            line-height: 1.7;
+            font-size: 1.05rem;
+            padding-left: 48px;
+        }
+
+        .daily-insight-tip {
+            display: inline-block;
+            background: var(--button-gradient-start);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-left: auto;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        @media (max-width: 768px) {
+            .daily-insight {
+                padding: 20px;
+            }
+
+            .daily-insight-content {
+                padding-left: 0;
+                margin-top: 10px;
+            }
+
+            .daily-insight-header {
+                flex-wrap: wrap;
+            }
+        }
     </style>
 </head>
 <body>
@@ -2070,6 +2167,11 @@
                 <h3>🎯 Recent AI Improvements</h3>
                 <div class="improvement-list" id="recentImprovements">
                     <div class="improvement-item">
+                        <span class="improvement-date">Oct 10</span>
+                        <span class="improvement-desc">Added Daily AI Insight section with rotating tips about the project</span>
+                        <span class="improvement-type">✨ Feature</span>
+                    </div>
+                    <div class="improvement-item">
                         <span class="improvement-date">Oct 9</span>
                         <span class="improvement-desc">Fixed CLS issues for 99.9% performance improvement</span>
                         <span class="improvement-type">⚡ Performance</span>
@@ -2078,11 +2180,6 @@
                         <span class="improvement-date">Oct 8</span>
                         <span class="improvement-desc">Updated feature counts &amp; module statistics for accuracy</span>
                         <span class="improvement-type">📊 Data</span>
-                    </div>
-                    <div class="improvement-item">
-                        <span class="improvement-date">Oct 7</span>
-                        <span class="improvement-desc">Enhanced metrics accuracy &amp; performance improvements</span>
-                        <span class="improvement-type">⚡ Enhancement</span>
                     </div>
                 </div>
             </div>
@@ -2115,6 +2212,21 @@
                     <button type="button" class="notification-btn secondary" onclick="dismissNotification()">Got it!</button>
                 </div>
             </div>
+        </div>
+
+        <!-- Daily AI Insight -->
+        <div class="daily-insight" role="complementary" aria-label="Daily AI Insight">
+            <div class="daily-insight-header">
+                <span class="daily-insight-icon" aria-hidden="true">💡</span>
+                <h2 class="daily-insight-title">Today's AI Insight</h2>
+                <span class="daily-insight-tip">Oct 10</span>
+            </div>
+            <p class="daily-insight-content" id="dailyInsightText">
+                Did you know? CocoPilot uses GitHub Actions to trigger daily improvements. Each morning at 09:15 UTC, 
+                an automated workflow creates a planning issue, which GitHub Copilot then analyzes to propose and implement 
+                thoughtful enhancements. This creates a truly autonomous development cycle where the repository continuously 
+                evolves based on AI-driven decisions!
+            </p>
         </div>
 
         <div class="about-section">
