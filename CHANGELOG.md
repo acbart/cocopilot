@@ -5,6 +5,27 @@ All notable changes to the CocoPilot project are documented here.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.9.0] - 2025-10-11
+
+### Added 🚀
+- **Animated Gradient Background**: Smooth, infinite gradient shift animation creates a dynamic, living background
+- **Button Ripple Effects**: Interactive ripple animations on all buttons for enhanced tactile feedback
+- **Enhanced Emoji Interactions**: Added pulse animation and interactive spin effect on hover
+- **Updated Daily Insight**: Fresh content for October 11 about the importance of micro-interactions
+
+### Enhanced 🎨
+- **Visual Polish**: Elevated user experience through thoughtful micro-interactions
+- **Animation Quality**: Smooth, performance-optimized CSS animations with hardware acceleration
+- **User Engagement**: More delightful and responsive interface through subtle animations
+- **Timeline Freshness**: Added October 11 entry to recent improvements section
+
+### Impact Metrics 📊
+- **3 New Animations**: Gradient shift (15s cycle), button ripples, and enhanced emoji effects
+- **Zero Performance Cost**: Pure CSS animations with GPU acceleration
+- **Accessibility First**: All animations respect `prefers-reduced-motion` user preference
+- **User Delight**: Enhanced perceived quality through professional micro-interactions
+- **Zero Breaking Changes**: Visual enhancements only, all functionality preserved
+
 ## [2.8.0] - 2025-10-08
 
 ### Enhanced 📊

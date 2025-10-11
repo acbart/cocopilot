@@ -213,6 +213,8 @@
             line-height: 1.6;
             color: var(--text-primary);
             background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
+            background-size: 200% 200%;
+            animation: gradientShift 15s ease infinite;
             min-height: 100vh;
             display: flex;
             align-items: center;
@@ -225,6 +227,12 @@
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
             text-rendering: optimizeLegibility;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
 
         /* Smooth theme transitions */
@@ -277,14 +285,30 @@
             font-size: 4rem;
             margin-bottom: 20px;
             display: block;
-            animation: wave 2s ease-in-out infinite;
+            animation: wave 2s ease-in-out infinite, pulse 3s ease-in-out infinite;
             transition: transform 0.5s ease;
+            cursor: pointer;
+        }
+
+        .emoji:hover {
+            animation: spin 1s ease-in-out;
         }
 
         @keyframes wave {
             0%, 100% { transform: rotate(0deg); }
             25% { transform: rotate(-10deg); }
             75% { transform: rotate(10deg); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg) scale(1); }
+            50% { transform: rotate(180deg) scale(1.2); }
+            100% { transform: rotate(360deg) scale(1); }
         }
 
         h1 {
@@ -431,11 +455,36 @@
             font-weight: 600;
             transition: transform 0.2s, box-shadow 0.2s;
             margin: 0 10px 10px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .btn:hover::before {
+            width: 300px;
+            height: 300px;
         }
 
         .btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+            box-shadow: 0 5px 10px rgba(102, 126, 234, 0.2);
         }
 
         .btn-secondary {
@@ -2167,6 +2216,11 @@
                 <h3>🎯 Recent AI Improvements</h3>
                 <div class="improvement-list" id="recentImprovements">
                     <div class="improvement-item">
+                        <span class="improvement-date">Oct 11</span>
+                        <span class="improvement-desc">Enhanced UI with animated gradient background and interactive button effects</span>
+                        <span class="improvement-type">🎨 Design</span>
+                    </div>
+                    <div class="improvement-item">
                         <span class="improvement-date">Oct 10</span>
                         <span class="improvement-desc">Added Daily AI Insight section with rotating tips about the project</span>
                         <span class="improvement-type">✨ Feature</span>
@@ -2175,11 +2229,6 @@
                         <span class="improvement-date">Oct 9</span>
                         <span class="improvement-desc">Fixed CLS issues for 99.9% performance improvement</span>
                         <span class="improvement-type">⚡ Performance</span>
-                    </div>
-                    <div class="improvement-item">
-                        <span class="improvement-date">Oct 8</span>
-                        <span class="improvement-desc">Updated feature counts &amp; module statistics for accuracy</span>
-                        <span class="improvement-type">📊 Data</span>
                     </div>
                 </div>
             </div>
@@ -2219,13 +2268,13 @@
             <div class="daily-insight-header">
                 <span class="daily-insight-icon" aria-hidden="true">💡</span>
                 <h2 class="daily-insight-title">Today's AI Insight</h2>
-                <span class="daily-insight-tip">Oct 10</span>
+                <span class="daily-insight-tip">Oct 11</span>
             </div>
             <p class="daily-insight-content" id="dailyInsightText">
-                Did you know? CocoPilot uses GitHub Actions to trigger daily improvements. Each morning at 09:15 UTC, 
-                an automated workflow creates a planning issue, which GitHub Copilot then analyzes to propose and implement 
-                thoughtful enhancements. This creates a truly autonomous development cycle where the repository continuously 
-                evolves based on AI-driven decisions!
+                Visual delight matters! Today's improvements add subtle animations that enhance user experience without overwhelming. 
+                The gentle gradient shift in the background, ripple effects on buttons, and playful emoji interactions create a more 
+                engaging interface. These micro-interactions make the site feel alive and responsive, demonstrating how small touches 
+                can significantly improve the overall user experience. Great design is often about the details!
             </p>
         </div>
 
