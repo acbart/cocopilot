@@ -835,6 +835,28 @@
             }
         }
 
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideOutDown {
+            from {
+                opacity: 1;
+                transform: translateY(0);
+            }
+            to {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+        }
+
         .metric-label {
             font-size: 0.85rem;
             color: var(--text-secondary);
@@ -2216,6 +2238,11 @@
                 <h3>🎯 Recent AI Improvements</h3>
                 <div class="improvement-list" id="recentImprovements">
                     <div class="improvement-item">
+                        <span class="improvement-date">Oct 12</span>
+                        <span class="improvement-desc">Enhanced RSS feed integration with improved discoverability and documentation</span>
+                        <span class="improvement-type">📡 Integration</span>
+                    </div>
+                    <div class="improvement-item">
                         <span class="improvement-date">Oct 11</span>
                         <span class="improvement-desc">Enhanced UI with animated gradient background and interactive button effects</span>
                         <span class="improvement-type">🎨 Design</span>
@@ -2224,11 +2251,6 @@
                         <span class="improvement-date">Oct 10</span>
                         <span class="improvement-desc">Added Daily AI Insight section with rotating tips about the project</span>
                         <span class="improvement-type">✨ Feature</span>
-                    </div>
-                    <div class="improvement-item">
-                        <span class="improvement-date">Oct 9</span>
-                        <span class="improvement-desc">Fixed CLS issues for 99.9% performance improvement</span>
-                        <span class="improvement-type">⚡ Performance</span>
                     </div>
                 </div>
             </div>
@@ -2268,13 +2290,88 @@
             <div class="daily-insight-header">
                 <span class="daily-insight-icon" aria-hidden="true">💡</span>
                 <h2 class="daily-insight-title">Today's AI Insight</h2>
-                <span class="daily-insight-tip">Oct 11</span>
+                <span class="daily-insight-tip">Oct 12</span>
             </div>
             <p class="daily-insight-content" id="dailyInsightText">
-                Visual delight matters! Today's improvements add subtle animations that enhance user experience without overwhelming. 
-                The gentle gradient shift in the background, ripple effects on buttons, and playful emoji interactions create a more 
-                engaging interface. These micro-interactions make the site feel alive and responsive, demonstrating how small touches 
-                can significantly improve the overall user experience. Great design is often about the details!
+                Stay connected with CocoPilot's evolution! Our RSS feed provides real-time updates about daily improvements, new features, 
+                and AI-driven enhancements. By subscribing, you'll never miss a breakthrough. RSS feeds are a timeless technology that 
+                puts you in control of your content consumption - no algorithms, no distractions, just pure updates delivered directly 
+                to your feed reader. It's the perfect way to follow CocoPilot's autonomous development journey!
+            </p>
+        </div>
+
+        <!-- RSS Feed Helper -->
+        <div class="rss-feed-helper" role="complementary" aria-label="RSS Feed Subscription Guide" style="
+            background: linear-gradient(135deg, rgba(255, 152, 0, 0.1) 0%, rgba(255, 87, 34, 0.1) 100%);
+            border: 2px solid rgba(255, 152, 0, 0.3);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 30px 0;
+            text-align: left;
+            box-shadow: 0 4px 15px rgba(255, 152, 0, 0.1);
+        ">
+            <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 20px;">
+                <span style="font-size: 2.5rem;" aria-hidden="true">📡</span>
+                <div>
+                    <h2 style="margin: 0; color: var(--text-primary); font-size: 1.5rem;">Stay Updated with RSS</h2>
+                    <p style="margin: 5px 0 0 0; color: var(--text-secondary); font-size: 0.95rem;">Get instant notifications of daily improvements</p>
+                </div>
+            </div>
+
+            <div style="display: grid; gap: 15px; margin-bottom: 20px;">
+                <div style="display: flex; align-items: start; gap: 10px;">
+                    <span style="color: #ff9800; font-weight: bold; min-width: 24px;">1.</span>
+                    <p style="margin: 0; color: var(--text-primary);">
+                        <strong>Copy the feed URL:</strong> 
+                        <code style="background: rgba(255, 152, 0, 0.15); padding: 4px 8px; border-radius: 4px; font-size: 0.9rem; display: inline-block; margin-top: 5px;">https://acbart.github.io/cocopilot/feed.xml</code>
+                    </p>
+                </div>
+                <div style="display: flex; align-items: start; gap: 10px;">
+                    <span style="color: #ff9800; font-weight: bold; min-width: 24px;">2.</span>
+                    <p style="margin: 0; color: var(--text-primary);">
+                        <strong>Choose your reader:</strong> Try Feedly, NewsBlur, Inoreader, or built-in browser RSS features
+                    </p>
+                </div>
+                <div style="display: flex; align-items: start; gap: 10px;">
+                    <span style="color: #ff9800; font-weight: bold; min-width: 24px;">3.</span>
+                    <p style="margin: 0; color: var(--text-primary);">
+                        <strong>Subscribe:</strong> Paste the URL into your RSS reader and enjoy automated updates!
+                    </p>
+                </div>
+            </div>
+
+            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                <button type="button" onclick="copyRSSFeedUrl()" style="
+                    background: linear-gradient(135deg, #ff9800 0%, #ff5722 100%);
+                    color: white;
+                    border: none;
+                    padding: 10px 20px;
+                    border-radius: 8px;
+                    font-weight: 600;
+                    cursor: pointer;
+                    transition: transform 0.2s, box-shadow 0.2s;
+                    font-size: 0.95rem;
+                " onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 12px rgba(255, 152, 0, 0.4)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'" aria-label="Copy RSS feed URL to clipboard">
+                    📋 Copy Feed URL
+                </button>
+                <a href="feed.xml" target="_blank" style="
+                    background: rgba(255, 152, 0, 0.2);
+                    color: var(--text-primary);
+                    border: 2px solid rgba(255, 152, 0, 0.4);
+                    padding: 10px 20px;
+                    border-radius: 8px;
+                    font-weight: 600;
+                    text-decoration: none;
+                    transition: all 0.2s;
+                    display: inline-block;
+                    font-size: 0.95rem;
+                " onmouseover="this.style.background='rgba(255, 152, 0, 0.3)'" onmouseout="this.style.background='rgba(255, 152, 0, 0.2)'" aria-label="View RSS feed in browser">
+                    🔗 View Feed
+                </a>
+            </div>
+
+            <p style="margin: 15px 0 0 0; color: var(--text-secondary); font-size: 0.85rem; font-style: italic;">
+                💡 Pro tip: RSS feeds respect your privacy - no tracking, no ads, just pure content updates!
             </p>
         </div>
 
@@ -2796,6 +2893,65 @@
                 
                 setTimeout(() => {
                     btn.innerHTML = originalText;
+                }, 2000);
+            }
+        }
+
+        // Copy RSS Feed URL to clipboard
+        async function copyRSSFeedUrl() {
+            const feedUrl = 'https://acbart.github.io/cocopilot/feed.xml';
+            const btn = event.target;
+            const originalContent = btn.innerHTML;
+            
+            try {
+                await navigator.clipboard.writeText(feedUrl);
+                btn.innerHTML = '✅ Copied!';
+                btn.style.background = 'linear-gradient(135deg, #28a745, #20c997)';
+                
+                // Show a brief success notification
+                const notification = document.createElement('div');
+                notification.style.cssText = `
+                    position: fixed;
+                    bottom: 20px;
+                    right: 20px;
+                    background: linear-gradient(135deg, #28a745, #20c997);
+                    color: white;
+                    padding: 15px 25px;
+                    border-radius: 10px;
+                    box-shadow: 0 4px 15px rgba(40, 167, 69, 0.4);
+                    z-index: 10000;
+                    animation: slideInUp 0.3s ease-out;
+                    font-weight: 600;
+                `;
+                notification.textContent = '📋 RSS feed URL copied to clipboard!';
+                document.body.appendChild(notification);
+                
+                setTimeout(() => {
+                    notification.style.animation = 'slideOutDown 0.3s ease-out';
+                    setTimeout(() => notification.remove(), 300);
+                }, 2500);
+                
+                setTimeout(() => {
+                    btn.innerHTML = originalContent;
+                    btn.style.background = 'linear-gradient(135deg, #ff9800 0%, #ff5722 100%)';
+                }, 2000);
+            } catch (error) {
+                // Fallback for browsers that don't support clipboard API
+                const textarea = document.createElement('textarea');
+                textarea.value = feedUrl;
+                textarea.style.position = 'fixed';
+                textarea.style.left = '-999999px';
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+                
+                btn.innerHTML = '✅ Copied!';
+                btn.style.background = 'linear-gradient(135deg, #28a745, #20c997)';
+                
+                setTimeout(() => {
+                    btn.innerHTML = originalContent;
+                    btn.style.background = 'linear-gradient(135deg, #ff9800 0%, #ff5722 100%)';
                 }, 2000);
             }
         }
