@@ -1,8 +1,8 @@
 name: Self-maintainer (Copilot-driven)
 
 on:
-  schedule:
-    - cron: "15 9 * * *"   # daily at 09:15 UTC (~05:15 ET)
+  #schedule:
+  #  - cron: "15 9 * * *"   # daily at 09:15 UTC (~05:15 ET)
   workflow_dispatch: {}
   pull_request:
     types: [opened, ready_for_review, synchronize, reopened, edited]
